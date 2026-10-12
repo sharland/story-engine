@@ -36,13 +36,21 @@ You are empty-handed.
 Time passes.
 
 ## Verb + noun, synonyms, adjectives, "it", a pattern a pack added to "take"
+> x me
+Muddy boots, a patient expression.
+The cat slips away.
+
+> look at myself
+Muddy boots, a patient expression.
+
 > take lamp
 Taken.
-The cat slips away.
+The cat pads in.
 
 > x lantern
 An oil lamp.
 It is switched off.
+The cat slips away.
 
 > examine oil lamp
 An oil lamp.
@@ -72,33 +80,33 @@ Kitchen
 A narrow kitchen. A table stands by the wall. The cupboard is shut.
 You can see a bottle of milk here.
 On the table you can see an apple and a brass key.
+The cat pads in.
 
 > west
 Hall
 A square hall with a flagstone floor. A door leads north, the kitchen is east, an archway opens west to the garden and stone steps go down. A trapdoor is set in the ceiling.
 An upright piano stands against the wall.
 You can see an oil lamp and a waxed coat here.
-The cat pads in.
 
 > go east
 Kitchen
 A narrow kitchen. A table stands by the wall. The cupboard is shut.
 You can see a bottle of milk here.
 On the table you can see an apple and a brass key.
-The cat pads in.
+The cat is here.
 
 > walk west
 Hall
 A square hall with a flagstone floor. A door leads north, the kitchen is east, an archway opens west to the garden and stone steps go down. A trapdoor is set in the ceiling.
 An upright piano stands against the wall.
 You can see an oil lamp and a waxed coat here.
+The cat pads in.
 
 > e
 Kitchen
 A narrow kitchen. A table stands by the wall. The cupboard is shut.
 You can see a bottle of milk here.
 On the table you can see an apple and a brass key.
-The cat is here.
 
 ## A missing noun: the parser asks, and the answer completes the command
 > take
@@ -106,7 +114,6 @@ What do you want to take?
 
 > apple
 Taken.
-The cat slips away.
 
 > open
 What do you want to open?
@@ -141,33 +148,33 @@ brass key: Taken.
 
 > take all from cupboard
 tin: Taken.
+The cat pads in.
 
 > drop all but tin
 apple: Dropped.
 brass key: Dropped.
 bottle of milk: Dropped.
+The cat slips away.
 
 > take all
 apple: Taken.
 brass key: Taken.
 bottle of milk: Taken.
-The cat pads in.
 
 > put all in tin
 apple: The tin is closed.
 brass key: The tin is closed.
 bottle of milk: The tin is closed.
-The cat slips away.
+The cat pads in.
 
 ## Several commands on one line; an error drops the rest of the line
 > open tin. take coin from tin
 Opening the tin reveals a silver coin.
+The cat slips away.
 Taken.
-The cat pads in.
 
 > put coin in tin then close tin
 You put the silver coin in the tin.
-The cat slips away.
 You close the tin.
 
 > take coin. drop tin
@@ -186,11 +193,11 @@ Hall
 A square hall with a flagstone floor. A door leads north, the kitchen is east, an archway opens west to the garden and stone steps go down. A trapdoor is set in the ceiling.
 An upright piano stands against the wall.
 You can see an oil lamp and a waxed coat here.
+The cat is here.
 
 > unlock door
 (with the brass key)
 You unlock the study door.
-The cat pads in.
 
 > open door
 You open the study door.
@@ -222,6 +229,7 @@ Which do you mean, the iron key or the brass key?
 
 > brass
 You see nothing special about the brass key.
+The cat slips away.
 
 > drop key
 Dropped.
@@ -233,7 +241,7 @@ Which do you mean, the brass key or the iron key?
 apple: Dropped.
 tin: Dropped.
 bottle of milk: Dropped.
-The cat slips away.
+The cat pads in.
 
 > lock door
 You'll have to close it first.
@@ -243,7 +251,6 @@ I didn't understand that sentence.
 
 > close door
 You close the study door.
-The cat pads in.
 
 > lock it
 What do you want to lock the study door with?
@@ -260,13 +267,14 @@ A walled garden. The house is east and a shed stands to the north.
 You can see a ladder and some pebbles here.
 The gardener is weeding a bed of roses.
 Rufus is here.
+The cat pads in.
 
 > x gardener
 A stooped man in a straw hat.
 
 > ask him about roses
 "They need rain," he says.
-The cat pads in.
+The cat slips away.
 
 > x her
 I'm not sure what "her" refers to.
@@ -277,27 +285,26 @@ The gardener doesn't seem interested.
 
 > show brass key to gardener
 The gardener glances at the brass key without interest.
-The cat slips away.
 
 > show gardener brass key
 The gardener glances at the brass key without interest.
+The cat pads in.
 
 > say hello
 Nothing happens.
 
 > say hello to gardener
 The gardener doesn't respond.
-The cat pads in.
 
 > x cat
 A thin grey cat.
+The cat slips away.
 
 > x her
-A thin grey cat.
+You can't see the cat any more.
 
 > ask gardener about weather
 The gardener shrugs.
-The cat slips away.
 
 ## Pack verbs and their defaults
 > ring pebbles

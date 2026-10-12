@@ -15,7 +15,8 @@ manual is [WRITING-A-PACK.md](WRITING-A-PACK.md); the exact field list lives in
 - Packs load from any directory, including one outside this repository.
 - Runs in Node (tests, command line) and in a browser with no server.
 - No runtime dependencies. Dev dependencies: `typescript` (type-checking),
-  `esbuild` (browser and CLI bundles), `@types/node`.
+  `esbuild` (browser and CLI bundles), `@types/node`, and `playwright-core`
+  (drives a headless Chromium to test the web page).
 - One seeded random generator, stored in the game state. A session is
   reproducible from `(pack, seed, commands)`.
 - Game state is one plain JSON value. Save is `JSON.stringify`; restore is
@@ -79,7 +80,7 @@ Every entity has a pack-unique id (`^[a-z][a-z0-9_-]*$`). Kinds:
 Dynamic data lives in `GameState`, never in the `World`:
 
 ```ts
-{ format, pack: {id, version}, rng, turns, score, awarded[], location,
+{ format, pack: {id, version}, seed, rng, turns, score, awarded[], location,
   parent: {objectId: parentId | null},      // room, object, "player", char, or offstage
   props:  {entityId: {open, locked, on, worn, moved, visited, ...custom}},
   vars:   {name: value}, act, events: [{id, at}], fired[], it, him, her,
@@ -147,7 +148,7 @@ adjective-only matches. Then:
   asked about.
 - A missing noun produces `What do you want to take?`, answered the same way.
   `unlock door` with no key named uses a key the player holds.
-- Unknown words give `I don't know the word "xyzzy".` Known words that name
+- Unknown words give `I don't know the word "flummox".` Known words that name
   nothing present give `You can't see any such thing.`
 
 Packs extend the grammar: a pack verb is a set of patterns plus a default
@@ -209,10 +210,12 @@ a real language through a narrow interface. That interface is the bounded
 extension point that lets two people write two packs without touching the
 engine.
 
-Rule order: rules are tried most specific first (room + object + second
-noun beats object alone beats action alone), then by `priority`, then in load
-order. Load order is files sorted by path, then position in the file. All of
-this is deterministic.
+Rule order: rules are tried by `priority` (highest first), then most
+specific first (room + object + second noun beats object alone beats action
+alone), then in load order. Load order is files sorted by path, then position
+in the file. All of this is deterministic. Before-rules stop at the first one
+that runs, unless it says `continue`. After-rules run only when the standard
+behaviour succeeded. For the pseudo-actions every matching rule runs.
 
 ### Worked example
 
@@ -310,13 +313,22 @@ ending.
 ## Left for later
 
 - Commands addressed to characters (`robot, go north`) and NPC goal-seeking
-  (path-finding).
+  (path-finding). Characters wander at random, follow, or are moved by effects.
 - Player inside enterable objects (vehicles, beds) and nested rooms.
 - Weight and size. Capacity is a simple item count.
 - Ranks for score ranges, and full-score bonus messages.
 - Conversation menus. Conversation is ask, tell and talk only.
+- Paging ("press a key") for long passages; act intros print in one go.
+- An `exits` command; `opposite` on directions is recorded but unused.
+- Asking for the first noun of two-noun verbs (`put` alone is not
+  understood; `put lamp in` asks what to put it in).
 - A JSON Schema for editor completion. The validator is the schema today.
 - Localisation of the standard library. Packs can override every standard
   message, but the grammar is English.
 - Marking passages as verbatim quotation for source-tracking reports.
+- Save migration between pack versions: a save only restores into the
+  version that made it.
+- Indexing containment for very large packs. Scope is computed by scanning
+  every object, which is fast at novel scale (hundreds of objects) but
+  quadratic in principle.
 - Sandboxing pack scripts. They are trusted.

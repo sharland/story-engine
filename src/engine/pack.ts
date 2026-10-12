@@ -457,7 +457,6 @@ function buildRoom(c: Checker, id: string, def: RoomDef, file: string, direction
       else: e.else ?? null,
       say: e.say ?? null,
       do: e.do ?? [],
-      hidden: !!e.hidden,
     });
   }
   return {

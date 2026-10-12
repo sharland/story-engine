@@ -94,7 +94,6 @@ export type ExitDef =
       else?: TextDef;
       say?: TextDef;
       do?: Effect[];
-      hidden?: boolean;
     };
 
 export interface RoomDef {
@@ -274,7 +273,6 @@ export interface Exit {
   else: TextDef | null;
   say: TextDef | null;
   do: Effect[];
-  hidden: boolean;
 }
 
 export interface Room {

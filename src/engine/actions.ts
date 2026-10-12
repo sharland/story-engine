@@ -95,6 +95,13 @@ export const ACTIONS: Record<string, Handler> = {
 
   examine,
 
+  examineSelf(g) {
+    const own = g.world.manifest.player?.description;
+    if (own) g.say(own);
+    else g.msg('examineSelf');
+    return true;
+  },
+
   read(g, c) {
     if (!g.isLit()) {
       g.msg('tooDark');

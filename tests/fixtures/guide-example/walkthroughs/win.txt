@@ -1,0 +1,9 @@
+# expect: on-the-road
+# score: 15
+e
+take letter
+read letter
+ask hale about bag
+give purse to hale
+w
+n

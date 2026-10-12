@@ -1,0 +1,19 @@
+{
+  "format": 1,
+  "id": "salt-road",
+  "title": "The Salt Road (example)",
+  "version": "1.0.0",
+  "author": "A. Adapter",
+  "licence": "CC0-1.0",
+  "description": "A three-room example of a novel adaptation.",
+  "source": {
+    "title": "The Salt Road",
+    "author": "An Imaginary Novelist",
+    "year": 1901,
+    "licence": "Public domain",
+    "note": "The novel is invented for this example."
+  },
+  "credits": ["Adapted for the story-engine pack guide."],
+  "start": "yard",
+  "intro": "@intro"
+}

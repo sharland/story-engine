@@ -1,0 +1,60 @@
+{
+  "regions": {
+    "road": {
+      "if": { "actAtLeast": "departure" },
+      "else": "Mrs Hale has your bag behind the bar. You won't get far without it."
+    }
+  },
+  "rooms": {
+    "yard": {
+      "name": "Inn Yard",
+      "description": "@yard",
+      "exits": { "in": "parlour", "east": "parlour", "north": "road-north" }
+    },
+    "parlour": {
+      "name": "Parlour",
+      "description": [
+        "A low room with a fire. The yard is back out to the west.",
+        { "if": { "act": "departure" }, "text": "The fire has burned down to embers." }
+      ],
+      "exits": { "west": "yard", "out": "yard" }
+    },
+    "road-north": {
+      "name": "The North Road",
+      "region": "road",
+      "description": "@road",
+      "exits": { "south": "yard" }
+    }
+  },
+  "objects": {
+    "purse": {
+      "name": "purse", "location": "player",
+      "description": "Your purse. Three shillings, which is all you have."
+    },
+    "bag": {
+      "name": "travelling bag", "nouns": ["bag"], "adjectives": ["travelling"],
+      "location": "hale",
+      "description": "Your bag, with everything you own in it."
+    },
+    "letter": {
+      "name": "letter", "location": "parlour",
+      "initial": "A letter addressed to you lies on the parlour table.",
+      "read": "@letter"
+    }
+  },
+  "characters": {
+    "hale": {
+      "name": "Mrs Hale", "nouns": ["hale", "innkeeper", "woman"], "pronoun": "her",
+      "location": "parlour",
+      "description": "The innkeeper, broad and watchful.",
+      "initial": "Mrs Hale stands behind the bar.",
+      "noTopic": "\"I wouldn't know about that,\" says Mrs Hale.",
+      "topics": [
+        { "keys": ["bag", "luggage"], "if": { "act": "arrival" },
+          "text": "\"Your bag stays with me until the bill is paid,\" she says." },
+        { "keys": ["bag", "luggage"], "text": "\"It's yours. Mind the coach.\"" },
+        { "keys": ["coach", "road"], "text": "@hale-coach" }
+      ]
+    }
+  }
+}

@@ -221,7 +221,7 @@ const textString: FieldCheck = (c, v, where) => {
 
 const COMPARATORS = ['eq', 'ne', 'gt', 'gte', 'lt', 'lte'];
 
-const CONDITION_FORMS: Record<string, Spec> = {
+export const CONDITION_FORMS: Record<string, Spec> = {
   all: { fields: { all: list((c, v, w) => condition(c, v, w)) } },
   any: { fields: { any: list((c, v, w) => condition(c, v, w)) } },
   not: { fields: { not: (c, v, w) => condition(c, v, w) } },
@@ -299,7 +299,7 @@ function checkForm(c: Checker, v: unknown, where: string, forms: Record<string, 
 // ---------------------------------------------------------------------------
 // Effects
 
-const EFFECT_FORMS: Record<string, Spec> = {
+export const EFFECT_FORMS: Record<string, Spec> = {
   say: { fields: { say: text } },
   sayRandom: { fields: { sayRandom: list(text) } },
   set: { fields: { set: ref('varWrite'), to: value }, required: ['to'] },
@@ -368,7 +368,6 @@ const exit: FieldCheck = (c, v, where) => {
       else: text,
       say: text,
       do: effects,
-      hidden: bool,
     },
   });
 };

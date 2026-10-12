@@ -10,5 +10,5 @@
   "credits": ["Written for the engine's test suite."],
   "start": "hall",
   "intro": "@intro",
-  "player": { "capacity": 5 }
+  "player": { "capacity": 5, "description": "Muddy boots, a patient expression." }
 }
