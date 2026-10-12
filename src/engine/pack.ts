@@ -367,8 +367,11 @@ export function compilePack(src: PackSource): CompileResult {
   const messages: Record<string, string> = { ...STANDARD_MESSAGES };
   for (const [id, { def }] of maps.messages) if (typeof def === 'string') messages[id] = def;
 
-  // Object vocabulary must avoid parser keywords.
+  // Object vocabulary must avoid parser keywords, and must exist.
   for (const t of things.values()) {
+    if (t.words.size === 0) {
+      c.error(definedIn.get(t.id) ?? t.id, 'no-words', `"${t.id}" has no words the player can use to name it; give it "nouns"`);
+    }
     for (const w of t.words) {
       if (RESERVED_WORDS.includes(w)) {
         c.error(definedIn.get(t.id) ?? t.id, 'vocabulary-clash', `"${w}" is a parser keyword and can't name ${t.id}`);

@@ -27,11 +27,17 @@ export function validate(src: PackSource, options: ValidateOptions = {}): Valida
   const world = compiled.world;
   const hasErrors = () => issues.some((i) => i.level === 'error');
 
-  if (world && !hasErrors()) {
-    const reachable = reachableRooms(world, compiled, issues);
-    unobtainable(world, compiled, reachable, issues);
-    vocabularyClashes(world, issues);
-    unused(world, compiled, issues);
+  if (world) {
+    // Static analyses run even when there are errors, so every problem is
+    // reported at once. They must tolerate dangling references.
+    try {
+      const reachable = reachableRooms(world, compiled, issues);
+      unobtainable(world, compiled, reachable, issues);
+      vocabularyClashes(world, issues);
+      unused(world, compiled, issues);
+    } catch (e) {
+      if (!hasErrors()) throw e;
+    }
     if (src.walkthroughs.length === 0) {
       issues.push({
         level: 'warning',
