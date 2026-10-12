@@ -169,7 +169,7 @@ export function list(check: FieldCheck): FieldCheck {
 // ---------------------------------------------------------------------------
 // Text
 
-const THING_TAGS = ['the', 'The', 'a', 'A', 'name', 'it', 'It', 'that', 'That', 'is'];
+const THING_TAGS = ['the', 'The', 'a', 'A', 'name', 'it', 'It', 'that', 'That', 'is', 'has', 's', 'es'];
 const BARE_TAGS = ['score', 'max', 'turns'];
 const MESSAGE_PARAMS = ['list', 'word', 'verb', 'n', 'title', 'reason'];
 

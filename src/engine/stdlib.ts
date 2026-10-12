@@ -122,7 +122,8 @@ export const BUILTIN_VARS = ['turns', 'score', 'maxScore', 'room', 'act'];
 export const STANDARD_PROPS = ['open', 'locked', 'on', 'worn', 'moved', 'visited', 'dark', 'following'];
 
 // Messages. Templates: {The:noun} {the:noun} {a:noun} {A:noun} {name:noun}
-// {it:noun} {It:noun} {that:noun} {That:noun} {is:noun}, where the part after
+// {it:noun} {It:noun} {that:noun} {That:noun}, verb endings {is:noun} {has:noun}
+// {s:noun} {es:noun} (singular "s"/"es", plural nothing), where the part after
 // the colon is "noun", "second" or an id; {var:name}; {score} {max} {turns};
 // and named parameters such as {list}, {word} and {n}.
 export const STANDARD_MESSAGES: Record<string, string> = {
@@ -203,7 +204,7 @@ export const STANDARD_MESSAGES: Record<string, string> = {
   fixed: '{That:noun} {is:noun} fixed in place.',
   scenery: "That's hardly portable.",
   takeCharacter: '{The:noun} would not appreciate that.',
-  belongsTo: '{That:noun} seems to belong to {the:second}.',
+  belongsTo: '{That:noun} seem{s:noun} to belong to {the:second}.',
   notInside: "{The:noun} {is:noun} not there.",
   carryingTooMuch: "You're carrying too many things already.",
   takeSelf: 'You are always self-possessed.',
@@ -220,19 +221,19 @@ export const STANDARD_MESSAGES: Record<string, string> = {
   noRoom: 'There is no more room in {the:second}.',
 
   // Opening and locking
-  notOpenable: "{That:noun} {is:noun} not something you can open.",
-  notCloseable: "{That:noun} {is:noun} not something you can close.",
+  notOpenable: "You can't open {that:noun}.",
+  notCloseable: "You can't close {that:noun}.",
   alreadyOpen: '{It:noun} {is:noun} already open.',
   alreadyClosed: '{It:noun} {is:noun} already closed.',
   opened: 'You open {the:noun}.',
   openReveals: 'Opening {the:noun} reveals {list}.',
   closed: 'You close {the:noun}.',
   locked: '{It:noun} seems to be locked.',
-  notLockable: "{That:noun} doesn't have a lock.",
+  notLockable: "{That:noun} do{es:noun}n't have a lock.",
   alreadyLocked: '{It:noun} {is:noun} already locked.',
   alreadyUnlocked: "{It:noun} {is:noun} not locked.",
   closeFirst: "You'll have to close {it:noun} first.",
-  wrongKey: "{The:second} doesn't fit {the:noun}.",
+  wrongKey: "{The:second} won't fit {the:noun}.",
   withKey: '(with {the:second})',
   lockedIt: 'You lock {the:noun}.',
   unlockedIt: 'You unlock {the:noun}.',
@@ -243,7 +244,7 @@ export const STANDARD_MESSAGES: Record<string, string> = {
   notWearing: "You aren't wearing {that:noun}.",
   wearing: 'You put on {the:noun}.',
   takenOff: 'You take off {the:noun}.',
-  notSwitchable: "{That:noun} {is:noun} not something you can switch on or off.",
+  notSwitchable: "You can't switch {that:noun} on or off.",
   alreadyOn: "{It:noun} {is:noun} already on.",
   alreadyOff: "{It:noun} {is:noun} already off.",
   switchedOn: 'You switch on {the:noun}.',
@@ -252,7 +253,7 @@ export const STANDARD_MESSAGES: Record<string, string> = {
   // Eating, reading, senses
   eaten: 'You eat {the:noun}.',
   drunk: 'You drink {the:noun}.',
-  notEdible: "{That:noun} {is:noun} not something you can eat.",
+  notEdible: "You can't eat {that:noun}.",
   notDrinkable: "You can't drink {that:noun}.",
   nothingHappens: 'Nothing obvious happens.',
   touched: 'You feel nothing unexpected.',
@@ -270,11 +271,11 @@ export const STANDARD_MESSAGES: Record<string, string> = {
 
   // People
   giveNotCharacter: "You can't give things to {the:second}.",
-  notInterested: "{The:second} doesn't seem interested.",
-  shown: '{The:second} glances at {the:noun} without interest.',
+  notInterested: "{The:second} do{es:second}n't seem interested.",
+  shown: '{The:second} glance{s:second} at {the:noun} without interest.',
   notCharacter: "You can't talk to {that:noun}.",
-  noTopic: '{The:noun} has nothing to say about that.',
-  talkDefault: '{The:noun} waits for you to ask about something.',
+  noTopic: '{The:noun} {has:noun} nothing to say about that.',
+  talkDefault: '{The:noun} wait{s:noun} for you to ask about something.',
   saidNothing: 'Nothing happens.',
-  saidToNobody: "{The:noun} doesn't respond.",
+  saidToNobody: "{The:noun} do{es:noun}n't respond.",
 };

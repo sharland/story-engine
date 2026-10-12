@@ -58,6 +58,9 @@ export interface ActionCtx {
 
 type Params = Record<string, string | number>;
 
+/** Template tags that take a thing: {the:noun}, {is:second}, {s:lamp} ... */
+export const THING_TAGS = ['the', 'The', 'a', 'A', 'name', 'it', 'It', 'that', 'That', 'is', 'has', 's', 'es'];
+
 const ALLOWED_AFTER_END = ['restart', 'restore', 'undo', 'quit', 'about', 'help', 'score'];
 
 export function renderBlocks(blocks: Block[]): string {
@@ -220,7 +223,7 @@ export class Game {
   private fill(s: string, params: Params): string {
     const ctx = this.ctx();
     return fillTemplate(s, (tag, ref) => {
-      if (['the', 'The', 'a', 'A', 'name', 'it', 'It', 'that', 'That', 'is'].includes(tag)) {
+      if (THING_TAGS.includes(tag)) {
         let id: string | null = ref;
         if (ref === 'noun') id = params.noun !== undefined ? String(params.noun) : ctx.noun;
         else if (ref === 'second') id = params.second !== undefined ? String(params.second) : ctx.second;
@@ -263,6 +266,12 @@ export class Game {
         return capitalise(this.thatWord(t));
       case 'is':
         return t.plural ? 'are' : 'is';
+      case 'has':
+        return t.plural ? 'have' : 'has';
+      case 's':
+        return t.plural ? '' : 's';
+      case 'es':
+        return t.plural ? '' : 'es';
     }
     return t.name;
   }

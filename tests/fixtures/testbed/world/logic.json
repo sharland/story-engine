@@ -1,0 +1,128 @@
+{
+  "vars": { "knocks": 0, "bells": 0 },
+  "scores": {
+    "helped-gardener": 5,
+    "found-ring": { "points": 10, "note": "Taking the ring from the case" },
+    "rang-bell": 5
+  },
+  "acts": [
+    { "id": "morning", "title": "Part One: Morning" },
+    {
+      "id": "evening", "title": "Part Two: Evening", "intro": "The light turns gold.",
+      "do": [{ "schedule": "church-bell", "in": 3 }]
+    }
+  ],
+  "events": {
+    "church-bell": {
+      "say": "A church bell tolls somewhere far off.",
+      "do": [{ "inc": "bells" }]
+    }
+  },
+  "endings": {
+    "won": { "title": "You have rung the bell", "text": "The note hangs in the air for a long time.", "win": true },
+    "poisoned": { "title": "You have died", "text": "The mushroom was a poor choice." }
+  },
+  "messages": {
+    "yelled": "Your shout echoes off the walls."
+  },
+  "verbs": {
+    "ring": { "patterns": ["ring OBJ"], "default": "You can't ring {that:noun}." },
+    "knock": { "patterns": ["knock on OBJ", "knock OBJ"], "default": "Nobody answers." },
+    "whistle": { "patterns": ["whistle"] },
+    "count": { "patterns": ["count"] },
+    "take": { "patterns": ["nick OBJ"] }
+  },
+  "rules": [
+    {
+      "id": "lamp-burns",
+      "on": "turn",
+      "if": { "var": "lamp.on" },
+      "do": [
+        { "dec": "lamp.fuel" },
+        { "if": { "var": "lamp.fuel", "lte": 0 }, "then": [
+          { "set": "lamp.on", "to": false },
+          { "say": "The lamp gutters and goes out." }
+        ] }
+      ]
+    },
+    {
+      "id": "lamp-empty",
+      "on": "switchOn", "object": "lamp",
+      "if": { "var": "lamp.fuel", "lte": 0 },
+      "say": "The lamp has no oil left."
+    },
+    {
+      "id": "give-apple",
+      "on": "give", "object": "apple", "with": "gardener",
+      "if": { "act": "morning" },
+      "say": "The gardener takes the apple and bites into it. \"Thank you. I'll open the shed this evening.\"",
+      "do": [{ "move": "apple", "to": "nowhere" }, { "award": "helped-gardener" }, { "act": "evening" }]
+    },
+    {
+      "id": "take-ring",
+      "on": "take", "object": "ring", "when": "after",
+      "do": [{ "award": "found-ring" }]
+    },
+    {
+      "id": "ring-bell-with-ring",
+      "on": "ring", "object": "bell",
+      "if": { "has": "ring" },
+      "say": "You ring the bell. The gold ring in your hand catches the light.",
+      "do": [{ "award": "rang-bell" }, { "end": "won" }]
+    },
+    {
+      "id": "ring-bell",
+      "on": "ring", "object": "bell",
+      "say": "The bell clanks dully. Something is missing."
+    },
+    {
+      "id": "eat-mushroom",
+      "on": "eat", "object": "mushroom",
+      "say": "It tastes of earth.",
+      "do": [{ "end": "poisoned" }]
+    },
+    {
+      "id": "knock-door",
+      "on": "knock", "object": "study-door",
+      "say": "A hollow sound. That makes {var:knocks} before this one.",
+      "do": [{ "inc": "knocks" }]
+    },
+    {
+      "id": "cat-hiss",
+      "on": ["take", "touch"], "object": "cat",
+      "say": "The cat hisses at you."
+    },
+    {
+      "id": "first-cellar",
+      "on": "arrive", "in": "cellar", "once": true,
+      "if": { "light": true },
+      "say": "Cobwebs brush your face."
+    },
+    {
+      "id": "say-please",
+      "on": "say", "topic": "please", "in": "kitchen", "if": { "here": "cat" },
+      "say": "The cat looks up at you."
+    },
+    {
+      "id": "too-laden",
+      "on": "jump",
+      "if": { "script": "holding-many", "args": { "n": 3 } },
+      "say": "You are carrying too much to jump."
+    },
+    {
+      "id": "count",
+      "on": "count",
+      "do": [{ "script": "tally" }]
+    },
+    {
+      "id": "note-take-coat",
+      "on": "take", "object": "#clothing", "continue": true,
+      "say": "You check the pockets first. Empty."
+    },
+    {
+      "id": "pebbles-grounds",
+      "on": "drop", "object": "pebbles", "in": "outbuildings",
+      "say": "Better not leave them in the shed."
+    }
+  ]
+}

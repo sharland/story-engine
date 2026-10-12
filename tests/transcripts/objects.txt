@@ -1,0 +1,402 @@
+# Objects: portable, fixed, scenery; containers (open, closed, nested,
+# capacity, transparent, locked); surfaces; wearables; carrying capacity;
+# eating, drinking, reading, searching; standard responses.
+# pack: ../fixtures/testbed
+# seed: 3
+## Fixed things and scenery
+This is the testbed. Nothing here is a story; every room exists to exercise part of the engine.
+Part One: Morning
+Hall
+A square hall with a flagstone floor. A door leads north, the kitchen is east, an archway opens west to the garden and stone steps go down. A trapdoor is set in the ceiling.
+You have not been here before.
+The second paragraph of a first visit.
+An oil lamp stands on the floor.
+An upright piano stands against the wall.
+You can see a waxed coat here.
+
+> take piano
+The piano is far too heavy to move.
+
+> push piano
+Nothing obvious happens.
+The cat pads in.
+
+> x floor
+I don't know the word "floor".
+
+> e
+Kitchen
+A narrow kitchen. A table stands by the wall. The cupboard is shut.
+You can see a bottle of milk here.
+On the table you can see an apple and a brass key.
+
+> take table
+That's hardly portable.
+
+> x table
+You see nothing special about the table.
+On the table you can see an apple and a brass key.
+The cat pads in.
+
+> search table
+On the table you can see an apple and a brass key.
+
+> look under table
+You find nothing of interest.
+The cat slips away.
+
+## Containers: closed, open, nested, capacity
+> take tin
+You can't see any such thing.
+
+> look in cupboard
+The cupboard is closed.
+
+> open cupboard
+Opening the cupboard reveals a tin.
+
+> look in cupboard
+In the cupboard you can see a tin.
+
+> take tin
+Taken.
+
+> x tin
+You see nothing special about the tin.
+It is closed.
+
+> take coin
+You can't see any such thing.
+
+> open tin
+Opening the tin reveals a silver coin.
+
+> x tin
+You see nothing special about the tin.
+It is open.
+In the tin you can see a silver coin.
+
+> put apple in tin
+There is no more room in the tin.
+
+> take coin
+Taken.
+
+> put apple in tin
+(first taking the apple)
+Taken.
+You put the apple in the tin.
+
+> put tin in tin
+You can't put something inside itself.
+
+> close tin
+You close the tin.
+
+> look in tin
+The tin is closed.
+The cat pads in.
+
+> i
+You are carrying:
+  a tin
+  a silver coin
+
+> open tin
+Opening the tin reveals an apple.
+The cat slips away.
+
+> put coin on table
+You put the silver coin on the table.
+
+> look
+Kitchen
+A narrow kitchen. A table stands by the wall. The cupboard hangs open.
+You can see a bottle of milk here.
+On the table you can see a brass key and a silver coin.
+
+> take all from table
+brass key: Taken.
+silver coin: Taken.
+
+## Surfaces and the "initial" text that lasts until something is moved
+> put tin on table
+You put the tin on the table.
+
+> x table
+You see nothing special about the table.
+On the table you can see a tin.
+
+> take tin
+Taken.
+
+> drop tin
+Dropped.
+
+> look
+Kitchen
+A narrow kitchen. A table stands by the wall. The cupboard hangs open.
+You can see a tin and a bottle of milk here.
+In the tin you can see an apple.
+
+## Eating, drinking, reading
+> eat apple
+(first taking the apple)
+Taken.
+You eat the apple.
+
+> eat tin
+You can't eat that.
+The cat pads in.
+
+> drink milk
+You drink the bottle of milk.
+The cat slips away.
+
+> i
+You are carrying:
+  a brass key
+  a silver coin
+
+> w
+Hall
+A square hall with a flagstone floor. A door leads north, the kitchen is east, an archway opens west to the garden and stone steps go down. A trapdoor is set in the ceiling.
+An oil lamp stands on the floor.
+An upright piano stands against the wall.
+You can see a waxed coat here.
+The cat is here.
+
+> unlock door
+(with the brass key)
+You unlock the study door.
+
+> open door
+You open the study door.
+The cat slips away.
+
+> n
+Study
+A small study with a desk under the window.
+On the desk you can see a letter and an iron key.
+
+> read letter
+The letter reads:
+Dear friend,
+the ring is in the attic.
+Yours.
+
+> x letter
+A folded letter in a neat hand.
+
+> take letter
+Taken.
+
+> s
+Hall
+A square hall with a flagstone floor. A door leads north, the kitchen is east, an archway opens west to the garden and stone steps go down. A trapdoor is set in the ceiling.
+An oil lamp stands on the floor.
+An upright piano stands against the wall.
+You can see a waxed coat here.
+The cat is here.
+
+## Wearables
+> take coat
+You check the pockets first. Empty.
+Taken.
+
+> wear coat
+You put on the waxed coat.
+
+> wear coat
+You're already wearing it.
+The cat slips away.
+
+> i
+You are carrying:
+  a waxed coat (being worn)
+  a brass key
+  a silver coin
+  a letter
+
+> drop coat
+You'll have to take it off first.
+
+> take off coat
+You take off the waxed coat.
+The cat pads in.
+
+> remove coat
+You aren't wearing that.
+The cat slips away.
+
+> put on coat
+You put on the waxed coat.
+
+> put coat on
+You're already wearing it.
+
+> take coat off
+You take off the waxed coat.
+The cat pads in.
+
+## Carrying capacity (five items, worn things don't count)
+> wear coat
+You put on the waxed coat.
+The cat slips away.
+
+> take lamp
+Taken.
+
+> e
+Kitchen
+A narrow kitchen. A table stands by the wall. The cupboard hangs open.
+You can see a tin here.
+
+> take tin
+Taken.
+
+> take bottle
+You can't see any such thing.
+
+> take pebbles
+You can't see any such thing.
+
+> w
+Hall
+A square hall with a flagstone floor. A door leads north, the kitchen is east, an archway opens west to the garden and stone steps go down. A trapdoor is set in the ceiling.
+An upright piano stands against the wall.
+The cat pads in.
+
+> w
+Garden
+A walled garden. The house is east and a shed stands to the north.
+You can see a ladder and some pebbles here.
+The gardener is weeding a bed of roses.
+Rufus is here.
+The cat pads in.
+
+> take pebbles
+You're carrying too many things already.
+
+> take ladder
+You're carrying too many things already.
+
+> drop letter
+Dropped.
+
+> take ladder
+Taken.
+
+> i
+You are carrying:
+  a ladder
+  an oil lamp
+  a waxed coat (being worn)
+  a brass key
+  a tin
+  a silver coin
+
+## Standard responses
+> pull ladder
+Nothing obvious happens.
+
+> turn ladder
+Nothing obvious happens.
+
+> touch ladder
+You feel nothing unexpected.
+
+> smell
+You smell nothing unexpected.
+
+> smell ladder
+You smell nothing unexpected.
+The cat slips away.
+
+> listen
+You hear nothing unexpected.
+
+> listen to gardener
+You hear nothing unexpected.
+The cat pads in.
+
+> taste pebbles
+You taste nothing unexpected.
+The cat slips away.
+
+> attack gardener
+Fighting won't help here.
+
+> throw pebbles at gardener
+Throwing the pebbles would achieve nothing.
+The cat pads in.
+
+> climb ladder
+You can't climb that.
+The cat slips away.
+
+> climb
+There is nothing obvious to climb.
+
+> jump
+You are carrying too much to jump.
+
+> sleep
+This is no time for sleeping.
+
+> yell
+Your shout echoes off the walls.
+
+> use ladder
+Try a more specific verb with the ladder.
+
+> talk to ladder
+You can't talk to that.
+
+> talk to gardener
+The gardener straightens up and waits.
+
+> take gardener
+The gardener would not appreciate that.
+The cat pads in.
+
+> eat ladder
+You can't eat that.
+
+> drink ladder
+You can't drink that.
+
+> read pebbles
+You see nothing special about the pebbles.
+
+> open pebbles
+You can't open those.
+
+> close pebbles
+You can't close those.
+The cat slips away.
+
+> lock pebbles
+Those don't have a lock.
+The cat pads in.
+
+> wear pebbles
+You can't wear those.
+
+> switch on pebbles
+You can't switch those on or off.
+
+> enter pebbles
+That's not something you can enter.
+
+> put pebbles in ladder
+You can't put things in the ladder.
+The cat slips away.
+
+> put pebbles on ladder
+You can't put things on the ladder.
+The cat pads in.
+
+> give pebbles to ladder
+You can't give things to the ladder.
+The cat slips away.

@@ -20,6 +20,8 @@ export interface Segment {
   command: string | null;
   expected: string[];
   line: number;
+  /** Comment lines written just before this command (or, for the start, the header). */
+  comments: string[];
 }
 
 export interface Transcript {
@@ -31,17 +33,24 @@ export interface Transcript {
 export function parseTranscript(text: string, file: string): Transcript {
   let pack = '';
   let seed = 1;
-  const segments: Segment[] = [{ command: null, expected: [], line: 1 }];
+  const segments: Segment[] = [{ command: null, expected: [], line: 1, comments: [] }];
+  let comments: string[] = [];
   text.replace(/\r\n?/g, '\n').split('\n').forEach((line, i) => {
     const directive = /^#\s*(pack|seed)\s*:\s*(.+?)\s*$/.exec(line);
     if (directive) {
       if (directive[1] === 'pack') pack = resolve(dirname(file), directive[2]);
       else seed = Number(directive[2]);
+      segments[0].comments.push(line);
       return;
     }
-    if (line.startsWith('#')) return;
-    if (line.startsWith('> ')) {
-      segments.push({ command: line.slice(2), expected: [], line: i + 1 });
+    if (line.startsWith('#')) {
+      if (segments.length === 1 && segments[0].expected.length === 0) segments[0].comments.push(line);
+      else comments.push(line);
+      return;
+    }
+    if (line.startsWith('>')) {
+      segments.push({ command: line.replace(/^> ?/, ''), expected: [], line: i + 1, comments });
+      comments = [];
       return;
     }
     if (line.trim() !== '') segments[segments.length - 1].expected.push(line);
@@ -79,14 +88,11 @@ export async function runTranscript(file: string, update = false): Promise<Misma
     }
   }
   if (update && mismatches.length > 0) {
-    // Keep header comments; regenerate everything from the first output on.
-    const header = text.split('\n').filter((l, i, all) => {
-      const firstBody = all.findIndex((x) => !x.startsWith('#') && x.trim() !== '');
-      return firstBody < 0 || i < firstBody;
-    });
-    const out: string[] = [...header.filter((l) => l.trim() !== '')];
+    const out: string[] = [];
     t.segments.forEach((seg, i) => {
-      if (seg.command !== null) out.push('', `> ${seg.command}`);
+      if (seg.command !== null) out.push('');
+      out.push(...seg.comments);
+      if (seg.command !== null) out.push(`> ${seg.command}`);
       out.push(...actualBySegment[i]);
     });
     await writeFile(file, out.join('\n') + '\n');

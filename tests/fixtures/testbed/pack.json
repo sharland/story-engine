@@ -1,0 +1,14 @@
+{
+  "format": 1,
+  "id": "testbed",
+  "title": "Testbed",
+  "version": "1.0.0",
+  "author": "story-engine tests",
+  "licence": "CC0-1.0",
+  "description": "A fixture that exercises every engine feature. Not a story.",
+  "source": { "title": "No source", "author": "Nobody", "year": 2026, "note": "Test content only." },
+  "credits": ["Written for the engine's test suite."],
+  "start": "hall",
+  "intro": "@intro",
+  "player": { "capacity": 5 }
+}

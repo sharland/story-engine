@@ -427,11 +427,11 @@ function put(g: Game, c: ActionCtx, how: 'in' | 'on'): boolean {
     g.msg('wornFirst');
     return false;
   }
-  if (!g.implicitTake(id)) return false;
   if (dest.capacity !== null && g.children(dest.id).length >= dest.capacity) {
     g.msg('noRoom');
     return false;
   }
+  if (!g.implicitTake(id)) return false;
   g.moveThing(id, dest.id);
   g.msg(how === 'in' ? 'putIn' : 'putOn');
   return true;

@@ -1,0 +1,268 @@
+{
+  "_comment": "Indoor rooms. Keys starting with _ are ignored.",
+  "rooms": {
+    "hall": {
+      "name": "Hall",
+      "description": [
+        "A square hall with a flagstone floor. A door leads north, the kitchen is east, an archway opens west to the garden and stone steps go down. A trapdoor is set in the ceiling.",
+        {
+          "if": {
+            "obj": "ladder",
+            "in": "hall"
+          },
+          "text": "A ladder reaches up to the trapdoor."
+        }
+      ],
+      "firstVisit": "@hall-first",
+      "exits": {
+        "north": {
+          "to": "study",
+          "door": "study-door"
+        },
+        "east": "kitchen",
+        "west": "garden",
+        "down": "cellar",
+        "up": {
+          "to": "attic",
+          "if": {
+            "obj": "ladder",
+            "in": "hall"
+          },
+          "else": "The trapdoor is too high to reach."
+        },
+        "south": {
+          "say": "The front door is barred from outside."
+        }
+      }
+    },
+    "kitchen": {
+      "name": "Kitchen",
+      "description": [
+        "A narrow kitchen. A table stands by the wall.",
+        {
+          "if": {
+            "var": "cupboard.open"
+          },
+          "text": "The cupboard hangs open.",
+          "else": "The cupboard is shut."
+        }
+      ],
+      "exits": {
+        "west": "hall"
+      },
+      "noExit": "The only way out of the kitchen is west."
+    },
+    "study": {
+      "name": "Study",
+      "description": "A small study with a desk under the window.",
+      "exits": {
+        "south": {
+          "to": "hall",
+          "door": "study-door"
+        }
+      }
+    },
+    "cellar": {
+      "name": "Cellar",
+      "description": "A low cellar that smells of earth.",
+      "dark": true,
+      "exits": {
+        "up": "hall"
+      }
+    },
+    "attic": {
+      "name": "Attic",
+      "description": "Dust and rafters.",
+      "exits": {
+        "down": "hall"
+      }
+    }
+  },
+  "objects": {
+    "study-door": {
+      "name": "study door",
+      "nouns": [
+        "door"
+      ],
+      "adjectives": [
+        "study"
+      ],
+      "door": true,
+      "openable": true,
+      "locked": true,
+      "key": "brass-key",
+      "foundIn": [
+        "hall",
+        "study"
+      ],
+      "description": "A panelled door."
+    },
+    "lamp": {
+      "name": "oil lamp",
+      "nouns": [
+        "lamp",
+        "lantern"
+      ],
+      "adjectives": [
+        "oil"
+      ],
+      "location": "hall",
+      "switchable": true,
+      "light": true,
+      "props": {
+        "fuel": 8
+      },
+      "initial": "An oil lamp stands on the floor.",
+      "description": [
+        "An oil lamp.",
+        {
+          "if": {
+            "var": "lamp.fuel",
+            "lte": 3
+          },
+          "text": "It is nearly out of oil."
+        }
+      ]
+    },
+    "piano": {
+      "name": "piano",
+      "location": "hall",
+      "fixed": "The piano is far too heavy to move.",
+      "initial": "An upright piano stands against the wall."
+    },
+    "coat": {
+      "name": "waxed coat",
+      "nouns": [
+        "coat"
+      ],
+      "adjectives": [
+        "waxed"
+      ],
+      "location": "hall",
+      "wearable": true,
+      "tags": [
+        "clothing"
+      ]
+    },
+    "table": {
+      "name": "table",
+      "location": "kitchen",
+      "scenery": true,
+      "surface": true
+    },
+    "apple": {
+      "name": "apple",
+      "location": "table",
+      "edible": true
+    },
+    "brass-key": {
+      "name": "brass key",
+      "nouns": [
+        "key"
+      ],
+      "adjectives": [
+        "brass"
+      ],
+      "location": "table"
+    },
+    "cupboard": {
+      "name": "cupboard",
+      "location": "kitchen",
+      "fixed": true,
+      "scenery": true,
+      "container": true,
+      "openable": true
+    },
+    "tin": {
+      "name": "tin",
+      "location": "cupboard",
+      "container": true,
+      "openable": true,
+      "capacity": 1
+    },
+    "coin": {
+      "name": "silver coin",
+      "nouns": [
+        "coin"
+      ],
+      "adjectives": [
+        "silver"
+      ],
+      "location": "tin"
+    },
+    "bottle": {
+      "name": "bottle of milk",
+      "nouns": [
+        "bottle",
+        "milk"
+      ],
+      "location": "kitchen",
+      "drinkable": true
+    },
+    "desk": {
+      "name": "desk",
+      "location": "study",
+      "scenery": true,
+      "surface": true
+    },
+    "letter": {
+      "name": "letter",
+      "location": "desk",
+      "read": "@letter",
+      "description": "A folded letter in a neat hand."
+    },
+    "iron-key": {
+      "name": "iron key",
+      "nouns": [
+        "key"
+      ],
+      "adjectives": [
+        "iron"
+      ],
+      "location": "desk"
+    },
+    "crate": {
+      "name": "crate",
+      "location": "cellar",
+      "container": true,
+      "fixed": true
+    },
+    "mushroom": {
+      "name": "pale mushroom",
+      "nouns": [
+        "mushroom"
+      ],
+      "adjectives": [
+        "pale"
+      ],
+      "location": "crate",
+      "edible": true
+    },
+    "case": {
+      "name": "glass case",
+      "nouns": [
+        "case"
+      ],
+      "adjectives": [
+        "glass"
+      ],
+      "location": "attic",
+      "fixed": true,
+      "container": true,
+      "transparent": true,
+      "openable": true,
+      "locked": true,
+      "key": "iron-key"
+    },
+    "ring": {
+      "name": "gold ring",
+      "nouns": [
+        "ring"
+      ],
+      "adjectives": [
+        "gold"
+      ],
+      "location": "case"
+    }
+  }
+}

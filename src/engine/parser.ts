@@ -94,6 +94,7 @@ export function knownWords(world: World, grammar: Pattern[]): Set<string> {
   for (const p of grammar) for (const t of p.tokens) if (t.kind === 'word') t.words.forEach((w) => known.add(w));
   for (const w of world.directionWords.keys()) known.add(w);
   for (const t of world.things.values()) t.words.forEach((w) => known.add(w));
+  for (const r of world.rooms.values()) normaliseWords(r.name).forEach((w) => known.add(w));
   return known;
 }
 
