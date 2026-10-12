@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>story-engine</title>
+<meta name="description" content="A text adventure engine in the style of the late-1970s mainframe adventures.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="bar">
+  <label class="picker">
+    <span class="visually-hidden">Story</span>
+    <select id="pack-select" aria-label="Story"></select>
+  </label>
+  <div class="actions">
+    <button type="button" id="new-game" title="Start again with a new random seed">New game</button>
+    <button type="button" id="transcript" title="Download everything shown so far">Transcript</button>
+    <label class="file-button" title="Load a pack bundle (.json) made with story-engine bundle">
+      Open bundle…<input type="file" id="pack-file" accept=".json,application/json">
+    </label>
+    <label class="file-button" title="Load a pack folder (pack.json, world/, text/, scripts/)">
+      Open folder…<input type="file" id="pack-folder" webkitdirectory multiple>
+    </label>
+  </div>
+</header>
+<div class="status" id="status" aria-live="off"><span id="status-room">&nbsp;</span><span id="status-score"></span></div>
+<main id="terminal" class="terminal">
+  <div id="output" class="output" role="log" aria-live="polite" aria-relevant="additions"></div>
+  <form id="command-form" class="command" autocomplete="off">
+    <label for="command" class="prompt" aria-hidden="true">&gt;</label>
+    <input id="command" name="command" type="text" spellcheck="false" autocapitalize="none" autocorrect="off"
+           aria-label="Command" enterkeyhint="send">
+  </form>
+</main>
+<footer class="foot">
+  <span id="seed-info"></span>
+  <a href="https://github.com/sharland/story-engine">story-engine</a>
+</footer>
+<noscript><p class="noscript">This page needs JavaScript to run the game.</p></noscript>
+<script src="packs.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

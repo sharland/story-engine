@@ -29,8 +29,8 @@ export interface PackContent {
 /**
  * Words the engine owns, which a pack may reuse as ids without that being a
  * leak: standard verbs, directions, messages and properties, the pack
- * format's own field and section names, and TypeScript keywords (a pack may
- * well call an object "case" or a verb "type").
+ * format's own field and section names, TypeScript keywords and browser
+ * globals (a pack may well call an object "case" or "window", or a verb "type").
  */
 export const ENGINE_WORDS = new Set<string>([
   ...Object.keys(STANDARD_VERBS),
@@ -43,6 +43,8 @@ export const ENGINE_WORDS = new Set<string>([
   ...['break', 'case', 'catch', 'class', 'const', 'continue', 'default', 'delete', 'do', 'else', 'export', 'false',
     'for', 'function', 'if', 'import', 'in', 'let', 'new', 'null', 'return', 'switch', 'this', 'throw', 'true', 'try',
     'type', 'typeof', 'var', 'void', 'while'],
+  // Browser globals that are also ordinary words a story might use.
+  ...['window', 'document', 'history', 'location', 'navigator', 'console', 'screen', 'event'],
 ]);
 
 /** Every identifier, display name and 5-word phrase a pack defines. */
@@ -130,6 +132,7 @@ export function findLeaks(content: PackContent, sources: Array<{ file: string; t
       if (re.test(text)) leaks.push({ file, kind: 'identifier', value: id });
     }
     for (const name of content.names) {
+      if (ENGINE_WORDS.has(name.toLowerCase())) continue;
       const re = new RegExp(`(?<![A-Za-z0-9])${escape(name)}(?![A-Za-z0-9])`, 'i');
       if (re.test(text)) leaks.push({ file, kind: 'name', value: name });
     }
