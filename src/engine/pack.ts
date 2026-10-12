@@ -187,14 +187,14 @@ export function compilePack(src: PackSource): CompileResult {
       const prev = definedIn.get(id);
       if (prev) c.error(file, 'duplicate-id', `"${id}" is already used by ${prev}`);
       else definedIn.set(id, file);
-      if (!ID_PATTERN.test(id)) c.error(file, 'bad-id', `Id "${id}" must start with a letter and use only a-z, 0-9, - and _`);
+      if (!ID_PATTERN.test(id)) c.error(file, 'bad-id', `Id "${id}" must start with a-z and use only a-z, 0-9, - and _`);
       if (RESERVED_IDS.includes(id)) c.error(file, 'reserved-id', `"${id}" is reserved by the engine`);
     }
   }
   for (const section of ['regions', 'events', 'endings', 'scores', 'vars', 'verbs', 'directions']) {
     for (const [id, { file }] of maps[section]) {
       if (!ID_PATTERN.test(id) && section !== 'verbs') {
-        c.error(file, 'bad-id', `Id "${id}" must start with a letter and use only a-z, 0-9, - and _`);
+        c.error(file, 'bad-id', `Id "${id}" must start with a-z and use only a-z, 0-9, - and _`);
       }
     }
   }
@@ -414,7 +414,7 @@ function collectIds(ch: Checker, v: unknown, where: string, into: string[]): voi
   }
 }
 
-function registerScript(c: Checker, file: string, module: unknown, table: ScriptTable): void {
+function registerScript(c: Checker, file: string, module: unknown, registry: ScriptTable): void {
   const fn = isPlainObject(module) || typeof module === 'object' ? (module as { default?: unknown }).default : undefined;
   if (typeof fn !== 'function') {
     c.error(file, 'bad-script', 'A script module must export a default function');
@@ -426,16 +426,16 @@ function registerScript(c: Checker, file: string, module: unknown, table: Script
       return;
     }
     const key = `${kind}:${name}`;
-    const prev = table.origins.get(key);
+    const prev = registry.origins.get(key);
     if (prev) c.error(file, 'duplicate-id', `Script ${kind} "${name}" is already registered by ${prev}`);
-    table.origins.set(key, file);
+    registry.origins.set(key, file);
     map.set(name, f);
   };
   try {
     fn({
-      condition: (name: string, f: unknown) => add('condition', table.conditions, name, f as never),
-      effect: (name: string, f: unknown) => add('effect', table.effects, name, f as never),
-      action: (name: string, f: unknown) => add('action', table.actions, name, f as never),
+      condition: (name: string, f: unknown) => add('condition', registry.conditions, name, f as never),
+      effect: (name: string, f: unknown) => add('effect', registry.effects, name, f as never),
+      action: (name: string, f: unknown) => add('action', registry.actions, name, f as never),
     });
   } catch (e) {
     c.error(file, 'bad-script', `Script registration failed: ${(e as Error).message}`);

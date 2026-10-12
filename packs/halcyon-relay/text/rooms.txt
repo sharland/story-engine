@@ -1,0 +1,30 @@
+== quarters ==
+A narrow cabin with two bunks, one of them yours and one of them empty for as
+long as you have been aboard. A storage locker is bolted to the bulkhead. The
+hatch to the spine corridor is east.
+
+== spine ==
+The station's central corridor, ribbed with conduit. The crew quarters are
+west and the galley east. A heavy door to the north leads to the control room,
+a ladder well drops down into the maintenance shaft, and the suit room is
+south.
+
+== galley ==
+A cramped galley with a fold-down table, a water dispenser and the smell of
+reheated protein. The stores are behind a door to the east, with a keypad
+beside it. The spine corridor is west.
+
+== reactor ==
+The squat fusion core hums behind its shielding, still running but cut off
+from the rest of the station. A junction panel on the wall has a socket where
+the main power coupling belongs, and a breaker lever beside it. Rungs lead up
+into the shaft.
+
+== control ==
+A horseshoe of consoles faces a window full of slowly turning cloud bands. The
+beacon console sits in the middle. The spine corridor is south.
+
+== hull ==
+You stand on the station's outer skin, boots locked to the plating. The gas
+giant fills half the sky, banded in rust and cream. A maintenance ladder leads
+up to the dish mount. The outer hatch is north.

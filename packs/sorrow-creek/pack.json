@@ -1,0 +1,12 @@
+{
+  "format": 1,
+  "id": "sorrow-creek",
+  "title": "Trouble at Sorrow Creek",
+  "version": "1.0.0",
+  "author": "story-engine demo",
+  "licence": "CC0-1.0",
+  "description": "A tiny western placeholder: a runaway mare, a coil of rope, an afternoon to set things right.",
+  "credits": ["A demonstration pack for story-engine. Dedicated to the public domain under CC0 1.0."],
+  "start": "main-street",
+  "intro": "@intro"
+}

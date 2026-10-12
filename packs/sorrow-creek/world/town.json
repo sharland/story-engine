@@ -1,0 +1,61 @@
+{
+  "directions": {
+    "upstream": { "words": ["upstream"], "opposite": "downstream" },
+    "downstream": { "words": ["downstream"], "opposite": "upstream" }
+  },
+  "messages": {
+    "cantGo": "There's no trail that way.",
+    "dark": "It's black as the inside of a boot.",
+    "taken": "You take {it:noun}.",
+    "waited": "The afternoon drags on."
+  },
+  "rooms": {
+    "main-street": {
+      "name": "Main Street",
+      "description": "@main-street",
+      "exits": { "east": "livery", "west": "office", "south": "wash" }
+    },
+    "livery": {
+      "name": "Livery Stable",
+      "description": ["@livery", { "if": { "var": "mare.following" }, "text": "The end stall waits for its owner." }],
+      "exits": { "west": "main-street", "out": "main-street" }
+    },
+    "office": {
+      "name": "Sheriff's Office",
+      "description": "@office",
+      "exits": { "east": "main-street", "out": "main-street" }
+    },
+    "wash": {
+      "name": "Dry Wash",
+      "description": "@wash",
+      "exits": {
+        "north": "main-street",
+        "upstream": { "say": "The wash narrows to a crack in the rock a little way upstream. Nothing bigger than a lizard could get through." },
+        "downstream": { "say": "Downstream the wash runs out into open desert. You'd need a horse for that." }
+      }
+    }
+  },
+  "objects": {
+    "peg": { "name": "peg", "location": "livery", "scenery": true, "surface": true,
+      "description": "A wooden peg driven into the stable wall." },
+    "lariat": {
+      "name": "lariat", "nouns": ["lariat", "rope", "lasso", "loop"], "location": "peg",
+      "description": "Thirty feet of stiff grass rope with a honda knot at one end."
+    },
+    "stalls": { "name": "stalls", "nouns": ["stalls", "stall", "horses"], "plural": true, "location": "livery", "scenery": true,
+      "description": "A row of stalls. The one at the end stands empty." },
+    "desk": { "name": "desk", "location": "office", "scenery": true, "surface": true,
+      "description": "A scarred desk, its top more cigarette burn than wood." },
+    "jar": { "name": "glass jar", "nouns": ["jar"], "adjectives": ["glass"], "location": "desk",
+      "container": true, "transparent": true, "openable": true,
+      "description": "A glass jar with a tin lid." },
+    "sugar": { "name": "sugar lumps", "nouns": ["sugar", "lumps", "lump"], "adjectives": ["sugar"], "plural": true, "location": "jar",
+      "edible": true, "description": "A handful of brown sugar lumps." },
+    "poster": { "name": "poster", "nouns": ["poster", "notice"], "location": "office", "scenery": true,
+      "description": "A notice tacked to the wall, in fresh ink.", "read": "@poster" },
+    "cell": { "name": "cell", "location": "office", "scenery": true,
+      "description": "Empty, for once." },
+    "stones": { "name": "white stones", "nouns": ["stones", "stone"], "adjectives": ["white"], "plural": true, "location": "wash", "scenery": true,
+      "description": "Smooth white stones, scattered where the water used to run." }
+  }
+}

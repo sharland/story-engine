@@ -160,9 +160,9 @@ export const STANDARD_MESSAGES: Record<string, string> = {
   verboseOn: 'Full room descriptions from now on.',
   briefOn: 'Full descriptions only for rooms you have not seen before.',
   help:
-    'Type commands such as LOOK, INVENTORY, NORTH (or N), TAKE LAMP, PUT KEY IN BOX, ' +
-    'OPEN DOOR, ASK SOMEONE ABOUT SOMETHING. Other commands: SCORE, SAVE, RESTORE, ' +
-    'UNDO, AGAIN, RESTART, QUIT, ABOUT.',
+    'Type short commands: LOOK, INVENTORY, a direction such as NORTH or N, TAKE something, ' +
+    'PUT something IN something, OPEN something, ASK someone ABOUT something. Other ' +
+    'commands: SCORE, SAVE, RESTORE, UNDO, AGAIN, RESTART, QUIT, ABOUT.',
   endingTitle: '*** {title} ***',
   finalScore: 'In {turnCount} you scored {score} out of a possible {max}.',
 

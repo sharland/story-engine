@@ -1,0 +1,222 @@
+{
+  "vars": { "air": 8 },
+  "scores": {
+    "opened-stores": 10,
+    "restored-power": 15,
+    "aligned-dish": 15,
+    "guided-wren": 10
+  },
+  "acts": [
+    { "id": "blackout", "title": "I. Blackout" },
+    {
+      "id": "power", "title": "II. Power", "intro": "@power-on",
+      "do": [
+        { "set": "shaft.dark", "to": false },
+        { "set": "reactor.dark", "to": false },
+        { "schedule": "wren-hail", "in": 4 }
+      ]
+    }
+  ],
+  "events": {
+    "wren-hail": {
+      "say": "A chime sounds from every speaker on the station: \"Halcyon, this is Wren, on approach. We have no beacon. Please advise.\""
+    }
+  },
+  "endings": {
+    "docked": { "title": "The Wren is home", "text": "@docked", "win": true },
+    "vacuum": { "title": "You have died", "text": "@vacuum" },
+    "suffocated": { "title": "You have died", "text": "@suffocated" }
+  },
+  "verbs": {
+    "type": {
+      "patterns": ["type/key/punch TEXT", "type/key/punch TEXT on/into OBJ", "punch in TEXT"],
+      "default": "You key in the number. Nothing happens."
+    },
+    "align": {
+      "patterns": ["align/realign/adjust/aim OBJ"],
+      "default": "{That:noun} can't be aligned."
+    },
+    "transmit": {
+      "patterns": ["transmit", "send signal/beacon/message", "broadcast", "press/push transmit"],
+      "default": "There is nothing here to transmit with."
+    }
+  },
+  "rules": [
+    {
+      "id": "torch-battery",
+      "on": "turn",
+      "if": { "var": "torch.on" },
+      "do": [
+        { "dec": "torch.battery" },
+        { "if": { "var": "torch.battery", "eq": 10 }, "then": [{ "say": "The torch beam yellows. The battery is running low." }] },
+        { "if": { "var": "torch.battery", "lte": 0 }, "then": [
+          { "set": "torch.on", "to": false },
+          { "say": "The torch flickers and dies." }
+        ] }
+      ]
+    },
+    {
+      "id": "torch-flat",
+      "on": "switchOn", "object": "torch",
+      "if": { "var": "torch.battery", "lte": 0 },
+      "say": "You thumb the switch. The battery is flat."
+    },
+
+    {
+      "id": "keypad-right",
+      "on": "type", "topic": "4471", "in": "galley",
+      "if": { "var": "stores-door.locked" },
+      "say": "The keypad beeps twice and the stores door slides open.",
+      "do": [
+        { "set": "stores-door.locked", "to": false },
+        { "set": "stores-door.open", "to": true },
+        { "award": "opened-stores" }
+      ]
+    },
+    {
+      "id": "keypad-again",
+      "on": "type", "in": "galley",
+      "if": { "not": { "var": "stores-door.locked" } },
+      "say": "The keypad display reads OPEN."
+    },
+    {
+      "id": "keypad-wrong",
+      "on": "type", "in": "galley",
+      "say": "The keypad gives a flat buzz. The display reads LOCKED."
+    },
+    {
+      "id": "keypad-elsewhere",
+      "on": "type",
+      "say": "There is no keypad here."
+    },
+    {
+      "id": "stores-door-by-hand",
+      "on": ["open", "unlock"], "object": "stores-door",
+      "if": { "var": "stores-door.locked" },
+      "say": "The door is opened from the keypad beside it."
+    },
+    {
+      "id": "use-keypad",
+      "on": ["use", "push"], "object": "keypad",
+      "say": "Type the code, for example TYPE 1234."
+    },
+
+    {
+      "id": "lever-with-coupling",
+      "on": ["pull", "push", "turn", "use"], "object": "lever",
+      "if": { "all": [{ "obj": "coupling", "in": "socket" }, { "act": "blackout" }] },
+      "say": "You haul the breaker lever up. It locks with a clunk.",
+      "do": [{ "award": "restored-power" }, { "act": "power" }]
+    },
+    {
+      "id": "lever-without-coupling",
+      "on": ["pull", "push", "turn", "use"], "object": "lever",
+      "if": { "act": "blackout" },
+      "say": "You haul the lever up. It snaps straight back down: nothing is connected across the socket."
+    },
+    {
+      "id": "lever-done",
+      "on": ["pull", "push", "turn", "use"], "object": "lever",
+      "say": "The lever is locked in the ON position. Best leave it there."
+    },
+    {
+      "id": "burnt-in-socket",
+      "on": "putIn", "object": "burnt-coupling", "with": "socket",
+      "say": "It is scorched beyond use. It would only short out again."
+    },
+    {
+      "id": "take-coupling-back",
+      "on": "take", "object": "coupling",
+      "if": { "act": "power" },
+      "say": "Pull the coupling out now and the lights go off again. Leave it."
+    },
+
+    {
+      "id": "interlock-outer",
+      "on": "open", "object": "outer-hatch",
+      "if": { "var": "inner-hatch.open" },
+      "say": "A warning light flashes. The outer hatch will not open while the inner hatch is open."
+    },
+    {
+      "id": "interlock-inner",
+      "on": "open", "object": "inner-hatch",
+      "if": { "var": "outer-hatch.open" },
+      "say": "A warning light flashes. The inner hatch will not open while the outer hatch is open."
+    },
+    {
+      "id": "vacuum",
+      "on": "open", "object": "outer-hatch", "when": "after",
+      "if": { "not": { "wearing": "suit" } },
+      "say": "The outer hatch slides back and the air leaves the airlock in one long roar, taking you with it.",
+      "do": [{ "end": "vacuum" }]
+    },
+    {
+      "id": "hatch-cycle",
+      "on": "open", "object": "outer-hatch", "when": "after",
+      "say": "The airlock pumps whine, then fall silent. Your suit stiffens as the pressure drops."
+    },
+    {
+      "id": "keep-suit-on",
+      "on": ["takeOff", "drop"], "object": "suit",
+      "if": { "any": [{ "region": "outside" }, { "var": "outer-hatch.open" }] },
+      "say": "Not with the outer hatch open. Not unless you want to die."
+    },
+    {
+      "id": "suit-air",
+      "on": "turn", "in": "outside",
+      "do": [
+        { "dec": "air" },
+        { "if": { "var": "air", "eq": 3 }, "then": [{ "say": "A tone sounds in your helmet. Suit air is low." }] },
+        { "if": { "var": "air", "lte": 0 }, "then": [{ "end": "suffocated" }] }
+      ]
+    },
+    {
+      "id": "air-refill",
+      "on": "arrive", "in": "airlock",
+      "if": { "var": "air", "lt": 8 },
+      "say": "Your suit tops up its air from the airlock supply.",
+      "do": [{ "set": "air", "to": 8 }]
+    },
+    {
+      "id": "first-outside",
+      "on": "arrive", "in": "hull", "once": true,
+      "say": "You check the air gauge on your wrist. Not long."
+    },
+
+    {
+      "id": "align-dish",
+      "on": ["align", "turn", "push", "pull", "use"], "object": "dish",
+      "if": { "not": { "var": "dish.aligned" } },
+      "say": "You brace your boots and work the handwheel. The dish swings slowly round until the lane markers on your visor line up with its rim.",
+      "do": [{ "set": "dish.aligned", "to": true }, { "award": "aligned-dish" }]
+    },
+    {
+      "id": "align-dish-done",
+      "on": ["align", "turn", "push", "pull", "use"], "object": "dish",
+      "say": "The dish is already aimed along the shipping lane."
+    },
+
+    {
+      "id": "transmit-ready",
+      "on": "transmit", "in": "control",
+      "if": { "var": "dish.aligned" },
+      "say": "You lift the guard and press TRANSMIT. The beacon tone goes out, steady and clear.",
+      "do": [{ "award": "guided-wren" }, { "end": "docked" }]
+    },
+    {
+      "id": "transmit-misaligned",
+      "on": "transmit", "in": "control",
+      "say": "You press TRANSMIT. The console accepts the command, but the alignment readout blinks red: the dish is pointing at empty space."
+    },
+    {
+      "id": "use-console",
+      "on": ["use", "push", "touch"], "object": "console",
+      "say": "To send the beacon, TRANSMIT."
+    },
+    {
+      "id": "sleep-bunk",
+      "on": "sleep", "in": "quarters",
+      "say": "Not now. Not with the Wren on its way."
+    }
+  ]
+}

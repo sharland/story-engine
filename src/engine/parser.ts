@@ -36,7 +36,7 @@ export interface ParsedCommand {
   second: string | null;
   topic: string | null;
   dir: string | null;
-  /** Lines to print before acting, such as "(with the brass key)". */
+  /** Lines to print before acting, such as "(with the key)". */
   notes: Array<{ key: string; params: Record<string, string> }>;
 }
 
@@ -166,7 +166,7 @@ export function matchPattern(p: Pattern, tokens: string[], directionWords: Map<s
   return results;
 }
 
-/** A pattern whose final noun the player left off: "take", "put lamp in". */
+/** A pattern whose final noun the player left off: "take", "put X in". */
 function matchPrefix(p: Pattern, tokens: string[], directionWords: Map<string, string>): Candidate | null {
   const last = p.tokens[p.tokens.length - 1];
   if (p.tokens.length < 2 || last.kind !== 'slot' || (last.slot !== 'OBJ' && last.slot !== 'OBJ2')) return null;
@@ -332,7 +332,7 @@ function verbWords(c: Candidate): string {
   return first && first.kind === 'word' ? first.words[0] : c.pattern.action;
 }
 
-/** The words the player typed, with the first noun as "the lamp": "put the lamp in". */
+/** The words the player typed, with the first noun named: "put the X in". */
 function typedPhrase(env: ParserEnv, c: Candidate, tokens: string[], firstId: string | null): string {
   const out: string[] = [];
   let ti = 0;

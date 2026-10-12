@@ -1,0 +1,114 @@
+{
+  "scores": { "calmed-mare": 5, "caught-mare": 10, "returned-mare": 10 },
+  "endings": {
+    "home": { "title": "Juniper is home", "text": "@home", "win": true },
+    "horse-thief": { "title": "You are a horse thief", "text": "@horse-thief" }
+  },
+  "verbs": {
+    "lasso": {
+      "patterns": ["lasso/rope OBJ", "throw lariat/rope/lasso/loop at/over/on OBJ"],
+      "default": "You shake out a loop and drop it over {the:noun}. Nothing comes of it, and you coil the rope back up."
+    },
+    "ride": {
+      "patterns": ["ride/mount OBJ", "get on OBJ"],
+      "default": "You can't ride {that:noun}."
+    },
+    "wake": {
+      "patterns": ["wake/rouse OBJ", "wake OBJ up", "wake up OBJ"],
+      "default": "{The:noun} {is:noun} not asleep."
+    },
+    "whistle": { "patterns": ["whistle"] },
+    "give": { "patterns": ["feed OBJ to OBJ2", "feed OBJ2 OBJ"] }
+  },
+  "rules": [
+    {
+      "id": "lasso-needs-rope",
+      "on": "lasso", "priority": 10,
+      "if": { "not": { "has": "lariat" } },
+      "say": "You'd need a rope for that."
+    },
+    {
+      "id": "lasso-people",
+      "on": "lasso", "object": ["ada", "sheriff"],
+      "say": "That's a good way to get yourself shot."
+    },
+    {
+      "id": "lasso-skittish-mare",
+      "on": "lasso", "object": "mare",
+      "if": { "not": { "var": "mare.calm" } },
+      "say": "You shake out a loop and toss it. The mare sidesteps without even hurrying, then watches you coil the rope back in."
+    },
+    {
+      "id": "lasso-calm-mare",
+      "on": "lasso", "object": "mare",
+      "if": { "not": { "var": "mare.caught" } },
+      "say": "This time she stands for it. The loop settles over her neck and she lets you draw it snug.",
+      "do": [
+        { "set": "mare.caught", "to": true },
+        { "set": "mare.following", "to": true },
+        { "award": "caught-mare" }
+      ]
+    },
+    {
+      "id": "lasso-caught-mare",
+      "on": "lasso", "object": "mare",
+      "say": "She's already on the end of your rope."
+    },
+
+    {
+      "id": "sugar-for-mare",
+      "on": "give", "object": "sugar", "with": "mare",
+      "if": { "has": "sugar" },
+      "say": "You hold out a lump on your flat palm. She stretches her neck as far as it will go, takes it, and crunches. You give her the rest. Some of the white goes out of her eye.",
+      "do": [{ "move": "sugar", "to": "nowhere" }, { "set": "mare.calm", "to": true }, { "award": "calmed-mare" }]
+    },
+    {
+      "id": "sugar-not-in-hand",
+      "on": "give", "object": "sugar", "with": "mare",
+      "say": "You'd need the sugar in your hand first."
+    },
+    {
+      "id": "save-the-sugar",
+      "on": "eat", "object": "sugar",
+      "say": "You're tempted. But Juniper needs them more than you do."
+    },
+    {
+      "id": "pat-mare",
+      "on": ["touch", "push", "pull"], "object": "mare",
+      "say": [{ "if": { "var": "mare.calm" }, "text": "She leans her head into your hand.", "else": "She jerks her head away before you can touch her." }]
+    },
+
+    {
+      "id": "ride-caught-mare",
+      "on": "ride", "object": "mare",
+      "if": { "var": "mare.caught" },
+      "say": "You swing up bareback, turn her head south and give her her heels. Sorrow Creek is a smudge of dust behind you before you think better of it.",
+      "do": [{ "end": "horse-thief" }]
+    },
+    {
+      "id": "ride-wild-mare",
+      "on": "ride", "object": "mare",
+      "say": "She'd have you in the dirt before you got a leg over."
+    },
+
+    {
+      "id": "wake-sheriff",
+      "on": "wake", "object": "sheriff",
+      "say": "The sheriff snorts, lifts his hat an inch and says, \"Help yourself to the sugar, Ada's been asking.\" The hat comes down again. He is snoring before you can answer."
+    },
+    {
+      "id": "wake-sheriff-by-talking",
+      "on": ["ask", "tell", "attack", "yell"], "in": "office",
+      "if": { "here": "sheriff" },
+      "say": "The sheriff snorts in his sleep and turns his face to the wall."
+    },
+
+    {
+      "id": "mare-comes-home",
+      "on": "arrive", "in": "livery",
+      "if": { "var": "mare.caught" },
+      "say": "Ada lets out a whoop that sets every horse in the stable stamping.",
+      "do": [{ "award": "returned-mare" }, { "end": "home" }]
+    }
+  ]
+}

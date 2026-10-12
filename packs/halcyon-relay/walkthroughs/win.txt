@@ -1,0 +1,39 @@
+# The shortest route to the winning ending.
+# expect: docked
+# score: 50
+# seed: 1
+open locker
+take torch
+e
+e
+read slate
+type 4471
+e
+take coupling
+w
+w
+turn on torch
+d
+d
+put coupling in socket
+pull lever
+turn off torch
+u
+u
+s
+wear suit
+open hatch
+s
+close inner hatch
+open outer hatch
+s
+u
+align dish
+d
+n
+close outer hatch
+open inner hatch
+n
+n
+n
+transmit

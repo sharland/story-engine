@@ -3,7 +3,7 @@
 //   # expect: rescued        the ending id this walkthrough must reach (required)
 //   # seed: 7                random seed (default 1)
 //   # score: 50              final score to check (optional)
-//   take lamp
+//   take the first thing
 //   north
 //
 // Blank lines and other "#" lines are ignored.

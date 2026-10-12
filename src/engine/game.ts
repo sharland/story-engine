@@ -58,7 +58,7 @@ export interface ActionCtx {
 
 type Params = Record<string, string | number>;
 
-/** Template tags that take a thing: {the:noun}, {is:second}, {s:lamp} ... */
+/** Template tags that take a thing: {the:noun}, {is:second}, {s:some-id} ... */
 export const THING_TAGS = ['the', 'The', 'a', 'A', 'name', 'it', 'It', 'that', 'That', 'is', 'has', 's', 'es'];
 
 const ALLOWED_AFTER_END = ['restart', 'restore', 'undo', 'quit', 'about', 'help', 'score'];
@@ -613,7 +613,7 @@ export class Game {
     }
   }
 
-  /** "(first taking the lamp)": take something before using it. */
+  /** "(first taking the X)": take something before using it. */
   implicitTake(id: string): boolean {
     if (this.isDirectlyHeld(id)) return true;
     this.msg('firstTaking', { noun: id });
@@ -677,7 +677,7 @@ export class Game {
     }
   }
 
-  /** "On the table you can see a book." for everything visible in a room. */
+  /** "On the X you can see a Y." for everything visible in a room. */
   private listNested(holder: string): void {
     const holders = this.children(holder);
     if (this.world.rooms.has(holder)) {
@@ -787,6 +787,7 @@ export class Game {
       if (this.state.ended || this.quitRequested) break;
     }
     if (cmd.nouns.length === 1) this.setPronoun(cmd.nouns[0]);
+    if (cmd.second && this.world.things.get(cmd.second)?.kind === 'character') this.setPronoun(cmd.second);
     if (!this.state.ended && !this.quitRequested) this.endTurn(wasLit, wasAt);
   }
 

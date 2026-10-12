@@ -1,0 +1,17 @@
+# Staying outside too long.
+# expect: suffocated
+e
+s
+wear suit
+open hatch
+s
+close inner hatch
+open outer hatch
+s
+u
+z
+z
+z
+z
+z
+z

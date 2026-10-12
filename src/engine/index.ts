@@ -1,4 +1,4 @@
-// Public entry point of the engine core. Platform-free: no Node or DOM APIs.
+// Public entry point of the engine. Platform-free: no Node or DOM APIs.
 
 export { Game, initialState, renderBlocks } from './game.ts';
 export type { ActionCtx, Block, BlockStyle, GameOptions, Host } from './game.ts';

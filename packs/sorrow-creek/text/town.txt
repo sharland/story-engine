@@ -1,0 +1,41 @@
+== intro ==
+Ada Pruitt's best mare has bolted, and Ada is in no state to go after her. The
+sheriff is asleep. That leaves you.
+
+== main-street ==
+Sorrow Creek's only street runs between a handful of false-fronted buildings,
+baking in the afternoon sun. The livery stable is east and the sheriff's
+office west. A trail drops south into the dry wash below town.
+
+== livery ==
+The stable smells of hay and harness oil. Most of the stalls hold drowsing
+horses, but the end stall stands open and empty. A wooden peg is driven into
+the wall by the door. Main Street is back to the west.
+
+== office ==
+A cramped office with a scarred desk, a cold stove and an empty cell at the
+back. A poster is tacked to the wall. Main Street is east.
+
+== wash ==
+A dry creek bed of cracked clay and white stones, walled by crumbling banks.
+Mesquite clings to the edges. The trail climbs north back into town; the wash
+itself runs upstream and downstream.
+
+== poster ==
+| REWARD
+| for the return of a DUN MARE answering to JUNIPER.
+| Black stockings, white star.
+| Apply A. Pruitt, Livery.
+
+== home ==
+Ada takes the rope from you and leads Juniper into the end stall, talking to
+her the whole way. When she comes out she presses two silver dollars into your
+hand and will not hear a word about it.
+
+The sun goes down red over Sorrow Creek, and for one evening at least, nothing
+else goes wrong.
+
+== horse-thief ==
+By sundown you are ten miles out and the mare is blown. By morning there is a
+poster with your description on the sheriff's wall, and the sheriff is wide
+awake.

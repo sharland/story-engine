@@ -1,0 +1,164 @@
+{
+  "rooms": {
+    "quarters": {
+      "name": "Crew Quarters",
+      "description": ["@quarters", { "if": { "act": "blackout" }, "text": "Amber emergency strips glow along the floor.", "else": "The ceiling panels give off their usual flat white light." }],
+      "exits": { "east": "spine", "out": "spine" }
+    },
+    "spine": {
+      "name": "Spine Corridor",
+      "description": ["@spine", { "if": { "act": "blackout" }, "text": "Only the amber emergency strips are lit.", "else": "Every light in the corridor is back on." }],
+      "exits": {
+        "west": "quarters",
+        "east": "galley",
+        "south": "suit-room",
+        "down": "shaft",
+        "north": {
+          "to": "control",
+          "if": { "actAtLeast": "power" },
+          "else": "The control room door is sealed. Without main power it will not open."
+        }
+      }
+    },
+    "galley": {
+      "name": "Galley",
+      "description": "@galley",
+      "exits": { "west": "spine", "east": { "to": "stores", "door": "stores-door" } }
+    },
+    "stores": {
+      "name": "Stores",
+      "description": "Shelves of sealed crates line the walls, each labelled in the station's cramped stencil. The galley is back to the west.",
+      "exits": { "west": { "to": "galley", "door": "stores-door" } }
+    },
+    "shaft": {
+      "name": "Maintenance Shaft",
+      "dark": true,
+      "description": "A vertical shaft lined with cable trays. Rungs lead up to the spine corridor and down to the reactor bay.",
+      "exits": { "up": "spine", "down": "reactor" }
+    },
+    "reactor": {
+      "name": "Reactor Bay",
+      "dark": true,
+      "description": ["@reactor", { "if": { "obj": "coupling", "in": "socket" }, "text": "The new coupling sits snugly in its socket." }],
+      "exits": { "up": "shaft" }
+    },
+    "control": {
+      "name": "Control Room",
+      "description": "@control",
+      "exits": { "south": "spine" }
+    },
+    "suit-room": {
+      "name": "Suit Room",
+      "description": "Pressure suits hang in a rack along one wall, though only one of them has ever passed inspection. The spine corridor is north. The airlock's inner hatch is south.",
+      "exits": { "north": "spine", "south": { "to": "airlock", "door": "inner-hatch" } }
+    },
+    "airlock": {
+      "name": "Airlock",
+      "description": "A bare chamber just big enough for two people in suits. The inner hatch leads north, back into the station. The outer hatch leads south, out onto the hull.",
+      "exits": {
+        "north": { "to": "suit-room", "door": "inner-hatch" },
+        "in": { "to": "suit-room", "door": "inner-hatch" },
+        "south": { "to": "hull", "door": "outer-hatch" },
+        "out": { "to": "hull", "door": "outer-hatch" }
+      }
+    },
+    "hull": {
+      "name": "Outer Hull",
+      "region": "outside",
+      "description": "@hull",
+      "exits": {
+        "north": { "to": "airlock", "door": "outer-hatch" },
+        "in": { "to": "airlock", "door": "outer-hatch" },
+        "up": "dish-mount"
+      }
+    },
+    "dish-mount": {
+      "name": "Dish Mount",
+      "region": "outside",
+      "description": [
+        "The relay dish is a great white bowl on a gimballed mount, with a stiff handwheel at its base for manual adjustment.",
+        { "if": { "var": "dish.aligned" }, "text": "It points straight along the shipping lane.", "else": "The strike has knocked it askew, and it points uselessly at empty space." },
+        "The ladder leads back down to the hull."
+      ],
+      "exits": { "down": "hull" }
+    }
+  },
+  "objects": {
+    "bunk": { "name": "bunk", "nouns": ["bunk", "bunks", "bed"], "location": "quarters", "scenery": true, "surface": true,
+      "description": "Your bunk, its blanket kicked to the floor when the alarm went off." },
+    "locker": { "name": "storage locker", "nouns": ["locker"], "adjectives": ["storage"], "location": "quarters",
+      "scenery": true, "container": true, "openable": true, "description": "A grey locker with your name on a strip of tape." },
+    "torch": {
+      "name": "hand torch", "nouns": ["torch", "flashlight", "light"], "adjectives": ["hand"],
+      "location": "locker", "switchable": true, "light": true,
+      "props": { "battery": 60 },
+      "description": ["A rubber-cased hand torch.", { "if": { "var": "torch.battery", "lte": 10 }, "text": "Its beam has turned a weak yellow." }]
+    },
+    "photo": { "name": "photograph", "nouns": ["photograph", "photo", "picture"], "location": "locker",
+      "description": "A creased photograph of a coastline you have not seen for two years." },
+
+    "table": { "name": "table", "location": "galley", "scenery": true, "surface": true,
+      "description": "A fold-down table, scratched by years of cutlery." },
+    "slate": { "name": "data slate", "nouns": ["slate", "log"], "adjectives": ["data", "maintenance"], "location": "table",
+      "description": "A battered data slate showing the maintenance log.", "read": "@slate" },
+    "mug": { "name": "mug", "nouns": ["mug", "cup"], "location": "table",
+      "description": "Your mug. The coffee in it went cold hours ago." },
+    "keypad": { "name": "keypad", "location": "galley", "scenery": true,
+      "description": "A ten-key pad beside the stores door. Its display reads LOCKED." },
+    "stores-door": { "name": "stores door", "nouns": ["door"], "adjectives": ["stores"], "door": true,
+      "lockable": true, "locked": true, "foundIn": ["galley", "stores"],
+      "description": "A sliding door, opened by the keypad beside it." },
+    "crates": { "name": "crates", "nouns": ["crates", "crate", "shelves"], "plural": true, "location": "stores", "scenery": true,
+      "description": "Food, filters, spare seals. Nothing you need right now, except perhaps one thing." },
+    "coupling": {
+      "name": "power coupling", "nouns": ["coupling"], "adjectives": ["power", "replacement", "spare", "new"],
+      "location": "stores",
+      "initial": "A replacement power coupling sits in a padded cradle on the lowest shelf.",
+      "description": "A fist-sized cylinder with gold contacts at each end."
+    },
+
+    "socket": { "name": "socket", "location": "reactor", "scenery": true, "container": true, "capacity": 1,
+      "description": "A round socket in the junction panel, sized for a power coupling." },
+    "panel": { "name": "junction panel", "nouns": ["panel", "junction"], "adjectives": ["junction"], "location": "reactor", "scenery": true,
+      "description": "The main power junction. A socket sits in the middle, with a breaker lever beside it." },
+    "lever": { "name": "breaker lever", "nouns": ["lever", "breaker"], "adjectives": ["breaker"], "location": "reactor", "scenery": true,
+      "description": ["A red breaker lever.", { "if": { "act": "power" }, "text": "It is locked in the ON position.", "else": "It is in the OFF position." }] },
+    "burnt-coupling": {
+      "name": "burnt coupling", "nouns": ["coupling"], "adjectives": ["burnt", "blackened", "old", "dead"],
+      "location": "reactor",
+      "initial": "A blackened coupling lies on the deck where the surge blew it out of its socket.",
+      "description": "Scorched past saving."
+    },
+    "core": { "name": "fusion core", "nouns": ["core", "reactor", "shielding"], "adjectives": ["fusion"], "location": "reactor", "scenery": true,
+      "description": "Still running. The core was never the problem." },
+
+    "console": {
+      "name": "beacon console", "nouns": ["console", "consoles", "beacon"], "adjectives": ["beacon"], "location": "control", "scenery": true,
+      "description": ["The beacon console. A large TRANSMIT key sits under a hinged guard.",
+        { "if": { "var": "dish.aligned" }, "text": "The dish alignment readout shows a steady green.", "else": "The dish alignment readout blinks red." }]
+    },
+    "window": { "name": "window", "location": "control", "scenery": true,
+      "description": "Cloud bands the size of continents drift past, slow as weather on a map." },
+
+    "suit": {
+      "name": "pressure suit", "nouns": ["suit", "spacesuit"], "adjectives": ["pressure", "space"],
+      "location": "suit-room", "wearable": true,
+      "initial": "Your pressure suit hangs on the rack, its seals checked and green.",
+      "description": "A white pressure suit with a domed helmet and a small air pack. The pack holds enough for a short job outside."
+    },
+    "rack": { "name": "rack", "location": "suit-room", "scenery": true,
+      "description": "A rack of suits, all but one tagged for repair." },
+    "inner-hatch": { "name": "inner hatch", "nouns": ["hatch"], "adjectives": ["inner"], "door": true,
+      "foundIn": ["suit-room", "airlock"], "description": "A heavy pressure hatch." },
+    "outer-hatch": { "name": "outer hatch", "nouns": ["hatch"], "adjectives": ["outer"], "door": true,
+      "foundIn": ["airlock", "hull"], "description": "The airlock's outer hatch. Beyond it there is nothing to breathe." },
+
+    "planet": { "name": "gas giant", "nouns": ["giant", "planet", "clouds"], "adjectives": ["gas"], "foundIn": ["hull", "dish-mount"], "scenery": true,
+      "description": "It fills half the sky, banded in rust and cream." },
+    "dish": {
+      "name": "relay dish", "nouns": ["dish", "bowl", "antenna", "handwheel", "wheel"], "adjectives": ["relay"], "location": "dish-mount", "scenery": true,
+      "props": { "aligned": false },
+      "description": ["A white bowl four metres across.", { "if": { "var": "dish.aligned" }, "text": "It is aimed along the shipping lane.", "else": "It is pointing the wrong way. The handwheel at its base would let you align it." }]
+    }
+  }
+}

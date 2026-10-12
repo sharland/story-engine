@@ -1,0 +1,16 @@
+# expect: home
+# score: 25
+w
+open jar
+take sugar
+e
+e
+ask ada about juniper
+take lariat
+w
+s
+lasso mare
+give sugar to mare
+lasso mare
+n
+e
