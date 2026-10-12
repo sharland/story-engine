@@ -88,7 +88,7 @@ export const STANDARD_VERBS: Record<string, StandardVerb> = {
 };
 
 /** Pseudo-actions that rules can hook but players cannot type. */
-export const PSEUDO_ACTIONS = ['start', 'arrive', 'turn'] as const;
+export const PSEUDO_ACTIONS = ['start', 'arrive', 'everyTurn'] as const;
 
 export interface StandardDirection {
   words: string[];
@@ -237,6 +237,7 @@ export const STANDARD_MESSAGES: Record<string, string> = {
   alreadyUnlocked: "{It:noun} {is:noun} not locked.",
   closeFirst: "You'll have to close {it:noun} first.",
   wrongKey: "{The:second} won't fit {the:noun}.",
+  noKeyhole: "There is no keyhole in {the:noun}.",
   withKey: '(with {the:second})',
   lockedIt: 'You lock {the:noun}.',
   unlockedIt: 'You unlock {the:noun}.',

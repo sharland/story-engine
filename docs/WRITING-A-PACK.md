@@ -115,7 +115,7 @@ character changes sides, night falls, the protagonist travels in time.
   (the bridging narration that the player does not play) and optional effects
   (move characters, unlock regions, start timers).
 - Acts advance only when the player achieves something: a rule's effect runs
-  `{"act": "next-act"}`. Do not advance acts on a timer unless the book really
+  `{"act": "<id of the next act>"}`. Do not advance acts on a timer unless the book really
   forces the pace.
 - Parts of the book the player cannot influence (a long journey, a battle seen
   from afar, years passing) become act intros or event text. Keep them short
@@ -239,7 +239,8 @@ my-pack/
 
 All files in `world/` are merged. Split them however helps you: by region, by
 act, or by kind (rooms, objects, rules). Files are read in path order, which
-only matters to break ties between rules ([section 10.4](#104-rules)).
+matters in two places: rules that tie ([section 10.4](#104-rules)), and
+`acts`, whose order is the story's order. **Keep all your acts in one file.**
 
 ### pack.json
 
@@ -280,7 +281,9 @@ Each data file is one JSON object with any of these sections:
 | `verbs` | object of id → verb | [11](#11-verbs-directions-and-messages) |
 | `directions` | object of id → direction | [11](#11-verbs-directions-and-messages) |
 | `messages` | object of key → text | [11](#11-verbs-directions-and-messages) |
-| `validator` | `{"assumeReachable": [ids], "assumeObtainable": [ids]}` | [13](#13-tools-validate-play-walkthrough) |
+| `validator` | `{"assumeReachable": [ids], "assumeObtainable": [ids], "assumeUsed": [ids]}` | [13](#13-tools-validate-play-walkthrough) |
+
+Any other section name is an error.
 
 **Ids.** Rooms, objects and characters share one set of ids, so a room and an
 object cannot both be called `forge`. Ids are lower case, start with a letter,
@@ -451,7 +454,7 @@ surfaces, then the characters.
 | `name` | Required. How the object is named in text: "glass jar". |
 | `nouns` | Words that name it. Default: the last word of `name`. |
 | `adjectives` | Words that describe it: `["glass", "small"]`. |
-| `article` | "a", "an", "some", or "" for none. Default: worked out from the name. |
+| `article` | "a", "an", "some", or "" for none. Default: "an" before a vowel letter, otherwise "a" ("some" if `plural`). Set it where that is wrong: "an hour", "a unicorn". |
 | `proper` | `true` for proper names (no "the"). |
 | `plural` | `true` for things named in the plural ("sugar lumps"). |
 
@@ -472,7 +475,7 @@ nouns or adjectives: `a`, `an`, `the`, `all`, `everything`, `but`, `except`,
 | Field | Meaning |
 |---|---|
 | `description` | *Text* for `examine`. Default: "You see nothing special about the X." |
-| `initial` | *Text* shown in the room description until the player first takes the object. Use it for anything you want described in place: "A lantern hangs from a nail by the door." |
+| `initial` | *Text* shown in the room description until the player first has the object (by taking it, or by a rule putting it in their hands). Use it for anything you want described in place: "A lantern hangs from a nail by the door." Not shown for `scenery`. |
 | `read` | *Text* for `read`. Without it, `read` examines. |
 
 ### Where it is
@@ -558,12 +561,12 @@ Pruitt", not "the Ada Pruitt"). Things a character holds (`"location":
 
 | Field | Meaning |
 |---|---|
-| `keys` | Required. Words or phrases. A key matches if all of its words appear in what the player asked about: key `"rose"` matches `ask about the rose bed`. |
+| `keys` | Required. Words or phrases. A key matches if all of its words appear in what the player asked about: key `"rose"` matches `ask about the rose bed`. Articles (`a`, `an`, `the`) are ignored on both sides. |
 | `text` | Required. *Text* of the answer. |
 | `if` | Condition for this topic to be available. |
 | `do` | Effects run after the answer. |
 | `once` | Answer only once; afterwards the next matching topic (or `noTopic`) answers. |
-| `id` | Optional name, for your own reference. |
+| `id` | Optional name, for your own reference. Ids belong to their character, so two characters can both have a topic `secret`. |
 
 The **first** matching topic in the list answers, so put conditional topics
 before their general fallback. A matching topic counts as success, so
@@ -633,8 +636,10 @@ An effect `{"schedule": "coach-leaves", "in": 4}` makes the event happen at
 the end of the fourth turn after the current one: scheduled during turn 10,
 it fires at the end of turn 14. Scheduling an event that is already
 waiting restarts its count; `{"cancel": "coach-leaves"}` stops it. When it
-fires, its `if` is checked; if it holds, `say` is printed and `do` runs.
-For something that happens every turn, use a `turn` rule
+fires, its `if` is checked; if it holds, `say` is printed and `do` runs. If
+the `if` does not hold, the event is used up all the same: schedule it again
+from its `do` or from a rule if it should try later. For something that
+should be checked every turn, use an `everyTurn` rule
 ([section 10.4](#104-rules)) instead.
 
 ### Scores
@@ -645,7 +650,9 @@ For something that happens every turn, use a `turn` rule
 
 An effect `{"award": "paid"}` adds the points once: awarding the same item
 again does nothing, so you can award from more than one rule safely. The
-maximum score is the total of all score items. The `score` command reports it.
+maximum score is the total of the positive score items; an item with negative
+points is a penalty. The `score` command reports the score. A pack with no
+score items is unscored, and its endings show no final score.
 
 ### Endings
 
@@ -683,7 +690,7 @@ you declare with their starting value:
 | Property | Meaning |
 |---|---|
 | `open`, `locked`, `on`, `worn` | As described in [section 7](#7-objects). |
-| `moved` | True once the player has taken it (its `initial` text then stops). |
+| `moved` | True once the player has had it in hand, by taking it or because an effect moved it to `"player"` (its `initial` text then stops). |
 | `visited` | For rooms: the player has seen it. |
 | `dark` | For rooms. |
 | `following` | For characters. |
@@ -731,7 +738,7 @@ Effects are lists of small JSON objects, run in order:
 | `{"set": "x", "to": value}` | sets a variable or property |
 | `{"inc": "x"}`, `{"inc": "x", "by": 5}` | adds 1 (or `by`) |
 | `{"dec": "x"}`, `{"dec": "x", "by": 5}` | subtracts 1 (or `by`) |
-| `{"move": "id", "to": "place"}` | moves an object or character to a room, container, surface, character, `"player"` (into the player's hands), `"here"` (the player's room) or `"nowhere"` (out of the game) |
+| `{"move": "id", "to": "place"}` | moves an object or character to a room, container, surface, character, `"player"` (into the player's hands), `"here"` (the player's room) or `"nowhere"` (out of the game). Nothing is printed; say what happened yourself. |
 | `{"movePlayer": "room"}` | moves the player, describes the room and runs its `arrive` rules (followers do not come along) |
 | `{"award": "score-id"}` | awards a score item, once |
 | `{"act": "id"}` | starts an act |
@@ -762,17 +769,17 @@ do that*.
 
 | Field | Meaning |
 |---|---|
-| `on` | Required. A verb id or a list of them ([Appendix A](#appendix-a-standard-verbs) and your own verbs), or a pseudo-action: `start`, `arrive`, `turn`. |
+| `on` | Required. A verb id or a list of them ([Appendix A](#appendix-a-standard-verbs) and your own verbs), or a pseudo-action: `start`, `arrive`, `everyTurn`. |
 | `when` | `"before"` (default) or `"after"`. |
 | `object` | Matches the command's first object: an id, a list of ids, `"#tag"` for any thing with that tag, or `"*"` for any object at all. |
 | `with` | Matches the second object, the same way ("give **object** to **with**"). |
 | `dir` | For `go`: a direction or list of directions. |
 | `topic` | For verbs with free text (`ask`, `tell`, `say`, and your own `TEXT` verbs): a word or phrase, or a list. Matches if all its words are in what the player typed. |
-| `in` | Room id or region id (or a list) the player must be in. |
+| `in` | Room id or region id (or a list) the player must be in when the rule runs. For an after-rule on `go`, that is the room just arrived in. |
 | `if` | Condition. |
 | `say` | *Text* printed when the rule runs. |
 | `do` | Effects run after `say`. |
-| `continue` | For before-rules: `true` lets the action go ahead after this rule runs. |
+| `continue` | `true` lets the next matching rule (or, for a before-rule, the standard behaviour) run after this one. |
 | `once` | The rule runs only once per game. |
 | `priority` | A number; higher runs first. Default 0. |
 | `id` | Optional name; shown in error messages. Recommended. |
@@ -784,10 +791,16 @@ rule runs and then the next matching rule, or the standard behaviour, carries
 on. Use before-rules for almost everything: puzzles, refusals, special
 responses.
 
+Before-rules also run before any of the standard checks: whether the player
+holds the thing, can reach it, whether a container is closed. A before-rule
+that should only work when the player holds something must test it
+(`{"has": "sugar"}`).
+
 **After-rules** run only when the standard behaviour *succeeded*, after its
 response: after the player really took the thing, really opened the door,
 really walked into the room. Use them to react to success: award points when
-the ring is taken. Many standard verbs never succeed by default (`push`,
+the ring is taken. As with before-rules, the first matching after-rule stops
+the rest unless it has `"continue": true`. Many standard verbs never succeed by default (`push`,
 `pull`, `turn`, `attack`, `give`, `show`, `use`, `climb`, `say`, and pack
 verbs that only have a default response), so **after-rules on those verbs
 never run: use before-rules for them.** [Appendix A](#appendix-a-standard-verbs)
@@ -800,21 +813,29 @@ rule runs, whatever `continue` says, and `when` does not matter:
   the first room description).
 - `arrive`: whenever the player arrives in a room, after it is described. Use
   `in` to choose the room.
-- `turn`: at the end of every turn. Use `if` and `in` to limit it. This is how
-  background processes work: a lamp burning oil, air running out.
+- `everyTurn`: at the end of every turn. Use `if` and `in` to limit it. This is
+  how background processes work: a lamp burning oil, air running out. (Not to
+  be confused with the standard verb `turn`, as in "turn the wheel".)
 
-**Order.** Rules are tried by `priority` (highest first), then by how specific
-they are (a rule naming an object, a second object, a direction, a topic, a
-room and a condition is more specific than one naming fewer of those), then
-in load order (file path, then position in the file). So you can write a
-specific rule and a general fallback for the same verb in any order, and the
-specific one wins.
+**Order.** Rules are tried by `priority` (highest first), then by
+specificity, then in load order (file path, then position in the file).
+Specificity is a score: `object` and `with` naming ids count 8 each (6 for a
+`#tag`, 1 for `"*"`), `dir` and `topic` 4 each, `in` 2, and `if` 1. So a rule
+naming an object beats one naming only a room and a condition, and you can
+write a specific rule and a general fallback for the same verb in any order.
+When that is not the order you want, set `priority`.
 
 **One turn.** Every command that is understood takes one turn, even one that
 fails ("It seems to be locked."), except the meta commands (score, save,
-restore, undo, again, help, about, verbose, brief, restart, quit). At the end
-of each turn: due events fire, `turn` rules run, wandering characters move,
-and if the light in the player's room changed, the player is told.
+restore, undo, help, about, verbose, brief, restart, quit). `again` repeats
+the last command, which takes its turn as usual. At the end of each turn: due
+events fire, `everyTurn` rules run, wandering characters move, and if the
+light in the player's room changed, the player is told.
+
+**What the player types.** Input is split into separate commands at `.`, `;`,
+`!`, `?` and the word `then`; apostrophes are removed and `a`, `an`, `the`
+dropped. So a password or code for a `TEXT` verb must be one plain word or
+number, or a phrase without those characters.
 
 ## 11. Verbs, directions and messages
 
@@ -855,7 +876,8 @@ with the most literal words wins: `throw lariat at OBJ` beats the standard
 `throw OBJ at OBJ2`. Give every verb the synonyms a player might try.
 
 To add phrasings to a **standard** verb, use its id and give only
-`patterns`. Your patterns are added to the standard ones:
+`patterns`. Your patterns are added to the standard ones (a `default` there is
+ignored, with a warning: change a standard response with a rule or a message):
 
 ```json
 "verbs": { "give": { "patterns": ["feed OBJ to OBJ2", "feed OBJ2 OBJ"] } }
@@ -877,8 +899,7 @@ your patterns is shadowed by, or shadows, a pattern of a different verb.
 | Field | Meaning |
 |---|---|
 | `words` | Required. What the player can type for it. Each word may belong to only one direction. |
-| `opposite` | The id of the opposite direction, for your own consistency. |
-| `name` | How the direction is named, if different from its id. |
+| `opposite` | The id of the opposite direction. Recorded for consistency; the engine does not use it yet. |
 
 A new direction can then be used in exits and typed by the player. Giving the
 id of a standard direction adds words to it: `"up": {"words": ["upstairs"]}`.
@@ -927,7 +948,8 @@ export default function register(api) {
 ```
 
 - `api.action(verbId, fn)` handles one of *your* verbs (not a standard verb)
-  when no before-rule stopped it. Return `false` if the action failed.
+  when no before-rule stopped it. Return `false` if the action failed; any
+  other return value (or none) counts as success, so after-rules run.
 - `api.condition(name, fn)` is used as `{"script": "carrying-many", "args": {"n": 3}}`.
 - `api.effect(name, fn)` is used as `{"script": "tally"}`.
 
@@ -942,7 +964,7 @@ The `ctx` object passed to each function:
 | `passage(key)` | The text of a passage. |
 | `get(ref)`, `set(ref, value)` | Read and write variables and properties (`"gold"`, `"lamp.fuel"`). |
 | `locationOf(id)` | Where something is: room, container, character, `"player"`, or null. |
-| `move(id, to)` | Move something (`"player"` to give it to the player, null to remove it). |
+| `move(id, to)` | Move something: to a room or thing id, `"player"`, `"here"`, or `"nowhere"` (or null) to remove it. |
 | `movePlayer(room)` | Move the player and describe the room. |
 | `room()` | The player's room. |
 | `exits(room)` | That room's exits as `{direction: room}` (ignores conditions and doors). |
@@ -1004,9 +1026,20 @@ use **Open folder…** to play your pack directory in a browser.
   thing.", "Which do you mean...?"). Each is played twice to check the game is
   deterministic.
 
-If a script makes a room reachable or an object obtainable in a way the
-validator cannot see, list it in `"validator": {"assumeReachable": [...],
-"assumeObtainable": [...]}`.
+The validator cannot see inside scripts. If a script makes a room reachable or
+an object obtainable, or is the only thing that uses a passage, ending, score
+item, event or act, list those ids in the `validator` section so the checks
+and warnings take it into account:
+
+```json
+"validator": {
+  "assumeReachable": ["secret-garden"],
+  "assumeObtainable": ["silver-key"],
+  "assumeUsed": ["ending-by-script", "passage-by-script"]
+}
+```
+
+Templates in passages are checked like any other text.
 
 ### Walkthroughs
 
@@ -1029,10 +1062,17 @@ n
 - `# seed:` (optional, default 1) fixes the random generator, so wandering
   characters and `chance` behave the same every time.
 - One command per line. Other lines starting with `#` are comments.
-- Every command must be understood: no ambiguity questions left unanswered.
+- Every command must be complete and understood. A command that makes the
+  parser ask a question ("Which do you mean...?", "What do you want to
+  take?") fails the walkthrough even if the next line answers it: write
+  `take brass key`, not `take key` then `brass`.
+- The game must not end before the last command.
 
 ### Debugging tips
 
+- `save` in `play` writes `<pack-id>-<slot>.sav.json` into the current
+  directory; use `--saves <dir>` to keep save files out of your pack and the
+  repository.
 - `play` with `--seed` and the same commands always gives the same game.
   Pipe commands in to reproduce a problem:
   `printf 'e\ntake rope\n' | node src/cli/main.ts play <pack> --seed 1`.
@@ -1053,10 +1093,11 @@ n
 `"door": "study-door"`. No rules needed: `unlock door` (using the key the
 player holds), `open door`, `north` all work.
 
-**A door opened by a code.** Make the door `lockable` and `locked` with no
-key, add a `TEXT` verb (`type`), and a rule with `"topic": "4471"` that sets
+**A door opened by a code.** Make the door `"locked": true` with no `key`, add
+a `TEXT` verb (`type`), and a rule with `"topic": "4471"` that sets
 `door.locked` false and `door.open` true. Add a fallback rule for wrong codes,
-and a rule on `open`/`unlock` that tells the player how this door works.
+and a rule on `open`/`unlock` that tells the player how this door works
+(without one, `unlock door` says "There is no keyhole in the door.").
 
 **Something hidden until searched.** Leave the object with no `location`. A
 before-rule on `search` (or `lookUnder`) for the hiding place, `"once": true`,
@@ -1066,8 +1107,8 @@ says "You find a key." and does `{"move": "key", "to": "here"}`.
 "apple", "with": "gardener"` that moves the apple to `nowhere` (or to the
 gardener), says thanks, awards points and perhaps starts the next act.
 
-**A light source that runs out.** Give it `"props": {"fuel": 40}`. A `turn`
-rule with `"if": {"var": "lamp.on"}` that decrements `lamp.fuel`, warns at a
+**A light source that runs out.** Give it `"props": {"fuel": 40}`. An
+`everyTurn` rule with `"if": {"var": "lamp.on"}` that decrements `lamp.fuel`, warns at a
 low value, and at zero sets `lamp.on` false. A before-rule on `switchOn` that
 refuses when fuel is zero.
 
@@ -1091,11 +1132,18 @@ befriends them; `false` when they part.
 **A death.** A before-rule that says what happens and does `{"end": "eaten"}`
 with an ending that is not a win.
 
+**Entering a building or a vehicle.** `enter X` walks through X only when X is
+a door used by one of the room's exits. For anything else (a tent, a cave
+mouth, a coach) add a before-rule on `enter` for that object that does
+`{"movePlayer": "inside-room"}`, or make the way in an ordinary exit
+(`"in": "tent-inside"`) and mention it in the description.
+
 ## 15. Definition of done
 
 A pack is done when all of these are true:
 
-- [ ] `validate` reports **0 errors and 0 warnings**.
+- [ ] `validate` reports **0 errors and 0 warnings** (content used only by
+      scripts is listed in `validator.assumeUsed`).
 - [ ] There is a walkthrough for **every ending**, and each passes.
 - [ ] The winning walkthrough has `# score:` equal to the maximum score.
 - [ ] Every room description names its exits, and directions are consistent.
@@ -1385,7 +1433,7 @@ success, which is when after-rules run.
 | `restart` | `restart` | meta: no time passes, rules do not apply |
 | `quit` | `quit/q` | meta: no time passes, rules do not apply |
 | `undo` | `undo` | meta: no time passes, rules do not apply |
-| `again` | `again/g` | meta: no time passes, rules do not apply |
+| `again` | `again/g` | repeats the last command, which then takes its turn and runs its rules as usual |
 | `help` | `help/hint/hints` | meta: no time passes, rules do not apply |
 | `about` | `about/credits/info/version` | meta: no time passes, rules do not apply |
 | `verbose` | `verbose` | meta: no time passes, rules do not apply |
@@ -1536,6 +1584,7 @@ Override any of these in a `messages` section. Templates are explained in
 | `alreadyUnlocked` | {It:noun} {is:noun} not locked. |
 | `closeFirst` | You'll have to close {it:noun} first. |
 | `wrongKey` | {The:second} won't fit {the:noun}. |
+| `noKeyhole` | There is no keyhole in {the:noun}. |
 | `withKey` | (with {the:second}) |
 | `lockedIt` | You lock {the:noun}. |
 | `unlockedIt` | You unlock {the:noun}. |

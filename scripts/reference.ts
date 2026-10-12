@@ -17,7 +17,10 @@ export function verbTable(): string {
   const rows = ['| Verb id | Patterns | Standard behaviour succeeds (after-rules run) |', '|---|---|---|'];
   for (const [id, v] of Object.entries(STANDARD_VERBS)) {
     const pats = v.patterns.map((p) => `\`${p}\``).join(', ');
-    rows.push(`| \`${id}\` | ${pats} | ${v.meta ? 'meta: no time passes, rules do not apply' : SUCCEEDS[id] ?? '?'} |`);
+    const note = id === 'again'
+      ? 'repeats the last command, which then takes its turn and runs its rules as usual'
+      : v.meta ? 'meta: no time passes, rules do not apply' : SUCCEEDS[id] ?? '?';
+    rows.push(`| \`${id}\` | ${pats} | ${note} |`);
   }
   return rows.join('\n');
 }

@@ -520,7 +520,7 @@ export const VERB_SPEC: Spec = {
 
 export const DIRECTION_SPEC: Spec = {
   required: ['words'],
-  fields: { words: words, opposite: ref('direction'), name: str },
+  fields: { words: words, opposite: ref('direction') },
 };
 
 export const MESSAGE_CHECK: FieldCheck = (c, v, where) => {

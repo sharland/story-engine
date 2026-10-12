@@ -44,7 +44,7 @@
   "rules": [
     {
       "id": "torch-battery",
-      "on": "turn",
+      "on": "everyTurn",
       "if": { "var": "torch.on" },
       "do": [
         { "dec": "torch.battery" },
@@ -163,7 +163,7 @@
     },
     {
       "id": "suit-air",
-      "on": "turn", "in": "outside",
+      "on": "everyTurn", "in": "outside",
       "do": [
         { "dec": "air" },
         { "if": { "var": "air", "eq": 3 }, "then": [{ "say": "A tone sounds in your helmet. Suit air is low." }] },

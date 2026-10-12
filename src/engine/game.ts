@@ -409,6 +409,7 @@ export class Game {
   /** Move an object or character. "to" is an id, "player", or null for nowhere. */
   moveThing(id: string, to: string | null): void {
     if (this.state.parent[id] === PLAYER && to !== PLAYER && this.flag(id, 'worn')) this.setProp(id, 'worn', false);
+    if (to === PLAYER && this.world.things.get(id)?.kind === 'object') this.setProp(id, 'moved', true);
     this.state.parent[id] = to;
   }
 
@@ -576,7 +577,7 @@ export class Game {
   }
 
   /** Run a pseudo-action's rules: every matching rule runs. */
-  private hook(action: 'start' | 'arrive' | 'turn'): void {
+  private hook(action: 'start' | 'arrive' | 'everyTurn'): void {
     const c: ActionCtx = { action, noun: null, second: null, topic: null, dir: null };
     this.ctxStack.push(c);
     try {
@@ -826,7 +827,7 @@ export class Game {
       if (this.state.ended) return;
     }
     // Background processes.
-    this.hook('turn');
+    this.hook('everyTurn');
     if (this.state.ended) return;
     this.wander();
     // Light coming or going where the player stands.
@@ -973,7 +974,7 @@ export class Game {
       },
       keyNeeded: (action, noun) => {
         const t = this.world.things.get(noun);
-        if (!t || !t.lockable) return false;
+        if (!t || !t.lockable || t.keys.length === 0) return false;
         const locked = this.flag(noun, 'locked');
         return action === 'unlock' ? locked : !locked && !(t.openable && this.flag(noun, 'open'));
       },
@@ -1020,7 +1021,7 @@ export class Game {
       get: (ref) => g.get(ref),
       set: (ref, value) => g.set(ref, value),
       locationOf: (id) => g.state.parent[id] ?? null,
-      move: (id, to) => g.moveThing(id, to),
+      move: (id, to) => g.moveThing(id, to === 'nowhere' ? null : to === 'here' ? g.state.location : to),
       movePlayer: (room) => g.movePlayer(room, false),
       room: () => g.state.location,
       exits: (room) => {

@@ -206,14 +206,15 @@ function couldMeet(w: World, a: string, b: string): boolean {
 }
 
 function unused(w: World, c: CompileResult, issues: Issue[]): void {
+  const assumed = new Set(w.validator.assumeUsed);
   for (const key of w.texts.keys()) {
-    if (!c.passagesUsed.has(key)) {
+    if (!c.passagesUsed.has(key) && !assumed.has(key)) {
       issues.push({ level: 'warning', code: 'unused-passage', message: `Passage "${key}" is never used` });
     }
   }
-  const targeted = (kind: string, id: string) => c.targets.some((t) => t.kind === kind && t.id === id);
+  const targeted = (kind: string, id: string) => assumed.has(id) || c.targets.some((t) => t.kind === kind && t.id === id);
   const scripted = w.scripts.effects.size > 0 || w.scripts.actions.size > 0;
-  const maybe = scripted ? ' (unless a script does it)' : '';
+  const maybe = scripted ? ' (if a script does, list it in validator.assumeUsed)' : '';
   for (const id of w.endings.keys()) {
     if (!targeted('end', id)) {
       issues.push({ level: 'warning', code: 'unused-ending', message: `No effect ends the game with "${id}"${maybe}` });

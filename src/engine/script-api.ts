@@ -40,7 +40,7 @@ export interface ScriptContext {
   set(ref: string, value: Value): void;
   /** Where something is: a room id, a container id, "player", a character id, or null. */
   locationOf(id: string): string | null;
-  /** Move an object or character. Use "player" to give it to the player, null to remove it. */
+  /** Move an object or character: a room or thing id, "player", "here", or "nowhere" (or null) to remove it. */
   move(id: string, to: string | null): void;
   /** Move the player to a room and describe it. */
   movePlayer(room: string): void;

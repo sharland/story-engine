@@ -105,14 +105,14 @@ input line ─► split on . ; ! ? and "then" ─► for each command:
       before-rules  (first rule that matches and doesn't say "continue" stops it)
       action        (standard library handler, or the pack verb's handler)
       after-rules   (only if the action succeeded)
-    end of turn: due events fire ─► "turn" rules (background processes)
+    end of turn: due events fire ─► "everyTurn" rules (background processes)
       ─► wandering characters move ─► light change check
     an `end` effect anywhere stops the loop and prints the ending
 ```
 
 Pseudo-actions let rules hook the loop: `start` (once, after the intro),
-`arrive` (after the player enters a room and it is described), `turn` (every
-turn). Movement is the `go` action, so "leaving" is a before-rule on `go`.
+`arrive` (after the player enters a room and it is described), `everyTurn`
+(the end of every turn). Movement is the `go` action, so "leaving" is a before-rule on `go`.
 
 ## Parser
 

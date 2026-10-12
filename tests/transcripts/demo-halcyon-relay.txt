@@ -52,7 +52,7 @@ On the table you can see a data slate and a mug.
 The door is opened from the keypad beside it.
 
 > unlock door
-What do you want to unlock the stores door with?
+The door is opened from the keypad beside it.
 
 > type 1234
 The keypad gives a flat buzz. The display reads LOCKED.
@@ -60,10 +60,11 @@ The keypad gives a flat buzz. The display reads LOCKED.
 > type 4471
 The keypad beeps twice and the stores door slides open.
 [Your score has gone up by 10.]
+The maintenance drone rolls in.
 
 > type 4471
 The keypad display reads OPEN.
-The maintenance drone rolls in.
+The maintenance drone rolls away.
 
 > e
 Stores
@@ -74,15 +75,15 @@ A replacement power coupling sits in a padded cradle on the lowest shelf.
 Galley
 A cramped galley with a fold-down table, a water dispenser and the smell of reheated protein. The stores are behind a door to the east, with a keypad beside it. The spine corridor is west.
 On the table you can see a data slate and a mug.
+The maintenance drone rolls in.
 
 > w
 Spine Corridor
 The station's central corridor, ribbed with conduit. The crew quarters are west and the galley east. A heavy door to the north leads to the control room, a ladder well drops down into the maintenance shaft, and the suit room is south. Only the amber emergency strips are lit.
-The maintenance drone idles here, its eye light pulsing.
-The maintenance drone rolls away.
 
 > type 4471
 There is no keypad here.
+The maintenance drone rolls in.
 
 ## The reactor: two couplings, a lever with nothing connected
 > w
@@ -98,6 +99,7 @@ Taken.
 > e
 Spine Corridor
 The station's central corridor, ribbed with conduit. The crew quarters are west and the galley east. A heavy door to the north leads to the control room, a ladder well drops down into the maintenance shaft, and the suit room is south. Only the amber emergency strips are lit.
+The maintenance drone rolls in.
 
 > d
 Darkness
@@ -129,6 +131,7 @@ A vertical shaft lined with cable trays. Rungs lead up to the spine corridor and
 > u
 Spine Corridor
 The station's central corridor, ribbed with conduit. The crew quarters are west and the galley east. A heavy door to the north leads to the control room, a ladder well drops down into the maintenance shaft, and the suit room is south. Only the amber emergency strips are lit.
+The maintenance drone rolls in.
 
 > e
 Galley
@@ -178,7 +181,6 @@ The lever is locked in the ON position. Best leave it there.
 
 > take coupling
 Pull the coupling out now and the lights go off again. Leave it.
-
 
 > turn off torch
 You switch off the hand torch.

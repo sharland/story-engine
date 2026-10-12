@@ -35,7 +35,7 @@
   "rules": [
     {
       "id": "lamp-burns",
-      "on": "turn",
+      "on": "everyTurn",
       "if": { "var": "lamp.on" },
       "do": [
         { "dec": "lamp.fuel" },

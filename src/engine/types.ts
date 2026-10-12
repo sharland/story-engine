@@ -222,7 +222,6 @@ export interface VerbDef {
 export interface DirectionDef {
   words: string[];
   opposite?: string;
-  name?: string;
 }
 
 export interface DataFile {
@@ -239,7 +238,7 @@ export interface DataFile {
   verbs?: Record<string, VerbDef>;
   directions?: Record<string, DirectionDef>;
   messages?: Record<string, string>;
-  validator?: { assumeReachable?: string[]; assumeObtainable?: string[] };
+  validator?: { assumeReachable?: string[]; assumeObtainable?: string[]; assumeUsed?: string[] };
 }
 
 /** A script module after import: its default export registers handlers. */
@@ -357,7 +356,6 @@ export interface Direction {
   id: string;
   words: string[];
   opposite: string | null;
-  name: string;
 }
 
 export interface World {
@@ -379,7 +377,7 @@ export interface World {
   messages: Record<string, string>;
   texts: Map<string, string>;
   scripts: import('./script-api.ts').ScriptTable;
-  validator: { assumeReachable: string[]; assumeObtainable: string[] };
+  validator: { assumeReachable: string[]; assumeObtainable: string[]; assumeUsed: string[] };
   walkthroughs: Array<{ file: string; content: string }>;
   origin: string;
 }

@@ -24,6 +24,7 @@ import {
   SECTIONS,
   VERB_SPEC,
   checkObject,
+  checkTemplates,
   value as valueCheck,
   type MoveRecord,
   type Ref,
@@ -120,7 +121,11 @@ export function compilePack(src: PackSource): CompileResult {
 
   // Text passages
   const texts = new Map<string, string>();
-  for (const t of src.texts) parsePassages(t.content, t.file, texts, c.issues);
+  for (const t of src.texts) {
+    for (const key of parsePassages(t.content, t.file, texts, c.issues)) {
+      checkTemplates(c, texts.get(key)!, `${t.file}: ${key}`);
+    }
+  }
 
   // Merge data files
   const maps: Record<string, Map<string, Located<unknown>>> = {};
@@ -131,6 +136,7 @@ export function compilePack(src: PackSource): CompileResult {
   const rules: Array<Located<unknown> & { index: number }> = [];
   const assumeReachable: string[] = [];
   const assumeObtainable: string[] = [];
+  const assumeUsed: string[] = [];
 
   for (const { file, content } of src.data) {
     if (!isPlainObject(content)) {
@@ -161,6 +167,10 @@ export function compilePack(src: PackSource): CompileResult {
           fields: {
             assumeReachable: (cc, vv, w) => collectIds(cc, vv, w, assumeReachable),
             assumeObtainable: (cc, vv, w) => collectIds(cc, vv, w, assumeObtainable),
+            assumeUsed: (cc, vv, w) => {
+              if (!Array.isArray(vv) || vv.some((x) => typeof x !== 'string')) cc.error(w, 'type', 'Expected a list of ids');
+              else assumeUsed.push(...(vv as string[]));
+            },
           },
         });
         continue;
@@ -222,16 +232,16 @@ export function compilePack(src: PackSource): CompileResult {
   for (const [, l] of maps.messages) MESSAGE_CHECK(c, l.def, l.file);
 
   // Build
-  const directions = new Map<string, { id: string; words: string[]; opposite: string | null; name: string }>();
+  const directions = new Map<string, { id: string; words: string[]; opposite: string | null }>();
   for (const [id, d] of Object.entries(STANDARD_DIRECTIONS)) {
-    directions.set(id, { id, words: [...d.words], opposite: d.opposite, name: id });
+    directions.set(id, { id, words: [...d.words], opposite: d.opposite });
   }
   for (const [id, { def }] of maps.directions) {
     const d = def as DirectionDef;
     if (!Array.isArray(d.words)) continue;
     const existing = directions.get(id);
     if (existing) existing.words.push(...d.words.filter((w) => !existing.words.includes(w)));
-    else directions.set(id, { id, words: [...d.words], opposite: d.opposite ?? null, name: d.name ?? id });
+    else directions.set(id, { id, words: [...d.words], opposite: d.opposite ?? null });
   }
   const directionWords = new Map<string, string>();
   for (const d of directions.values()) {
@@ -294,7 +304,9 @@ export function compilePack(src: PackSource): CompileResult {
     const existing = verbs.get(id);
     if (existing) {
       existing.patterns.push(...(v.patterns ?? []));
-      if (v.default !== undefined) existing.default = v.default;
+      if (v.default !== undefined) {
+        c.warn(file, 'verb-default', `"${id}" is a standard verb, so its "default" is ignored; change its response with a rule or a message`);
+      }
       if (v.multi !== undefined || v.meta !== undefined) {
         c.warn(file, 'verb-flags', `"${id}" is a standard verb; its multi and meta settings cannot be changed`);
       }
@@ -397,7 +409,7 @@ export function compilePack(src: PackSource): CompileResult {
     messages,
     texts,
     scripts,
-    validator: { assumeReachable, assumeObtainable },
+    validator: { assumeReachable, assumeObtainable, assumeUsed },
     walkthroughs: src.walkthroughs,
     origin: src.origin,
   };
@@ -527,7 +539,8 @@ function buildThing(id: string, def: CharacterDef, kind: 'object' | 'character',
       ...(def.props ?? {}),
     },
     pronoun: def.pronoun ?? (plural ? 'them' : kind === 'character' ? 'them' : 'it'),
-    topics: (def.topics ?? []).map((t, i) => ({ ...t, id: t.id ?? `${id}#${i}` })),
+    // Topic ids are scoped to their character, so "once" never collides.
+    topics: (def.topics ?? []).map((t, i) => ({ ...t, id: `topic:${id}:${t.id ?? i}` })),
     talk: def.talk ?? null,
     noTopic: def.noTopic ?? null,
     wander: def.wander ?? null,

@@ -465,7 +465,7 @@ function lockOrUnlock(g: Game, c: ActionCtx, lock: boolean): boolean {
   }
   if (!c.second || !t.keys.includes(c.second)) {
     if (c.second) g.msg('wrongKey');
-    else g.msg('locked');
+    else g.msg(t.keys.length === 0 ? 'noKeyhole' : 'locked');
     return false;
   }
   if (!g.implicitTake(c.second)) return false;

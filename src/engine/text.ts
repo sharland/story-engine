@@ -17,7 +17,9 @@ import type { Issue } from './types.ts';
 
 const HEADER = /^==\s*([A-Za-z0-9][A-Za-z0-9._-]*)\s*==\s*$/;
 
-export function parsePassages(content: string, file: string, into: Map<string, string>, issues: Issue[]): void {
+/** Parse a text file into passages; returns the keys it defined. */
+export function parsePassages(content: string, file: string, into: Map<string, string>, issues: Issue[]): string[] {
+  const keys: string[] = [];
   const lines = content.replace(/\r\n?/g, '\n').split('\n');
   let key: string | null = null;
   let body: string[] = [];
@@ -27,6 +29,7 @@ export function parsePassages(content: string, file: string, into: Map<string, s
       issues.push({ level: 'error', code: 'duplicate-passage', message: `Passage "${key}" is defined more than once`, where: file });
     }
     into.set(key, formatPassage(body));
+    keys.push(key);
   };
   lines.forEach((line, i) => {
     const m = HEADER.exec(line);
@@ -48,6 +51,7 @@ export function parsePassages(content: string, file: string, into: Map<string, s
     }
   });
   flush();
+  return keys;
 }
 
 /** Join wrapped lines into paragraphs; keep "|" lines as separate lines. */
@@ -96,17 +100,20 @@ export interface TemplateToken {
   raw: string;
 }
 
-const TEMPLATE = /\{([A-Za-z]+)(?::([A-Za-z0-9_.-]+))?\}/g;
+// The pattern only; each use makes its own RegExp, because a shared regex with
+// the g or y flag carries lastIndex from one call into the next.
+const TEMPLATE_SOURCE = '\\{([A-Za-z]+)(?::([A-Za-z0-9_.-]+))?\\}';
 
 /** Find every {tag} or {tag:ref} in a string. "{{" and "}}" are literal braces. */
 export function templateTokens(s: string): TemplateToken[] {
   const out: TemplateToken[] = [];
   const cleaned = s.replace(/\{\{|\}\}/g, '  ');
-  for (const m of cleaned.matchAll(TEMPLATE)) out.push({ tag: m[1], ref: m[2] ?? null, raw: m[0] });
+  for (const m of cleaned.matchAll(new RegExp(TEMPLATE_SOURCE, 'g'))) out.push({ tag: m[1], ref: m[2] ?? null, raw: m[0] });
   return out;
 }
 
 export function fillTemplate(s: string, resolve: (tag: string, ref: string | null) => string | null): string {
+  const template = new RegExp(TEMPLATE_SOURCE, 'y');
   let out = '';
   let i = 0;
   while (i < s.length) {
@@ -121,9 +128,9 @@ export function fillTemplate(s: string, resolve: (tag: string, ref: string | nul
       continue;
     }
     if (s[i] === '{') {
-      TEMPLATE.lastIndex = i;
-      const m = TEMPLATE.exec(s);
-      if (m && m.index === i) {
+      template.lastIndex = i;
+      const m = template.exec(s);
+      if (m) {
         const value = resolve(m[1], m[2] ?? null);
         out += value ?? m[0];
         i += m[0].length;
@@ -202,7 +209,7 @@ export function matchTopic(keys: string[], topic: string | null): boolean {
   if (!topic) return false;
   const words = new Set(normaliseWords(topic));
   return keys.some((k) => {
-    const kw = normaliseWords(k);
+    const kw = normaliseWords(k).filter((w) => w !== 'a' && w !== 'an' && w !== 'the');
     return kw.length > 0 && kw.every((w) => words.has(w));
   });
 }
