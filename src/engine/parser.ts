@@ -187,6 +187,7 @@ export function parse(env: ParserEnv, grammar: Pattern[], tokens: string[], know
 
   if (candidates.length === 0) {
     // A command with its last noun left off asks for it.
+    let nounError: ParseOutcome | null = null;
     for (const p of grammar) {
       const c = matchPrefix(p, tokens, env.world.directionWords);
       if (!c) continue;
@@ -194,6 +195,7 @@ export function parse(env: ParserEnv, grammar: Pattern[], tokens: string[], know
       let firstId: string | null = null;
       if (last.slot === 'OBJ2') {
         const r = resolveSlot(env, c, 'OBJ', known);
+        if (r.kind === 'error') nounError ??= r;
         if (r.kind !== 'ok' || r.ids.length !== 1) continue;
         firstId = r.ids[0];
       }
@@ -204,6 +206,7 @@ export function parse(env: ParserEnv, grammar: Pattern[], tokens: string[], know
         params: { verb: typedPhrase(env, c, tokens, firstId) },
       };
     }
+    if (nounError) return nounError;
     const unknown = tokens.find((t) => t !== ',' && !known.has(t));
     if (unknown) return { kind: 'error', key: 'unknownWord', params: { word: unknown } };
     return { kind: 'error', key: 'notUnderstood', params: {} };
@@ -218,7 +221,12 @@ export function parse(env: ParserEnv, grammar: Pattern[], tokens: string[], know
   return firstError!;
 }
 
-/** Re-run a candidate after the player answered a question. */
+/**
+ * Re-run a candidate after the player answered a question. Returns null if
+ * the input does not answer a "which" question; for a missing noun it returns
+ * the resolution, which may be an error the caller weighs against parsing the
+ * input as a new command.
+ */
 export function answer(
   env: ParserEnv,
   pending: Pending,
@@ -245,8 +253,7 @@ export function answer(
     pattern: pending.candidate.pattern,
     bindings: { ...pending.candidate.bindings, [pending.slot]: tokens },
   };
-  const r = resolveCandidate(env, candidate, known);
-  return r.kind === 'error' ? null : r;
+  return resolveCandidate(env, candidate, known);
 }
 
 type SlotResult =
@@ -338,8 +345,11 @@ function typedPhrase(env: ParserEnv, c: Candidate, tokens: string[], firstId: st
   let ti = 0;
   for (const t of c.pattern.tokens) {
     if (ti >= tokens.length) break;
-    if (t.kind === 'word') out.push(tokens[ti++]);
-    else {
+    if (t.kind === 'word') {
+      // Abbreviations ("x", "l") read badly in a question; use the full word.
+      out.push(tokens[ti].length < 3 ? t.words[0] : tokens[ti]);
+      ti += 1;
+    } else {
       const span = c.bindings[t.slot] ?? [];
       out.push(t.slot === 'OBJ' && firstId ? env.theName(firstId) : span.join(' '));
       ti += span.length;

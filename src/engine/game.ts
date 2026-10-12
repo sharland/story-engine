@@ -733,13 +733,19 @@ export class Game {
 
   /** Returns true if the rest of the input line should be dropped. */
   private handleTokens(tokens: string[]): boolean {
+    const fresh = () => parse(this.parserEnv(), this.grammar, tokens, this.known);
     if (this.pending) {
       const p = this.pending;
       this.pending = null;
       const r = answer(this.parserEnv(), p, tokens, this.known);
-      if (r) return this.handleOutcome(r);
+      if (r && r.kind !== 'error') return this.handleOutcome(r);
+      // Not a usable answer: treat it as a new command, unless it isn't one
+      // either, in which case the answer's own problem is the better message.
+      const f = fresh();
+      if (r && f.kind === 'error' && f.key === 'notUnderstood') return this.handleOutcome(r);
+      return this.handleOutcome(f);
     }
-    return this.handleOutcome(parse(this.parserEnv(), this.grammar, tokens, this.known));
+    return this.handleOutcome(fresh());
   }
 
   private handleOutcome(o: ParseOutcome): boolean {
@@ -786,7 +792,9 @@ export class Game {
       }
       if (this.state.ended || this.quitRequested) break;
     }
-    if (cmd.nouns.length === 1) this.setPronoun(cmd.nouns[0]);
+    // "it"/"them" mean the last thing named, "him"/"her" the last person
+    // (not the results of "all").
+    if (!cmd.all) for (const noun of cmd.nouns) this.setPronoun(noun);
     if (cmd.second && this.world.things.get(cmd.second)?.kind === 'character') this.setPronoun(cmd.second);
     if (!this.state.ended && !this.quitRequested) this.endTurn(wasLit, wasAt);
   }

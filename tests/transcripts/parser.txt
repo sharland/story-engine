@@ -127,6 +127,16 @@ What do you want to put the apple in?
 > tin
 The tin is closed.
 
+## Abbreviated verbs are spelled out in questions; a missing second noun after an unseen first
+> x
+What do you want to examine?
+
+> lamp
+You can't see any such thing.
+
+> put coin in
+You can't see any such thing.
+
 ## Lists and "all"
 > drop all
 apple: Dropped.
@@ -305,6 +315,18 @@ You can't see the cat any more.
 
 > ask gardener about weather
 The gardener shrugs.
+
+## "them" after a list means the last thing named
+> take pebbles and gardener
+pebbles: Taken.
+gardener: The gardener would not appreciate that.
+
+> drop them
+Dropped.
+
+> i
+You are carrying:
+  a brass key
 
 ## Pack verbs and their defaults
 > ring pebbles
