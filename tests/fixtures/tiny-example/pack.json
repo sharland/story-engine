@@ -1,0 +1,10 @@
+{
+  "format": 1,
+  "id": "tiny-example",
+  "title": "A Tiny Example",
+  "version": "1.0.0",
+  "author": "A. Writer",
+  "licence": "CC0-1.0",
+  "start": "porch",
+  "intro": "@intro"
+}
