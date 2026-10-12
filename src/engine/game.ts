@@ -234,6 +234,7 @@ export class Game {
       if (tag === 'score') return String(this.state.score);
       if (tag === 'max') return String(this.world.maxScore);
       if (tag === 'turns') return String(this.state.turns);
+      if (tag === 'turnCount') return `${this.state.turns} ${this.state.turns === 1 ? 'turn' : 'turns'}`;
       if (params[tag] !== undefined) return String(params[tag]);
       return null;
     });
@@ -929,7 +930,7 @@ export class Game {
     const m = this.world.manifest;
     this.print(`${m.title} (version ${m.version})`, 'heading');
     if (m.description) this.print(m.description);
-    this.print(`Adapted by ${m.author}.`);
+    this.print(m.source ? `Adapted by ${m.author}.` : `By ${m.author}.`);
     if (m.source) {
       const s = m.source;
       let line = `Based on ${s.title}`;
@@ -960,6 +961,12 @@ export class Game {
       implicitSecond: (_action, noun) => {
         const t = this.world.things.get(noun);
         return t?.keys.find((k) => this.isHeld(k)) ?? null;
+      },
+      keyNeeded: (action, noun) => {
+        const t = this.world.things.get(noun);
+        if (!t || !t.lockable) return false;
+        const locked = this.flag(noun, 'locked');
+        return action === 'unlock' ? locked : !locked && !(t.openable && this.flag(noun, 'open'));
       },
       theName: (id) => this.theName(id),
     };

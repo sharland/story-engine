@@ -1,0 +1,242 @@
+# Meta commands (no game time passes): score, save, restore, undo, again,
+# restart, verbose, brief, about, help, quit. Endings: a losing ending,
+# what is allowed after it, undo out of it, and the winning ending.
+# pack: ../fixtures/testbed
+# seed: 4
+## Help and about; nothing to undo at the start
+This is the testbed. Nothing here is a story; every room exists to exercise part of the engine.
+Part One: Morning
+Hall
+A square hall with a flagstone floor. A door leads north, the kitchen is east, an archway opens west to the garden and stone steps go down. A trapdoor is set in the ceiling.
+You have not been here before.
+The second paragraph of a first visit.
+An oil lamp stands on the floor.
+An upright piano stands against the wall.
+You can see a waxed coat here.
+
+> undo
+There is nothing to undo.
+
+> help
+Type commands such as LOOK, INVENTORY, NORTH (or N), TAKE LAMP, PUT KEY IN BOX, OPEN DOOR, ASK SOMEONE ABOUT SOMETHING. Other commands: SCORE, SAVE, RESTORE, UNDO, AGAIN, RESTART, QUIT, ABOUT.
+
+> about
+Testbed (version 1.0.0)
+A fixture that exercises every engine feature. Not a story.
+Adapted by story-engine tests.
+Based on No source by Nobody (2026).
+Test content only.
+Licence: CC0-1.0.
+Written for the engine's test suite.
+
+## Score and the move counter; meta commands take no time
+> score
+You have scored 0 out of a possible 20, in 0 turns.
+
+> look
+Hall
+A square hall with a flagstone floor. A door leads north, the kitchen is east, an archway opens west to the garden and stone steps go down. A trapdoor is set in the ceiling.
+An oil lamp stands on the floor.
+An upright piano stands against the wall.
+You can see a waxed coat here.
+
+> score
+You have scored 0 out of a possible 20, in 1 turn.
+
+> score
+You have scored 0 out of a possible 20, in 1 turn.
+
+## Brief and verbose descriptions
+> brief
+Full descriptions only for rooms you have not seen before.
+
+> e
+Kitchen
+A narrow kitchen. A table stands by the wall. The cupboard is shut.
+You can see a bottle of milk here.
+On the table you can see an apple and a brass key.
+The cat is here.
+The cat slips away.
+
+> w
+Hall
+An oil lamp stands on the floor.
+An upright piano stands against the wall.
+You can see a waxed coat here.
+The cat is here.
+The cat slips away.
+
+> e
+Kitchen
+You can see a bottle of milk here.
+On the table you can see an apple and a brass key.
+The cat is here.
+
+> look
+Kitchen
+A narrow kitchen. A table stands by the wall. The cupboard is shut.
+You can see a bottle of milk here.
+On the table you can see an apple and a brass key.
+The cat is here.
+The cat slips away.
+
+> verbose
+Full room descriptions from now on.
+
+> w
+Hall
+A square hall with a flagstone floor. A door leads north, the kitchen is east, an archway opens west to the garden and stone steps go down. A trapdoor is set in the ceiling.
+An oil lamp stands on the floor.
+An upright piano stands against the wall.
+You can see a waxed coat here.
+The cat is here.
+
+## Undo steps back one turn at a time; "i" and "look" are turns too
+> take lamp
+Taken.
+
+> take coat
+You check the pockets first. Empty.
+Taken.
+
+> undo
+Previous turn undone.
+
+> i
+You are carrying:
+  an oil lamp
+
+> undo
+Previous turn undone.
+
+> i
+You are carrying:
+  an oil lamp
+
+> undo
+Previous turn undone.
+
+> undo
+Previous turn undone.
+
+> i
+You are empty-handed.
+
+## Again
+> take coat
+You check the pockets first. Empty.
+Taken.
+
+> g
+You check the pockets first. Empty.
+You already have that.
+The cat slips away.
+
+> again
+You check the pockets first. Empty.
+You already have that.
+
+## Save and restore, with named slots
+> save
+Saved.
+
+> take lamp
+Taken.
+
+> save second
+Saved.
+
+> drop coat
+Dropped.
+
+> i
+You are carrying:
+  an oil lamp
+The cat pads in.
+
+> restore
+Restored.
+Hall
+A square hall with a flagstone floor. A door leads north, the kitchen is east, an archway opens west to the garden and stone steps go down. A trapdoor is set in the ceiling.
+An oil lamp stands on the floor.
+An upright piano stands against the wall.
+
+> i
+You are carrying:
+  a waxed coat
+
+> restore second
+Restored.
+Hall
+A square hall with a flagstone floor. A door leads north, the kitchen is east, an archway opens west to the garden and stone steps go down. A trapdoor is set in the ceiling.
+An upright piano stands against the wall.
+
+> i
+You are carrying:
+  an oil lamp
+  a waxed coat
+
+> restore nothing
+Restore failed: no saved game.
+
+## A losing ending; only meta commands work afterwards; undo leaves it
+> turn on lamp
+You switch on the oil lamp.
+The cat pads in.
+
+> d
+Cellar
+A low cellar that smells of earth.
+You can see a crate here.
+In the crate you can see a pale mushroom.
+Cobwebs brush your face.
+
+> take mushroom
+Taken.
+
+> eat mushroom
+It tastes of earth.
+*** You have died ***
+The mushroom was a poor choice.
+In 16 turns you scored 0 out of a possible 20.
+The game is over. Type RESTART, RESTORE, UNDO or QUIT.
+
+> look
+The game is over. Type RESTART, RESTORE, UNDO or QUIT.
+
+> score
+You have scored 0 out of a possible 20, in 16 turns.
+
+> undo
+Previous turn undone.
+
+> i
+You are carrying:
+  an oil lamp (providing light)
+  a waxed coat
+  a pale mushroom
+
+> eat mushroom
+It tastes of earth.
+*** You have died ***
+The mushroom was a poor choice.
+In 17 turns you scored 0 out of a possible 20.
+The game is over. Type RESTART, RESTORE, UNDO or QUIT.
+
+> restart
+Starting again.
+This is the testbed. Nothing here is a story; every room exists to exercise part of the engine.
+Part One: Morning
+Hall
+A square hall with a flagstone floor. A door leads north, the kitchen is east, an archway opens west to the garden and stone steps go down. A trapdoor is set in the ceiling.
+You have not been here before.
+The second paragraph of a first visit.
+An oil lamp stands on the floor.
+An upright piano stands against the wall.
+You can see a waxed coat here.
+
+> i
+You are empty-handed.
+
+> quit
+Goodbye.

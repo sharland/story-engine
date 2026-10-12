@@ -170,7 +170,7 @@ export function list(check: FieldCheck): FieldCheck {
 // Text
 
 const THING_TAGS = ['the', 'The', 'a', 'A', 'name', 'it', 'It', 'that', 'That', 'is', 'has', 's', 'es'];
-const BARE_TAGS = ['score', 'max', 'turns'];
+const BARE_TAGS = ['score', 'max', 'turns', 'turnCount'];
 const MESSAGE_PARAMS = ['list', 'word', 'verb', 'n', 'title', 'reason'];
 
 export function checkTemplates(c: Checker, s: string, where: string, allowParams = false): void {

@@ -236,10 +236,10 @@ bottle of milk: Dropped.
 The cat slips away.
 
 > lock door
-What do you want to lock the study door with?
+You'll have to close it first.
 
 > brass key
-You'll have to close it first.
+I didn't understand that sentence.
 
 > close door
 You close the study door.

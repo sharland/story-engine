@@ -61,6 +61,8 @@ export interface ParserEnv {
   allFor(action: string, second: string | null): string[];
   /** Fill an omitted second noun (a key for unlock), or null. */
   implicitSecond(action: string, noun: string): string | null;
+  /** Would locking or unlocking this need a key right now? (Not if it is already done.) */
+  keyNeeded(action: 'lock' | 'unlock', noun: string): boolean;
   theName(id: string): string;
 }
 
@@ -284,7 +286,12 @@ function resolveCandidate(env: ParserEnv, c: Candidate, known: Set<string>): Par
   }
 
   // "unlock door": use a key the player holds, or ask for one.
-  if (!c.bindings.OBJ2 && cmd.nouns.length === 1 && (action === 'lock' || action === 'unlock')) {
+  if (
+    !c.bindings.OBJ2 &&
+    cmd.nouns.length === 1 &&
+    (action === 'lock' || action === 'unlock') &&
+    env.keyNeeded(action, cmd.nouns[0])
+  ) {
     const key = env.implicitSecond(action, cmd.nouns[0]);
     if (key) {
       cmd.second = key;

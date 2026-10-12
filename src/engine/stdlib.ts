@@ -124,7 +124,8 @@ export const STANDARD_PROPS = ['open', 'locked', 'on', 'worn', 'moved', 'visited
 // Messages. Templates: {The:noun} {the:noun} {a:noun} {A:noun} {name:noun}
 // {it:noun} {It:noun} {that:noun} {That:noun}, verb endings {is:noun} {has:noun}
 // {s:noun} {es:noun} (singular "s"/"es", plural nothing), where the part after
-// the colon is "noun", "second" or an id; {var:name}; {score} {max} {turns};
+// the colon is "noun", "second" or an id; {var:name}; {score} {max} {turns}
+// {turnCount} ("1 turn", "5 turns");
 // and named parameters such as {list}, {word} and {n}.
 export const STANDARD_MESSAGES: Record<string, string> = {
   // Parser
@@ -143,8 +144,8 @@ export const STANDARD_MESSAGES: Record<string, string> = {
   gameOver: 'The game is over. Type RESTART, RESTORE, UNDO or QUIT.',
 
   // Meta
-  scoreReport: 'You have scored {score} out of a possible {max}, in {turns} turns.',
-  noScore: 'This story is not scored. You have taken {turns} turns.',
+  scoreReport: 'You have scored {score} out of a possible {max}, in {turnCount}.',
+  noScore: 'This story is not scored. You have taken {turnCount}.',
   scoreUp: '[Your score has gone up by {n}.]',
   scoreDown: '[Your score has gone down by {n}.]',
   saved: 'Saved.',
@@ -163,7 +164,7 @@ export const STANDARD_MESSAGES: Record<string, string> = {
     'OPEN DOOR, ASK SOMEONE ABOUT SOMETHING. Other commands: SCORE, SAVE, RESTORE, ' +
     'UNDO, AGAIN, RESTART, QUIT, ABOUT.',
   endingTitle: '*** {title} ***',
-  finalScore: 'In {turns} turns you scored {score} out of a possible {max}.',
+  finalScore: 'In {turnCount} you scored {score} out of a possible {max}.',
 
   // Looking
   darkTitle: 'Darkness',

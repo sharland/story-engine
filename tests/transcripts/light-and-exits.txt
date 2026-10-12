@@ -1,0 +1,255 @@
+# Light and darkness, a light source with a background process that burns
+# fuel, doors (closed, locked, entered), conditional and blocked exits,
+# "noExit" text, a pack direction, a region that opens with the story.
+# pack: ../fixtures/testbed
+# seed: 5
+## Darkness
+This is the testbed. Nothing here is a story; every room exists to exercise part of the engine.
+Part One: Morning
+Hall
+A square hall with a flagstone floor. A door leads north, the kitchen is east, an archway opens west to the garden and stone steps go down. A trapdoor is set in the ceiling.
+You have not been here before.
+The second paragraph of a first visit.
+An oil lamp stands on the floor.
+An upright piano stands against the wall.
+You can see a waxed coat here.
+
+> d
+Darkness
+It is pitch dark. You cannot see a thing.
+
+> take crate
+You can't see any such thing.
+
+> i
+You are empty-handed.
+
+> x crate
+You can't see any such thing.
+
+> u
+Hall
+A square hall with a flagstone floor. A door leads north, the kitchen is east, an archway opens west to the garden and stone steps go down. A trapdoor is set in the ceiling.
+An oil lamp stands on the floor.
+An upright piano stands against the wall.
+You can see a waxed coat here.
+The cat pads in.
+
+## A light source and a background process (fuel 8, one per turn while lit)
+> take lamp
+Taken.
+The cat slips away.
+
+> turn on lamp
+You switch on the oil lamp.
+
+> x lamp
+An oil lamp.
+It is switched on.
+The cat pads in.
+
+> i
+You are carrying:
+  an oil lamp (providing light)
+The cat slips away.
+
+> d
+Cellar
+A low cellar that smells of earth.
+You can see a crate here.
+In the crate you can see a pale mushroom.
+Cobwebs brush your face.
+
+> x crate
+You see nothing special about the crate.
+In the crate you can see a pale mushroom.
+
+> z
+Time passes.
+
+> x lamp
+An oil lamp. It is nearly out of oil.
+It is switched on.
+
+> turn lamp off
+You switch off the oil lamp.
+It is now pitch dark.
+
+> turn lamp on
+You switch on the oil lamp.
+The lamp gutters and goes out.
+
+> z
+Time passes.
+
+> z
+Time passes.
+
+> z
+Time passes.
+
+> turn on lamp
+The lamp has no oil left.
+
+> u
+Hall
+A square hall with a flagstone floor. A door leads north, the kitchen is east, an archway opens west to the garden and stone steps go down. A trapdoor is set in the ceiling.
+An upright piano stands against the wall.
+You can see a waxed coat here.
+
+> turn off lamp
+It is already off.
+The cat pads in.
+
+> turn on lamp
+The lamp has no oil left.
+
+## Doors
+> n
+The study door is locked.
+The cat slips away.
+
+> enter door
+The study door is locked.
+
+> open door
+It seems to be locked.
+The cat pads in.
+
+> unlock door
+What do you want to unlock the study door with?
+
+> e
+Kitchen
+A narrow kitchen. A table stands by the wall. The cupboard is shut.
+You can see a bottle of milk here.
+On the table you can see an apple and a brass key.
+
+> take key
+Taken.
+
+> w
+Hall
+A square hall with a flagstone floor. A door leads north, the kitchen is east, an archway opens west to the garden and stone steps go down. A trapdoor is set in the ceiling.
+An upright piano stands against the wall.
+You can see a waxed coat here.
+
+> unlock study door with lamp
+The oil lamp won't fit the study door.
+
+> unlock study door with brass key
+You unlock the study door.
+
+> unlock door
+It is not locked.
+
+> open door
+You open the study door.
+The cat pads in.
+
+> lock door
+You'll have to close it first.
+
+> enter door
+Study
+A small study with a desk under the window.
+On the desk you can see a letter and an iron key.
+
+> s
+Hall
+A square hall with a flagstone floor. A door leads north, the kitchen is east, an archway opens west to the garden and stone steps go down. A trapdoor is set in the ceiling.
+An upright piano stands against the wall.
+You can see a waxed coat here.
+
+> close door
+You close the study door.
+The cat pads in.
+
+> n
+The study door is closed.
+The cat slips away.
+
+> open door
+You open the study door.
+
+> n
+Study
+A small study with a desk under the window.
+On the desk you can see a letter and an iron key.
+
+## Conditional exit, blocked exit, noExit, pack direction
+> s
+Hall
+A square hall with a flagstone floor. A door leads north, the kitchen is east, an archway opens west to the garden and stone steps go down. A trapdoor is set in the ceiling.
+An upright piano stands against the wall.
+You can see a waxed coat here.
+The cat is here.
+
+> u
+The trapdoor is too high to reach.
+The cat slips away.
+
+> s
+The front door is barred from outside.
+The cat pads in.
+
+> e
+Kitchen
+A narrow kitchen. A table stands by the wall. The cupboard is shut.
+You can see a bottle of milk here.
+On the table you can see an apple.
+
+> e
+The only way out of the kitchen is west.
+
+> w
+Hall
+A square hall with a flagstone floor. A door leads north, the kitchen is east, an archway opens west to the garden and stone steps go down. A trapdoor is set in the ceiling.
+An upright piano stands against the wall.
+You can see a waxed coat here.
+The cat pads in.
+
+> w
+Garden
+A walled garden. The house is east and a shed stands to the north.
+You can see a ladder and some pebbles here.
+The gardener is weeding a bed of roses.
+Rufus is here.
+
+> around
+You walk around the garden and end up where you started.
+
+> sunwise
+I don't know the word "sunwise".
+
+## A region closed until a later act
+> n
+The shed is padlocked. The gardener keeps it shut until evening.
+The cat pads in.
+
+> take ladder
+Taken.
+The cat slips away.
+
+> e
+Hall
+A square hall with a flagstone floor. A door leads north, the kitchen is east, an archway opens west to the garden and stone steps go down. A trapdoor is set in the ceiling.
+An upright piano stands against the wall.
+You can see a waxed coat here.
+The cat is here.
+
+> drop ladder
+Dropped.
+The cat slips away.
+
+> u
+Attic
+Dust and rafters.
+You can see a glass case here.
+In the glass case you can see a gold ring.
+
+> d
+Hall
+A square hall with a flagstone floor. A door leads north, the kitchen is east, an archway opens west to the garden and stone steps go down. A trapdoor is set in the ceiling. A ladder reaches up to the trapdoor.
+An upright piano stands against the wall.
+You can see a ladder and a waxed coat here.
