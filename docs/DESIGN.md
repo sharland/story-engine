@@ -95,18 +95,18 @@ property is true, or if a light source is visible from the player's position
 ## Turn loop
 
 ```
-input line ─► split on "." and "then" ─► for each command:
+input line ─► split on . ; ! ? and "then" ─► for each command:
   pending question?  try the input as an answer first
-  parse ─► fail: message, no time passes
+  parse ─► fail: message, no time passes, rest of the line dropped
   meta verb (save, restore, undo, score, again, ...) ─► run, no time passes
   otherwise:
-    push state onto the undo stack
+    push state onto the undo stack; turns += 1
     for each object in the command (one, a list, or "all"):
       before-rules  (first rule that matches and doesn't say "continue" stops it)
       action        (standard library handler, or the pack verb's handler)
       after-rules   (only if the action succeeded)
-    end of turn: turns += 1 ─► due events fire ─► "turn" rules (background
-      processes) ─► wandering characters move ─► light change check
+    end of turn: due events fire ─► "turn" rules (background processes)
+      ─► wandering characters move ─► light change check
     an `end` effect anywhere stops the loop and prints the ending
 ```
 
@@ -116,8 +116,9 @@ turn). Movement is the `go` action, so "leaving" is a before-rule on `go`.
 
 ## Parser
 
-Input is lower-cased, punctuation dropped (except `,` and `.` which separate
-list items and commands), and the articles `a`, `an`, `the` removed. The
+Input is lower-cased, apostrophes and most punctuation dropped (`,` separates
+list items; `.`, `;`, `!`, `?` and the word `then` separate commands), and the
+articles `a`, `an`, `the` removed. The
 grammar is a list of patterns, each tied to an action:
 
 ```
@@ -152,7 +153,8 @@ adjective-only matches. Then:
   nothing present give `You can't see any such thing.`
 
 Packs extend the grammar: a pack verb is a set of patterns plus a default
-response, and a pack can add patterns to standard verbs (`grab OBJ` → take).
+response, and a pack can add patterns to standard verbs (`feed OBJ to OBJ2` →
+give). At equal rank, pack patterns win over standard ones.
 
 ## Pack format
 
@@ -183,9 +185,9 @@ Three layers, in the order an author should reach for them:
    effects (`say`, `do`). Conditions and effects are small JSON forms:
 
    ```
-   conditions: {var, eq|ne|gt|gte|lt|lte}  {has}  {wearing}  {at}  {in:{obj,in}}
-               {here}  {visited}  {act}  {actAtLeast}  {light}  {chance}
-               {all:[..]}  {any:[..]}  {not}  {script}
+   conditions: {var, eq|ne|gt|gte|lt|lte}  {has}  {wearing}  {at}  {region}
+               {obj, in}  {here}  {visited}  {act}  {actAtLeast}  {light}
+               {chance}  {all:[..]}  {any:[..]}  {not}  {script}
    effects:    {say}  {sayRandom}  {set,to}  {inc}  {dec}  {move,to}
                {movePlayer}  {award}  {end}  {act}  {schedule,in}  {cancel}
                {if,then,else}  {look}  {script}
@@ -197,7 +199,8 @@ Three layers, in the order an author should reach for them:
    `default function (api)` and registers named conditions, effects and verb
    handlers. They receive a narrow context object (read and set variables,
    move things, print, use the seeded random generator). They cannot reach
-   engine internals or keep their own state. Scripts are trusted code: they
+   engine internals, and must not keep their own state; the validator plays
+   each walkthrough twice to catch scripts that do. Scripts are trusted code: they
    run with the page's or the process's privileges.
 
 **Why this split.** Data covers most of a novel adaptation, and a validator can
@@ -329,6 +332,7 @@ ending.
 - Save migration between pack versions: a save only restores into the
   version that made it.
 - Indexing containment for very large packs. Scope is computed by scanning
-  every object, which is fast at novel scale (hundreds of objects) but
-  quadratic in principle.
+  every object. Measured on a synthetic pack of 100 rooms, 620 objects and
+  20 wandering characters: about 0.7 ms per command in Node 22, so this only
+  matters far beyond novel scale.
 - Sandboxing pack scripts. They are trusted.
