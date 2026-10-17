@@ -1,0 +1,62 @@
+{
+  "dialogues": {
+    "ada": {
+      "entry": [
+        { "if": { "not": { "var": "ada.asked" } }, "node": "juniper" },
+        { "node": "hub" }
+      ],
+      "leave": "Ada turns back to the empty stall.",
+      "resumeText": "\"Where were we?\" Ada says.",
+      "nodes": {
+        "juniper": {
+          "say": "\"You seen my Juniper?\" Ada asks.",
+          "do": [{ "set": "ada.asked", "to": true }],
+          "options": [
+            { "id": "not-yet", "text": "\"Not yet. Which way did she go?\"", "keys": ["no", "not yet"],
+              "line": "\"Not yet,\" you say. \"Which way did she go?\"",
+              "reply": "@ada-which-way", "then": "plan" },
+            { "id": "what-like", "text": "\"I'd know her if I had. What's she like?\"",
+              "reply": "@ada-describes-juniper", "then": "plan" },
+            { "id": "not-here", "text": "\"I'm not here about a horse.\"",
+              "reply": "Ada's face closes like a door. \"Then you're no use to me.\"",
+              "do": [{ "dec": "ada.trust" }], "then": "end" }
+          ]
+        },
+        "plan": {
+          "options": [
+            { "id": "sugar", "text": "\"Will she let me near her?\"", "reply": "@ada-sugar", "once": true },
+            { "id": "promise", "text": "\"I'll bring her back.\"",
+              "reply": "Ada looks at you for a long moment. \"See that you do.\"",
+              "do": [{ "inc": "ada.trust" }, { "say": "[Ada's trust in you has grown.]" }],
+              "then": "end" }
+          ]
+        },
+        "hub": {
+          "say": "Ada wipes her hands on her shirt. \"Well?\"",
+          "options": [
+            { "id": "sorry", "text": "\"I spoke out of turn before. I'll look for her.\"",
+              "if": { "var": "ada.trust", "lt": 0 },
+              "reply": "Ada studies you, then nods once. \"All right.\"",
+              "do": [{ "inc": "ada.trust" }] },
+            { "id": "which-way", "text": "\"Which way did she go again?\"", "keys": ["which way", "where"],
+              "reply": "@ada-which-way" },
+            { "id": "hint", "text": "\"Any idea how to get close to her?\"", "keys": ["hint", "help"],
+              "reply": "@ada-sugar" },
+            { "id": "whistle", "text": "\"Is there a trick to calling her?\"",
+              "if": { "var": "ada.trust", "gte": 1 },
+              "locked": "[Ada doesn't trust you enough yet.]",
+              "reply": "@ada-whistle" }
+          ]
+        }
+      }
+    }
+  },
+  "rules": [
+    {
+      "id": "ada-greets",
+      "on": "arrive", "in": "livery", "once": true,
+      "if": { "all": [{ "here": "ada" }, { "not": { "var": "mare.caught" } }] },
+      "do": [{ "converse": "ada" }]
+    }
+  ]
+}

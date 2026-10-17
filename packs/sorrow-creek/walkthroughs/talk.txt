@@ -1,0 +1,22 @@
+# Through Ada's conversation: a promise earns her trust, which unlocks the
+# whistle hint. Options are chosen by id, so new ones can't break this.
+# expect: home
+# score: 25
+w
+open jar
+take sugar
+e
+e
+@ada.not-yet
+@ada.sugar
+@ada.promise
+talk to ada
+@ada.whistle
+take lariat
+w
+s
+give sugar to mare
+n
+whistle
+lasso her
+e

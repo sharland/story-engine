@@ -71,9 +71,17 @@ Livery Stable
 The stable smells of hay and harness oil. Most of the stalls hold drowsing horses, but the end stall stands open and empty. A wooden peg is driven into the wall by the door. Main Street is back to the west.
 On the peg you can see a lariat.
 Ada Pruitt, who owns the livery, is pacing beside the empty stall.
+"You seen my Juniper?" Ada asks.
+  1. "Not yet. Which way did she go?"
+  2. "I'd know her if I had. What's she like?"
+  3. "I'm not here about a horse."
+  0. Leave
 
 > talk to ada
-"You seen my Juniper?" she asks.
+  1. "Not yet. Which way did she go?"
+  2. "I'd know her if I had. What's she like?"
+  3. "I'm not here about a horse."
+  0. Leave
 
 > ask ada about sugar
 "The sheriff keeps a jar of it on his desk. Sweet tooth on him like a child."
@@ -137,7 +145,7 @@ This time she stands for it. The loop settles over her neck and she lets you dra
 You swing up bareback, turn her head south and give her her heels. Sorrow Creek is a smudge of dust behind you before you think better of it.
 *** You are a horse thief ***
 By sundown you are ten miles out and the mare is blown. By morning there is a poster with your description on the sheriff's wall, and the sheriff is wide awake.
-In 36 turns you scored 15 out of a possible 25.
+In 35 turns you scored 15 out of a possible 25.
 The game is over. Type RESTART, RESTORE, UNDO or QUIT.
 
 > undo
@@ -153,5 +161,5 @@ Ada lets out a whoop that sets every horse in the stable stamping.
 *** Juniper is home ***
 Ada takes the rope from you and leads Juniper into the end stall, talking to her the whole way. When she comes out she presses two silver dollars into your hand and will not hear a word about it.
 The sun goes down red over Sorrow Creek, and for one evening at least, nothing else goes wrong.
-In 36 turns you scored 25 out of a possible 25.
+In 35 turns you scored 25 out of a possible 25.
 The game is over. Type RESTART, RESTORE, UNDO or QUIT.

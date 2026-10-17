@@ -139,10 +139,19 @@ export async function runCli(argv: string[], io: Io): Promise<number> {
         err(`${(e as Error).message}\nRun "story-engine validate" for details.\n`);
         return 1;
       }
-      const wanted = args.positional.slice(1);
-      const files = wanted.length > 0
-        ? wanted.map((f) => ({ file: f, content: readFileSync(f, 'utf8') }))
-        : world.walkthroughs;
+      // A named walkthrough is one of the pack's own ("talk", "talk.txt",
+      // "walkthroughs/talk.txt"), or a file anywhere on disk.
+      const files: Array<{ file: string; content: string }> = [];
+      for (const f of args.positional.slice(1)) {
+        const own = world.walkthroughs.find((w) => [w.file, w.file.replace(/^walkthroughs\//, ''), w.file.replace(/^walkthroughs\/|\.txt$/g, '')].includes(f));
+        if (own) files.push(own);
+        else if (existsSync(f)) files.push({ file: f, content: readFileSync(f, 'utf8') });
+        else {
+          err(`No walkthrough "${f}" in the pack or on disk.\n`);
+          return 1;
+        }
+      }
+      if (args.positional.length <= 1) files.push(...world.walkthroughs);
       let failed = 0;
       for (const w of files) {
         const r = playWalkthrough(world, w.content, w.file);
