@@ -159,8 +159,11 @@ The beekeeper lifts her veil. "Come for honey?"
   4. "Your bees are a menace."
   0. Leave
 
-> leave
+> leave. look
 "Mind the hives," she says.
+Orchard
+Rows of old pear trees. Beehives stand in the grass. The garden is east.
+A beekeeper in a veiled hat is here.
 
 ## Keys, and then to another node with no Leave.
 > talk to her
@@ -363,13 +366,14 @@ The beekeeper says nothing.
 
 > yes
 The gardener shrugs.
+The cat pads in.
 
 > reply roses
 "They need rain," he says.
-The cat pads in.
 
 > answer her with yes
 The beekeeper says nothing.
+The cat slips away.
 
 ## The menu's numbers mean nothing once it is closed.
 > 1

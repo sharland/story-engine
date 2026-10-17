@@ -1170,7 +1170,7 @@ export class Game {
       }
       if (cmd.action === 'talk' && cmd.nouns[0] === c.with) {
         this.menuDue = true;
-        return true;
+        return false;
       }
       if (noLeave) {
         this.msg('chooseOption', {}, 'parser');
@@ -1205,7 +1205,7 @@ export class Game {
     const d = this.world.dialogues.get(c.with)!;
     if (d.leave) this.sayAbout(c.with, d.leave);
     this.closeConversation(false);
-    return true;
+    return false;
   }
 
   /** Choose an option: one game turn. */
