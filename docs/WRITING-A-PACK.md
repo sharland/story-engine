@@ -172,6 +172,12 @@ container, a dark room, a reluctant character).
 - Each important character gets a description, a line for `talk to`, and
   **topics** for `ask X about Y` and `tell X about Y`. Topics carry conditions,
   so a character's answers change as the story moves on.
+- The characters who matter most can have a **conversation menu** instead
+  ([section 8](#conversation-menus)): numbered things to say, which change
+  with the story, and replies that change what the character thinks of the
+  player. Menus spare the player from guessing the right word, which ask/tell
+  never fully does. Minor characters can stay on topics, which are cheaper to
+  write; one character can have both.
 - Quote the book's dialogue where it fits. Keep each answer to a few sentences;
   a long speech can be a passage.
 - Give every character a `noTopic` reply in their own voice.
@@ -271,6 +277,7 @@ Each data file is one JSON object with any of these sections:
 | `rooms` | object of id → room | [6](#6-rooms-and-exits) |
 | `objects` | object of id → object | [7](#7-objects) |
 | `characters` | object of id → character | [8](#8-characters-and-conversation) |
+| `dialogues` | object of character id → conversation menu | [8](#conversation-menus) |
 | `regions` | object of id → region | [9](#9-story-structure-acts-regions-events-scores-endings) |
 | `acts` | list of acts, in story order | [9](#9-story-structure-acts-regions-events-scores-endings) |
 | `events` | object of id → event | [9](#9-story-structure-acts-regions-events-scores-endings) |
@@ -537,7 +544,7 @@ Characters take all the object fields, though they can never be taken, plus:
 |---|---|
 | `pronoun` | `"him"`, `"her"`, `"them"` or `"it"`. Lets the player say `ask her about the mare`. Default `"them"`. |
 | `initial` | *Text* that introduces them in a room description. Default: "The sheriff is here." |
-| `talk` | *Text* for `talk to`. |
+| `talk` | *Text* for `talk to`. If the character has a conversation menu, `talk to` opens that instead, and this text is used only when none of the menu's `entry` nodes applies. |
 | `topics` | List of topics for `ask X about ...` and `tell X about ...` (below). |
 | `noTopic` | *Text* when no topic matches. |
 | `wander` | `{"rooms": [ids], "chance": 0.3}`: each turn, with that probability, the character walks through an exit to one of those rooms. Closed doors stop them; exit conditions do not. A character who is `following` does not wander. |
@@ -571,6 +578,123 @@ Pruitt", not "the Ada Pruitt"). Things a character holds (`"location":
 The **first** matching topic in the list answers, so put conditional topics
 before their general fallback. A matching topic counts as success, so
 after-rules on `ask` and `tell` run.
+
+**Answers.** The standard verb `answer` covers `answer X with Y`,
+`answer Y to X`, `reply Y`, and a bare `yes` or `no`. Outside a menu it goes
+to rules (`"on": "answer"`) and then to the character's topics, so a key
+`"yes"` answers a question the character asked in its `talk` text. A bare
+answer goes to the last character who spoke, if they are still here, or else
+to the only character in the room.
+
+### Conversation menus
+
+A conversation menu gives a character numbered things the player can say.
+It goes in the `dialogues` section, keyed by the character's id, and can sit
+in a file of its own:
+
+```json
+"dialogues": {
+  "hale": {
+    "entry": [
+      { "if": { "act": "departure" }, "node": "paid" },
+      { "node": "start" }
+    ],
+    "leave": "Mrs Hale goes back to polishing glasses.",
+    "nodes": {
+      "start": {
+        "say": "\"Well?\" says Mrs Hale.",
+        "options": [
+          { "id": "bill", "text": "\"What do I owe you?\"", "keys": ["bill"], "once": true,
+            "reply": "\"Two shillings. Your bag stays with me until it's paid.\"" },
+          { "id": "letter", "text": "\"My sister has written. I must go home.\"",
+            "if": { "has": "letter" }, "locked": "(if you had news to tell her)",
+            "reply": "Her face softens. \"Then pay up and go.\"", "then": "end" }
+        ]
+      },
+      "paid": { "say": "\"Off you go,\" says Mrs Hale." }
+    }
+  }
+}
+```
+
+`talk to hale` then shows:
+
+```
+"Well?" says Mrs Hale.
+  1. "What do I owe you?"
+     "My sister has written. I must go home." (if you had news to tell her)
+  0. Leave
+```
+
+A dialogue is a set of **nodes**, each a point in the conversation with
+something the character says and a list of **options** for the player.
+
+| Dialogue field | Meaning |
+|---|---|
+| `nodes` | Required. Object of node id → node. |
+| `entry` | Where `talk to` starts: a list of `{"if": condition, "node": id}`, first match wins. Without `entry`, or if none applies, the node called `start`. If there is no such node either, `talk to` falls back to the character's `talk` text. |
+| `leave` | *Text* when the player leaves the conversation with `0` or a leave word. |
+| `resume` | `false` to start from `entry` every time, instead of resuming an interrupted conversation (below). Default `true`. |
+| `resumeText` | *Text* when an interrupted conversation resumes. Default: "Mrs Hale picks up where you left off." (message `resumeConversation`). |
+
+| Node field | Meaning |
+|---|---|
+| `say` | *Text* the character says on arriving at this node. |
+| `do` | Effects run on arriving at this node. |
+| `options` | List of options, shown in this order. |
+| `noLeave` | `true` to drop `0. Leave`: the player must choose. Commands other than meta commands (`save`, `undo`, `score`...) get "Choose one of the numbered options." Use it for a moment that demands an answer, and give such a node at least one option that is always shown. |
+
+| Option field | Meaning |
+|---|---|
+| `id` | Required. Unique within this dialogue. Used by `said` and by walkthroughs. |
+| `text` | Required. *Text* of the option as listed. |
+| `if` | Condition for the option to be offered. |
+| `locked` | *Text* shown, unnumbered, after the option's text while its `if` is false. Without it, an unavailable option is hidden. Showing a locked option tells the player a door exists. |
+| `once` | Offer it only until it has been chosen. |
+| `keys` | Words the player can type to choose it, as well as its number: `["yes"]`, `["no", "nope"]`. |
+| `line` | *Text* printed when chosen, if it should differ from `text`: `"You hold out your purse."` Default: `text`. |
+| `reply` | *Text* of the character's answer. |
+| `do` | Effects run after the reply. |
+| `then` | Node to go to next, or `"end"` to close the conversation. Without it the conversation stays at this node and lists its options again. |
+
+**How it plays.**
+
+- The player types a number, or an option's `keys`, or `answer hale with
+  bill`, or `say bill`. On the web page they can also click an option.
+- Choosing an option is one game turn: undo goes back one choice, and timed
+  events and wandering characters carry on while people talk, so an event can
+  interrupt a conversation.
+- `0`, `leave`, `bye`, `goodbye` or `farewell` leaves it, with the `leave`
+  text.
+- Any other command closes the menu quietly and runs as usual: `north` walks
+  away, `look` looks, `ask hale about coach` asks. The character remembers
+  where the conversation stopped, and the next `talk to` picks up there with
+  the `resumeText` line, without repeating the node's `say` or `do`. Leaving
+  properly, or reaching `"then": "end"`, forgets it, so the next `talk to`
+  starts from `entry`.
+- Meta commands (`save`, `restore`, `undo`, `score`) and typing mistakes keep
+  the menu open. `talk to` the same character shows it again.
+- If the character leaves the room, or the player does, the conversation is
+  interrupted in the same way.
+
+**Memory and relationships.** Every option chosen is remembered: the
+condition `{"said": "hale.bill"}` is true once the player has chosen option
+`bill` in Mrs Hale's dialogue, so later options, topics, descriptions and
+rules can refer back to it. For how a character feels about the player, give
+the character a property (`"props": {"trust": 0}`), change it in options'
+`do` (`{"inc": "hale.trust"}`), and test it in `if` and `entry`
+(`{"var": "hale.trust", "gte": 2}`). The western demo pack does this with Ada.
+
+**Opening a conversation from a rule.** The effect `{"converse": "hale"}`
+opens Mrs Hale's menu as if the player had talked to her (from `entry`, not
+resuming), and `{"converse": "hale", "node": "paid"}` opens it at a given
+node. Put it in an `arrive` rule to have a character speak first, and use
+`"once": true` so it happens only the first time.
+
+**Walkthroughs** choose options by id, not number, so adding an option above
+one does not break them: a line `@hale.bill` chooses option `bill` of Mrs
+Hale's menu, and fails the walkthrough if it is not on screen
+([section 13](#walkthroughs)).
 
 ## 9. Story structure: acts, regions, events, scores, endings
 
@@ -718,6 +842,7 @@ A condition is a small JSON object. Each has exactly one form:
 | `{"here": "id"}` | the thing is in the player's room (anywhere in it, carried included, lit or not) |
 | `{"obj": "id", "in": "place"}` | the thing's direct location is `place`: a room, container, surface, character, `"player"` or `"nowhere"` |
 | `{"visited": "room"}` | the player has seen that room |
+| `{"said": "hale.bill"}` | the player has chosen option `bill` in that character's conversation menu ([section 8](#conversation-menus)) |
 | `{"act": "id"}` | the current act is this one |
 | `{"actAtLeast": "id"}` | the current act is this one or a later one |
 | `{"light": true}` | the player's room is lit (`false`: dark) |
@@ -747,6 +872,7 @@ Effects are lists of small JSON objects, run in order:
 | `{"end": "ending-id"}` | ends the game |
 | `{"if": condition, "then": [effects], "else": [effects]}` | runs one branch |
 | `{"look": true}` | describes the player's room in full |
+| `{"converse": "hale"}`, `{"converse": "hale", "node": "paid"}` | opens that character's conversation menu, from its `entry` or at a given node ([section 8](#conversation-menus)). Nothing happens if they are not in the room. |
 | `{"script": "name", "args": ...}` | runs a script effect |
 
 ### 10.4 Rules
@@ -997,6 +1123,7 @@ is the path to your pack directory, wherever it is.
 node src/cli/main.ts validate <pack>         # check everything, play the walkthroughs
 node src/cli/main.ts play <pack> --seed 1    # play it yourself
 node src/cli/main.ts walkthrough <pack>      # print full walkthrough transcripts
+node src/cli/main.ts walkthrough <pack> win  # just walkthroughs/win.txt
 node src/cli/main.ts bundle <pack> -o x.json # one-file version for the web page
 ```
 
@@ -1019,6 +1146,11 @@ use **Open folder…** to play your pack directory in a browser.
 - **Vocabulary**: objects with exactly the same words but different names,
   parser keywords used as words, objects with no usable words, verb patterns
   that clash.
+- **Conversation menus**: every `entry`, `then` and `converse` node exists;
+  every `said` names a real option; option ids are unique in each dialogue;
+  every node can be reached from `entry`, `start`, a `then` or a `converse`
+  effect; a `noLeave` node has options. (An unreachable node is a warning,
+  not an error, if the pack has scripts, since a script can open it.)
 - **Unused content** (warnings): passages, endings, score items, events and
   acts that nothing uses.
 - **Walkthroughs**: each one is played; it must reach its declared ending with
@@ -1062,6 +1194,9 @@ n
 - `# seed:` (optional, default 1) fixes the random generator, so wandering
   characters and `chance` behave the same every time.
 - One command per line. Other lines starting with `#` are comments.
+- `@hale.bill` chooses option `bill` in Mrs Hale's conversation menu,
+  whatever its number. The walkthrough fails if that option is not on
+  screen. The transcript shows the number it stood for: `> 1 (@hale.bill)`.
 - Every command must be complete and understood. A command that makes the
   parser ask a question ("Which do you mean...?", "What do you want to
   take?") fails the walkthrough even if the next line answers it: write
@@ -1183,8 +1318,8 @@ A pack is done when all of these are true:
 
 This small pack shows the pieces working together: a source and credits, two
 acts, a region that opens with the second act, a character whose answers
-change, a passage file with a quoted letter, a timed event, two endings and
-their walkthroughs. It validates with no errors or warnings, and both
+change, a short conversation menu, a passage file with a quoted letter, a
+timed event, two endings and their walkthroughs. It validates with no errors or warnings, and both
 walkthroughs pass. (The engine's tests check that this copy is still valid.)
 
 `pack.json`:
@@ -1324,6 +1459,41 @@ walkthroughs pass. (The engine's tests check that this copy is still valid.)
 }
 ```
 
+`world/talk.json`:
+
+```json
+{
+  "dialogues": {
+    "hale": {
+      "entry": [
+        { "if": { "act": "departure" }, "node": "paid" },
+        { "node": "start" }
+      ],
+      "leave": "Mrs Hale goes back to polishing glasses.",
+      "nodes": {
+        "start": {
+          "say": "\"Well?\" says Mrs Hale.",
+          "options": [
+            { "id": "bill", "text": "\"What do I owe you?\"", "keys": ["bill"], "once": true,
+              "reply": "\"Two shillings. Your bag stays with me until it's paid.\"" },
+            { "id": "coach", "text": "\"When does the coach leave?\"", "reply": "@hale-coach" },
+            { "id": "letter", "text": "\"My sister has written. I must go home.\"",
+              "if": { "has": "letter" }, "locked": "(if you had news to tell her)",
+              "reply": "Her face softens. \"Then pay up and go, and quick about it.\"", "then": "end" }
+          ]
+        },
+        "paid": {
+          "say": "\"Off you go,\" says Mrs Hale.",
+          "options": [
+            { "id": "thanks", "text": "\"Thank you for everything.\"", "reply": "She flaps a cloth at you.", "then": "end" }
+          ]
+        }
+      }
+    }
+  }
+}
+```
+
 `text/passages.txt`:
 
 ```text
@@ -1359,9 +1529,12 @@ to meet you.
 # expect: on-the-road
 # score: 15
 e
+talk to hale
+@hale.bill
 take letter
 read letter
-ask hale about bag
+talk to hale
+@hale.letter
 give purse to hale
 w
 n
@@ -1391,14 +1564,32 @@ Parlour
 A low room with a fire. The yard is back out to the west.
 A letter addressed to you lies on the parlour table.
 Mrs Hale stands behind the bar.
+> talk to hale
+"Well?" says Mrs Hale.
+  1. "What do I owe you?"
+  2. "When does the coach leave?"
+     "My sister has written. I must go home." (if you had news to tell her)
+  0. Leave
+> 1 (@hale.bill)
+"What do I owe you?"
+"Two shillings. Your bag stays with me until it's paid."
+  1. "When does the coach leave?"
+     "My sister has written. I must go home." (if you had news to tell her)
+  0. Leave
 > take letter
 Taken.
 > read letter
 The letter is in your sister's hand:
 "Come home. Come quickly.
 Father is asking for you."
-> ask hale about bag
-"Your bag stays with me until the bill is paid," she says.
+> talk to hale
+Mrs Hale picks up where you left off.
+  1. "When does the coach leave?"
+  2. "My sister has written. I must go home."
+  0. Leave
+> 2 (@hale.letter)
+"My sister has written. I must go home."
+Her face softens. "Then pay up and go, and quick about it."
 > give purse to hale
 Mrs Hale counts the coins twice, then hands over your bag.
 [Your score has gone up by 5.]
@@ -1414,7 +1605,7 @@ The coach is waiting, its lamps lit. You climb aboard.
 [Your score has gone up by 10.]
 *** You are on the road ***
 The coach lurches forward. The inn shrinks behind you, and the hills come up to meet you.
-In 7 turns you scored 15 out of a possible 15.
+In 10 turns you scored 15 out of a possible 15.
 The game is over. Type RESTART, RESTORE, UNDO or QUIT.
 ```
 
@@ -1483,6 +1674,7 @@ success, which is when after-rules run.
 | `tell` | `tell/inform OBJ about TEXT` | if a topic matched |
 | `talk` | `talk/speak to/with OBJ`, `greet OBJ` | if it is a character |
 | `say` | `say/utter TEXT`, `say/utter TEXT to OBJ` | never |
+| `answer` | `answer/reply/respond TEXT`, `answer/reply/respond OBJ with TEXT`, `answer/reply/respond TEXT to OBJ`, `answer/reply/respond to OBJ with TEXT`, `yes/yeah/yep/aye`, `no/nope` | if a topic matched |
 
 ## Appendix B: standard messages
 
@@ -1623,3 +1815,11 @@ Override any of these in a `messages` section. Templates are explained in
 | `talkDefault` | {The:noun} wait{s:noun} for you to ask about something. |
 | `saidNothing` | Nothing happens. |
 | `saidToNobody` | {The:noun} do{es:noun}n't respond. |
+| `noDialogue` | {The:noun} {has:noun} nothing to say to you. |
+| `noAnswer` | {The:noun} {has:noun} no reply to that. |
+| `answerWho` | Say who you are answering: ANSWER someone WITH something. |
+| `nobodyToAnswer` | There is nobody here to answer. |
+| `leaveConversation` | Leave |
+| `notAnOption` | There is no option {n}. |
+| `chooseOption` | Choose one of the numbered options. |
+| `resumeConversation` | {The:noun} pick{s:noun} up where you left off. |

@@ -1,7 +1,28 @@
 # Spec: conversation menus
 
-Status: accepted, being built. All five decisions below were accepted as
-recommended, with resuming added to decision 4.
+Status: built. All five decisions below were accepted as recommended, with
+resuming added to decision 4. The user guide's
+[section 8](../WRITING-A-PACK.md#conversation-menus) documents the result.
+Where the build differs from this spec:
+
+- **Not built:** the warning for an option whose `if` can never be true. It
+  needs a data-flow analysis the validator doesn't have.
+- **`noLeave` nodes refuse other commands.** Meta commands still work; any
+  other command gets "Choose one of the numbered options." Decision 4
+  (other commands close the menu) applies to every other node.
+- **The state records which option is behind each number** (`conversation.shown`),
+  so a typed number means what was on screen even if a condition (`chance`)
+  would now come out differently.
+- **A bare answer** goes to the last character who spoke if still present,
+  else to the only character in the room, else asks who.
+- **`say yes`** inside a menu is tried as keys, like `answer`. Outside a menu
+  `say` behaves as before.
+- **`talk to` the same character** while their menu is open shows it again
+  and takes no turn.
+- **An unreachable node** is a warning rather than an error when the pack has
+  scripts, since a script can open it.
+- **Extra messages:** `chooseOption`, `resumeConversation`, `noAnswer`,
+  `answerWho` and `nobodyToAnswer`, as well as the three named below.
 
 ## Why
 

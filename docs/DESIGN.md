@@ -74,6 +74,10 @@ Every entity has a pack-unique id (`^[a-z][a-z0-9_-]*$`). Kinds:
 - **Character**: an object that can't be taken, with conversation `topics`,
   optional `wander` (random movement within a set of rooms) and a `following`
   property that makes it walk with the player.
+- **Dialogue**: an optional conversation menu for a character, keyed by the
+  character's id: nodes, each with the character's line and a list of
+  numbered options gated by conditions. The format and the reasons for each
+  choice are in [specs/conversation-menus.md](specs/conversation-menus.md).
 - **Region**: a named group of rooms that may carry an entry condition, so a
   whole part of the map can open when the story reaches a point.
 
@@ -84,7 +88,9 @@ Dynamic data lives in `GameState`, never in the `World`:
   parent: {objectId: parentId | null},      // room, object, "player", char, or offstage
   props:  {entityId: {open, locked, on, worn, moved, visited, ...custom}},
   vars:   {name: value}, act, events: [{id, at}], fired[], it, him, her,
-  verbose, ended }
+  verbose, ended,
+  conversation: {with, node, shown[]} | null,   // the open menu
+  said[], paused: {charId: node}, lastSpeaker }
 ```
 
 Containment is a tree of `parent` links. "In" or "on" follows from the
@@ -96,6 +102,9 @@ property is true, or if a light source is visible from the player's position
 
 ```
 input line ─► split on . ; ! ? and "then" ─► for each command:
+  conversation menu open?  a number, an option's keys or a leave word chooses
+    (one turn, then the end of turn as below); meta commands run and keep the
+    menu; any other command closes it, remembering the node, and runs below
   pending question?  try the input as an answer first
   parse ─► fail: message, no time passes, rest of the line dropped
   meta verb (save, restore, undo, score, again, ...) ─► run, no time passes
@@ -296,7 +305,9 @@ A cold hall that smells of old paper.
   and are never moved, or whose starting place is unreachable;
 - vocabulary clashes: objects that can share a room and have identical
   vocabulary, object words that are parser keywords or directions, pack
-  patterns that shadow other patterns.
+  patterns that shadow other patterns;
+- conversation menus: unknown nodes and options, nodes that no entry,
+  `then` or `converse` effect reaches, and `noLeave` nodes with no options.
 
 The validator is static. It can't see what scripts do. A pack can name rooms
 and objects that scripts make reachable in `validator.assumeReachable`. It
@@ -308,7 +319,7 @@ ending.
 | Requirement | How the format handles it |
 |---|---|
 | Story moves through acts or chapters; regions and events open up | `acts` is an ordered list. An `{"act": id}` effect advances the story, prints the act's title and intro, and runs the act's effects (move characters, schedule events). Conditions `act` and `actAtLeast` gate exits, topics, rules and descriptions. `regions` carry an entry condition, so a whole area opens when its act arrives. |
-| Long descriptive passages and dialogue, some quoted | Text files hold passages of any length under `== key ==` headers, referenced as `"@key"`. Blank lines make paragraphs, and lines starting with `|` keep their line breaks (verse, letters). Dialogue is ordinary text in topics, rules and events. Character `topics` carry conditions, so conversations change as the story moves. |
+| Long descriptive passages and dialogue, some quoted | Text files hold passages of any length under `== key ==` headers, referenced as `"@key"`. Blank lines make paragraphs, and lines starting with `|` keep their line breaks (verse, letters). Dialogue is ordinary text in topics, rules, events and conversation menus. Character `topics` and menu options carry conditions, so conversations change as the story moves, and the `said` condition remembers what the player chose. |
 | Metadata | `pack.json` carries `title`, `author` (the adapter), `source` (`title`, `author`, `year`, `url`, `licence`, `note`), `licence` (SPDX id), `credits`, `version`. The `about` command prints it. |
 | More than one ending | `endings` with `title`, `text` and `win: true/false`. Any effect can `end` the game. Each walkthrough names the ending it must reach, so every ending can be tested. |
 | Two writers, two packs, no engine edits | A pack is a self-contained directory. Pack-only verbs, rules, directions, messages and script modules cover new mechanics. The script API is the one bounded extension point. If a pack needs more, the writer records it in the pack's `ENGINE-REQUESTS.md` and does not edit the engine. |
@@ -320,7 +331,9 @@ ending.
 - Player inside enterable objects (vehicles, beds) and nested rooms.
 - Weight and size. Capacity is a simple item count.
 - Ranks for score ranges, and full-score bonus messages.
-- Conversation menus. Conversation is ask, tell and talk only.
+- Conversation menus: a warning for an option whose `if` can never be true
+  (the spec lists it; it needs a data-flow analysis the validator doesn't
+  have yet).
 - Paging ("press a key") for long passages; act intros print in one go.
 - An `exits` command; `opposite` on directions is recorded but unused.
 - Asking for the first noun of two-noun verbs (`put` alone is not

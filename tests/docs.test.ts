@@ -12,6 +12,9 @@ import {
   ACT_SPEC,
   CHARACTER_SPEC,
   CONDITION_FORMS,
+  DIALOGUE_NODE_SPEC,
+  DIALOGUE_OPTION_SPEC,
+  DIALOGUE_SPEC,
   DIRECTION_SPEC,
   EFFECT_FORMS,
   ENDING_SPEC,
@@ -60,7 +63,10 @@ test('the guide appendices are the standard library', () => {
 });
 
 test('every field, section, condition and effect of the pack format is documented', () => {
-  const specs = { ROOM_SPEC, OBJECT_SPEC, CHARACTER_SPEC, ACT_SPEC, RULE_SPEC, EVENT_SPEC, ENDING_SPEC, VERB_SPEC, DIRECTION_SPEC, REGION_SPEC, MANIFEST_SPEC };
+  const specs = {
+    ROOM_SPEC, OBJECT_SPEC, CHARACTER_SPEC, ACT_SPEC, RULE_SPEC, EVENT_SPEC, ENDING_SPEC, VERB_SPEC, DIRECTION_SPEC, REGION_SPEC, MANIFEST_SPEC,
+    DIALOGUE_SPEC, DIALOGUE_NODE_SPEC, DIALOGUE_OPTION_SPEC,
+  };
   const missing: string[] = [];
   for (const [name, spec] of Object.entries(specs)) {
     for (const field of Object.keys(spec.fields)) if (!guide.includes(`\`${field}\``)) missing.push(`${name}.${field}`);
