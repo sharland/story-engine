@@ -215,9 +215,15 @@ export function parse(env: ParserEnv, grammar: Pattern[], tokens: string[], know
   }
 
   let firstError: ParseOutcome | null = null;
+  // Actions whose better-ranked pattern named someone or something not here.
+  const absent = new Set<string>();
   for (const c of candidates) {
+    // Free text must not swallow it: "answer her with yes" when she has gone
+    // is not "answer" with the text "her with yes".
+    if (c.bindings.TEXT && absent.has(c.pattern.action)) continue;
     const r = resolveCandidate(env, c, known);
     if (r.kind === 'ok' || r.kind === 'question') return r;
+    if (r.key === 'cantSeeThat' || r.key === 'pronounGone') absent.add(c.pattern.action);
     firstError ??= r;
   }
   return firstError!;

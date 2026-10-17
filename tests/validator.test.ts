@@ -295,6 +295,62 @@ test('scripts: bad modules, duplicate names and replacing standard verbs are err
   assert.ok(find(r.issues, 'bad-script', 'Script registration failed: boom'));
 });
 
+test('dialogues: bad references, duplicate options, unreachable nodes and dead ends are errors', () => {
+  const r = validate(
+    pack({
+      rooms: twoRooms,
+      objects: { stone: { name: 'stone', location: 'a' } },
+      characters: {
+        guard: { name: 'guard', location: 'a' },
+        clerk: { name: 'clerk', location: 'b' },
+        porter: { name: 'porter', location: 'b' },
+      },
+      dialogues: {
+        guard: {
+          entry: [{ if: { said: 'guard.gretting' }, node: 'later' }, { node: 'strat' }],
+          nodes: {
+            start: {
+              say: 'The guard nods.',
+              options: [
+                { id: 'greeting', text: 'Hello.', then: 'midle' },
+                { id: 'greeting', text: 'Hello again.' },
+                { id: 'leave', text: 'Bye.', then: 'end' },
+              ],
+            },
+            middle: { options: [{ id: 'ask', text: 'Why?', then: 'start' }] },
+            later: { say: 'Again?' },
+            orphan: { say: 'Nobody gets here.' },
+            trap: { noLeave: true },
+          },
+        },
+        clerk: { nodes: { hello: { say: 'Hm?' } } },
+        stone: { nodes: { start: {} } },
+      },
+      rules: [
+        { on: 'wait', do: [{ converse: 'porter' }, { converse: 'guard', node: 'trap' }, { converse: 'guard', node: 'nowhere' }] },
+      ],
+    }),
+  );
+  const e = (code: string, text: string) => assert.ok(find(r.issues, code, text), `expected ${code} mentioning ${text}\n${JSON.stringify(r.issues, null, 1)}`);
+  e('dangling-ref', 'Unknown option "gretting" in guard\'s dialogue (did you mean "greeting"?)');
+  e('dangling-ref', 'Unknown node "strat" in guard\'s dialogue (did you mean "start"?)');
+  e('dangling-ref', 'Unknown node "midle" in guard\'s dialogue (did you mean "middle"?)');
+  e('duplicate-id', 'Option id "greeting" is already used');
+  e('missing-field', 'clerk\'s dialogue has no "entry" list and no node called "start"');
+  e('not-a-character', 'stone');
+  e('dangling-ref', 'No dialogue for "porter"');
+  e('dangling-ref', 'Unknown node "nowhere" in guard\'s dialogue');
+  e('dead-end-node', 'Node "trap" of guard\'s dialogue has "noLeave" but no options');
+  assert.deepEqual(
+    r.issues.filter((i) => i.code === 'unreachable-node').map((i) => i.message),
+    [
+      `Node "middle" of guard's dialogue can't be reached from its entry, a "then" or a converse effect`,
+      `Node "orphan" of guard's dialogue can't be reached from its entry, a "then" or a converse effect`,
+      `Node "hello" of clerk's dialogue can't be reached from its entry, a "then" or a converse effect`,
+    ],
+  );
+});
+
 test('the testbed fixture validates with no errors or warnings and its walkthroughs pass', async () => {
   const r = validate(await loadPack(join(import.meta.dirname, 'fixtures', 'testbed')));
   assert.deepEqual(r.issues, []);

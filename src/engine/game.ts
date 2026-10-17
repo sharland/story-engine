@@ -1139,7 +1139,11 @@ export class Game {
       this.choose(id);
       return this.state.ended !== null;
     }
-    if (words.length === 1 && LEAVE_WORDS.includes(words[0]) && !noLeave) return this.leaveConversation();
+    if (words.length === 1 && LEAVE_WORDS.includes(words[0])) {
+      if (!noLeave) return this.leaveConversation();
+      this.msg('chooseOption', {}, 'parser');
+      return true;
+    }
     const byKey = this.optionByKeys(words.join(' '));
     if (byKey) {
       this.choose(byKey);

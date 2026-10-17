@@ -633,6 +633,8 @@ function resolveRefs(c: Checker, w: World, definedIn: Map<string, string>): void
     c.error(r.where, 'dangling-ref', `Unknown ${what} "${r.id}"${s ? ` (did you mean "${s}"?)` : ''}`);
   };
   const entityIds = () => [...w.rooms.keys(), ...w.things.keys()];
+  const noDialogue = (where: string, who: string) =>
+    c.error(where, 'dangling-ref', `No dialogue for "${who}" in "dialogues"${suggestText(who, [...w.dialogues.keys()])}`);
 
   for (const r of c.refs) {
     switch (r.kind) {
@@ -699,12 +701,14 @@ function resolveRefs(c: Checker, w: World, definedIn: Map<string, string>): void
         if (!w.scripts.conditions.has(r.id)) dangling(r, 'script condition', w.scripts.conditions.keys());
         break;
       case 'dialogue':
-        if (!w.dialogues.has(r.id)) dangling(r, 'dialogue (a character with a "dialogues" entry)', w.dialogues.keys());
+        if (!w.dialogues.has(r.id)) noDialogue(r.where, r.id);
         break;
       case 'dialogueNode': {
         const [who, node] = r.id.split(':');
         const d = w.dialogues.get(who);
-        if (d && !(node in d.nodes)) dangling({ ...r, id: node }, `node in ${who}'s dialogue`, Object.keys(d.nodes));
+        if (d && !(node in d.nodes)) {
+          c.error(r.where, 'dangling-ref', `Unknown node "${node}" in ${who}'s dialogue${suggestText(node, Object.keys(d.nodes))}`);
+        }
         break;
       }
       case 'saidOption': {
@@ -712,8 +716,10 @@ function resolveRefs(c: Checker, w: World, definedIn: Map<string, string>): void
         const who = r.id.slice(0, dot);
         const option = r.id.slice(dot + 1);
         const d = w.dialogues.get(who);
-        if (!d) dangling({ ...r, id: who }, 'dialogue (a character with a "dialogues" entry)', w.dialogues.keys());
-        else if (!dialogueOptionIds(d).includes(option)) dangling({ ...r, id: option }, `option in ${who}'s dialogue`, dialogueOptionIds(d));
+        if (!d) noDialogue(r.where, who);
+        else if (!dialogueOptionIds(d).includes(option)) {
+          c.error(r.where, 'dangling-ref', `Unknown option "${option}" in ${who}'s dialogue${suggestText(option, dialogueOptionIds(d))}`);
+        }
         break;
       }
       case 'scriptEffect':
