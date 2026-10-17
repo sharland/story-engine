@@ -1,0 +1,34 @@
+{
+  "regions": {
+    "outbuildings": {
+      "name": "Outbuildings",
+      "if": { "actAtLeast": "evening" },
+      "else": "The shed is padlocked. The gardener keeps it shut until evening."
+    }
+  },
+  "directions": {
+    "around": { "words": ["around"] }
+  },
+  "rooms": {
+    "garden": {
+      "name": "Garden",
+      "description": "A walled garden. The house is east and a shed stands to the north.",
+      "exits": {
+        "east": "hall",
+        "north": "shed",
+        "around": { "say": "You walk around the garden and end up where you started." }
+      }
+    },
+    "shed": {
+      "name": "Shed",
+      "region": "outbuildings",
+      "description": "A tool shed. A bell hangs from a beam.",
+      "exits": { "south": "garden" }
+    }
+  },
+  "objects": {
+    "ladder": { "name": "ladder", "location": "garden" },
+    "pebbles": { "name": "pebbles", "plural": true, "location": "garden" },
+    "bell": { "name": "bell", "location": "shed", "scenery": true }
+  }
+}

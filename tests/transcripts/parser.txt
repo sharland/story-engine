@@ -1,0 +1,370 @@
+# Parser forms: single verbs, verb + noun, verb + noun + preposition + noun,
+# direction shortcuts, all, it/him/her, synonyms, adjectives, lists, several
+# commands on one line, questions for missing and ambiguous nouns, errors.
+# pack: ../fixtures/testbed
+# seed: 1
+## Single verbs and abbreviations
+This is the testbed. Nothing here is a story; every room exists to exercise part of the engine.
+Part One: Morning
+Hall
+A square hall with a flagstone floor. A door leads north, the kitchen is east, an archway opens west to the garden and stone steps go down. A trapdoor is set in the ceiling.
+You have not been here before.
+The second paragraph of a first visit.
+An oil lamp stands on the floor.
+An upright piano stands against the wall.
+You can see a waxed coat here.
+
+> look
+Hall
+A square hall with a flagstone floor. A door leads north, the kitchen is east, an archway opens west to the garden and stone steps go down. A trapdoor is set in the ceiling.
+An oil lamp stands on the floor.
+An upright piano stands against the wall.
+You can see a waxed coat here.
+
+> l
+Hall
+A square hall with a flagstone floor. A door leads north, the kitchen is east, an archway opens west to the garden and stone steps go down. A trapdoor is set in the ceiling.
+An oil lamp stands on the floor.
+An upright piano stands against the wall.
+You can see a waxed coat here.
+The cat pads in.
+
+> i
+You are empty-handed.
+
+> z
+Time passes.
+
+## Verb + noun, synonyms, adjectives, "it", a pattern a pack added to "take"
+> x me
+Muddy boots, a patient expression.
+The cat slips away.
+
+> look at myself
+Muddy boots, a patient expression.
+
+> take lamp
+Taken.
+The cat pads in.
+
+> x lantern
+An oil lamp.
+It is switched off.
+The cat slips away.
+
+> examine oil lamp
+An oil lamp.
+It is switched off.
+The cat pads in.
+
+> look at it
+An oil lamp.
+It is switched off.
+The cat slips away.
+
+> drop it
+Dropped.
+The cat pads in.
+
+> nick lamp
+Taken.
+The cat slips away.
+
+> drop lamp
+Dropped.
+The cat pads in.
+
+## Directions: shortcut, full word, "go", "walk"
+> e
+Kitchen
+A narrow kitchen. A table stands by the wall. The cupboard is shut.
+You can see a bottle of milk here.
+On the table you can see an apple and a brass key.
+The cat pads in.
+
+> west
+Hall
+A square hall with a flagstone floor. A door leads north, the kitchen is east, an archway opens west to the garden and stone steps go down. A trapdoor is set in the ceiling.
+An upright piano stands against the wall.
+You can see an oil lamp and a waxed coat here.
+
+> go east
+Kitchen
+A narrow kitchen. A table stands by the wall. The cupboard is shut.
+You can see a bottle of milk here.
+On the table you can see an apple and a brass key.
+The cat is here.
+
+> walk west
+Hall
+A square hall with a flagstone floor. A door leads north, the kitchen is east, an archway opens west to the garden and stone steps go down. A trapdoor is set in the ceiling.
+An upright piano stands against the wall.
+You can see an oil lamp and a waxed coat here.
+The cat pads in.
+
+> e
+Kitchen
+A narrow kitchen. A table stands by the wall. The cupboard is shut.
+You can see a bottle of milk here.
+On the table you can see an apple and a brass key.
+
+## A missing noun: the parser asks, and the answer completes the command
+> take
+What do you want to take?
+
+> apple
+Taken.
+
+> open
+What do you want to open?
+
+> cupboard
+Opening the cupboard reveals a tin.
+
+> put apple in
+What do you want to put the apple in?
+
+> tin
+The tin is closed.
+
+## Abbreviated verbs are spelled out in questions; a missing second noun after an unseen first
+> x
+What do you want to examine?
+
+> lamp
+You can't see any such thing.
+
+> put coin in
+You can't see any such thing.
+
+## Lists and "all"
+> drop all
+apple: Dropped.
+
+> drop all
+There is nothing to drop.
+
+> take all
+apple: Taken.
+bottle of milk: Taken.
+
+> drop brass key, apple
+brass key: You aren't carrying that.
+apple: Dropped.
+
+> take apple and brass key
+apple: Taken.
+brass key: Taken.
+
+> take all from cupboard
+tin: Taken.
+The cat pads in.
+
+> drop all but tin
+apple: Dropped.
+brass key: Dropped.
+bottle of milk: Dropped.
+The cat slips away.
+
+> take all
+apple: Taken.
+brass key: Taken.
+bottle of milk: Taken.
+
+> put all in tin
+apple: The tin is closed.
+brass key: The tin is closed.
+bottle of milk: The tin is closed.
+The cat pads in.
+
+## Several commands on one line; an error drops the rest of the line
+> open tin. take coin from tin
+Opening the tin reveals a silver coin.
+The cat slips away.
+Taken.
+
+> put coin in tin then close tin
+You put the silver coin in the tin.
+You close the tin.
+
+> take coin. drop tin
+You can't see any such thing.
+
+> i
+You are carrying:
+  an apple
+  a brass key
+  a tin
+  a bottle of milk
+
+## "unlock" uses a key the player holds
+> w
+Hall
+A square hall with a flagstone floor. A door leads north, the kitchen is east, an archway opens west to the garden and stone steps go down. A trapdoor is set in the ceiling.
+An upright piano stands against the wall.
+You can see an oil lamp and a waxed coat here.
+The cat is here.
+
+> unlock door
+(with the brass key)
+You unlock the study door.
+
+> open door
+You open the study door.
+
+> n
+Study
+A small study with a desk under the window.
+On the desk you can see a letter and an iron key.
+
+> take iron key
+Taken.
+
+> s
+Hall
+A square hall with a flagstone floor. A door leads north, the kitchen is east, an archway opens west to the garden and stone steps go down. A trapdoor is set in the ceiling.
+An upright piano stands against the wall.
+You can see an oil lamp and a waxed coat here.
+The cat is here.
+
+## Ambiguous nouns: the parser asks which; an answer that fits nothing is a new command
+> drop key
+Which do you mean, the brass key or the iron key?
+
+> iron
+Dropped.
+
+> x key
+Which do you mean, the iron key or the brass key?
+
+> brass
+You see nothing special about the brass key.
+The cat slips away.
+
+> drop key
+Dropped.
+
+> take key
+Which do you mean, the brass key or the iron key?
+
+> drop all
+apple: Dropped.
+tin: Dropped.
+bottle of milk: Dropped.
+The cat pads in.
+
+> lock door
+You'll have to close it first.
+
+> brass key
+I didn't understand that sentence.
+
+> close door
+You close the study door.
+
+> lock it
+What do you want to lock the study door with?
+
+> brass key
+(first taking the brass key)
+Taken.
+You lock the study door.
+
+## Pronouns for people
+> w
+Garden
+A walled garden. The house is east and a shed stands to the north.
+You can see a ladder and some pebbles here.
+The gardener is weeding a bed of roses.
+Rufus is here.
+The cat pads in.
+
+> x gardener
+A stooped man in a straw hat.
+
+> ask him about roses
+"They need rain," he says.
+The cat slips away.
+
+> x her
+I'm not sure what "her" refers to.
+
+## Prepositional and reversed forms
+> give gardener brass key
+The gardener doesn't seem interested.
+
+> show brass key to gardener
+The gardener glances at the brass key without interest.
+
+> show gardener brass key
+The gardener glances at the brass key without interest.
+The cat pads in.
+
+> say hello
+Nothing happens.
+
+> say hello to gardener
+The gardener doesn't respond.
+
+> x cat
+A thin grey cat.
+The cat slips away.
+
+> x her
+You can't see the cat any more.
+
+> ask gardener about weather
+The gardener shrugs.
+
+## "them" after a list means the last thing named
+> take pebbles and gardener
+pebbles: Taken.
+gardener: The gardener would not appreciate that.
+
+> drop them
+Dropped.
+
+> i
+You are carrying:
+  a brass key
+
+## Pack verbs and their defaults
+> ring pebbles
+You can't ring those.
+
+> knock on pebbles
+Nobody answers.
+
+> ring
+What do you want to ring?
+
+## Errors
+> flummox
+I don't know the word "flummox".
+
+> take flummox
+I don't know the word "flummox".
+
+> take shed
+You can't see any such thing.
+
+> north pebbles
+I didn't understand that sentence.
+
+> drop it
+You aren't carrying those.
+
+> 
+I beg your pardon?
+
+> g
+You aren't carrying those.
+
+> it
+I didn't understand that sentence.
+
+> take it
+Taken.
+
+> again
+You already have those.

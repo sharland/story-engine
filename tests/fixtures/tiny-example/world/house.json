@@ -1,0 +1,29 @@
+{
+  "vars": { "rang-bell": false },
+  "scores": { "opened-door": 5 },
+  "rooms": {
+    "porch": {
+      "name": "Porch",
+      "description": ["A sagging porch. The front door is to the north.",
+        { "if": { "var": "front-door.open" }, "text": "The door stands open." }],
+      "exits": { "north": { "to": "hall", "door": "front-door" } }
+    },
+    "hall": { "name": "Hall", "description": "@hall", "dark": true,
+              "exits": { "south": { "to": "porch", "door": "front-door" } } }
+  },
+  "objects": {
+    "front-door": { "name": "front door", "nouns": ["door"], "adjectives": ["front"],
+      "door": true, "openable": true, "lockable": true, "locked": true,
+      "key": "iron-key", "foundIn": ["porch", "hall"] },
+    "iron-key": { "name": "iron key", "location": "porch",
+      "initial": "An iron key lies under the mat." },
+    "bell": { "name": "bell", "scenery": true, "location": "porch" }
+  },
+  "verbs": { "ring": { "patterns": ["ring OBJ"], "default": "You can't ring that." } },
+  "rules": [
+    { "on": "ring", "object": "bell", "say": "Nobody comes.",
+      "do": [{ "set": "rang-bell", "to": true }] },
+    { "on": "open", "object": "front-door", "when": "after",
+      "do": [{ "award": "opened-door" }] }
+  ]
+}

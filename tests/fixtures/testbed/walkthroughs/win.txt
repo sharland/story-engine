@@ -1,0 +1,25 @@
+# expect: won
+# score: 20
+# seed: 1
+e
+take key and apple
+w
+unlock door
+open door
+n
+x desk
+take iron key
+s
+w
+give apple to gardener
+take ladder
+e
+drop ladder
+u
+unlock case with iron key
+open case
+take ring
+d
+w
+n
+ring bell

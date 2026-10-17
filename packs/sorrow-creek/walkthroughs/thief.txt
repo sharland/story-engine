@@ -1,0 +1,12 @@
+# expect: horse-thief
+e
+take lariat
+w
+w
+open jar
+take sugar
+e
+s
+feed mare sugar
+rope mare
+ride mare

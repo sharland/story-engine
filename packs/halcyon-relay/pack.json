@@ -1,0 +1,13 @@
+{
+  "format": 1,
+  "id": "halcyon-relay",
+  "title": "The Halcyon Relay",
+  "version": "1.0.0",
+  "author": "story-engine demo",
+  "licence": "CC0-1.0",
+  "description": "A small science-fiction placeholder: one technician, one silent relay station, one supply ship that needs guiding in.",
+  "credits": ["A demonstration pack for story-engine. Dedicated to the public domain under CC0 1.0."],
+  "start": "quarters",
+  "intro": "@intro",
+  "player": { "capacity": 6 }
+}

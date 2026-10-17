@@ -1,0 +1,43 @@
+{
+  "acts": [
+    { "id": "arrival", "title": "Chapter One: The Inn" },
+    {
+      "id": "departure",
+      "title": "Chapter Two: The Road",
+      "intro": "@departure",
+      "do": [{ "schedule": "coach-leaves", "in": 4 }]
+    }
+  ],
+  "scores": { "paid": 5, "caught-coach": 10 },
+  "events": {
+    "coach-leaves": {
+      "if": { "not": { "at": "road-north" } },
+      "say": "Out on the road, a horn sounds twice. The coach is gone.",
+      "do": [{ "end": "stranded" }]
+    }
+  },
+  "endings": {
+    "on-the-road": { "title": "You are on the road", "text": "@ending-road", "win": true },
+    "stranded": { "title": "You missed the coach", "text": "Another week at the inn, then." }
+  },
+  "rules": [
+    {
+      "id": "pay-hale",
+      "on": "give", "object": "purse", "with": "hale",
+      "if": { "act": "arrival" },
+      "say": "Mrs Hale counts the coins twice, then hands over your bag.",
+      "do": [
+        { "move": "purse", "to": "hale" },
+        { "move": "bag", "to": "player" },
+        { "award": "paid" },
+        { "act": "departure" }
+      ]
+    },
+    {
+      "id": "board-coach",
+      "on": "arrive", "in": "road-north",
+      "say": "The coach is waiting, its lamps lit. You climb aboard.",
+      "do": [{ "award": "caught-coach" }, { "end": "on-the-road" }]
+    }
+  ]
+}

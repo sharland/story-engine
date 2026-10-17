@@ -1,0 +1,33 @@
+== intro ==
+The alarm wakes you, then stops, which is worse.
+
+You are the only crew aboard Halcyon Relay, a communications station in a slow
+orbit around the gas giant below. The supply tender Wren is due within hours,
+and it cannot dock unless the relay's beacon guides it in. The beacon is
+silent. So is everything else.
+
+== slate ==
+MAINTENANCE LOG, HALCYON RELAY
+| Day 212: replaced filter set 4. Stores code changed after audit: 4471.
+| Day 219: dish bearings greased. Spare power coupling logged in stores.
+| Day 226: debris warning from Wren. Probably nothing.
+
+== power-on ==
+Somewhere below you a relay clacks shut. Fans spin up one after another down
+the length of the station, and white light floods back into every room.
+
+== docked ==
+For a long minute nothing answers. Then the speakers crackle: "Halcyon, Wren.
+We have your beacon. Coming in."
+
+Twenty minutes later the docking clamps close with a sound you feel in your
+teeth, and for the first time in two years you hear another human voice in the
+corridor.
+
+== vacuum ==
+There is no time to be afraid. There is only the cold, and the stars, and the
+station turning away beneath you.
+
+== suffocated ==
+The tone in your helmet becomes a single long note. The gas giant swims, and
+darkens, and goes out.

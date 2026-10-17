@@ -1,0 +1,14 @@
+== intro ==
+This is the testbed. Nothing here is a story; every room exists to
+exercise part of the engine.
+
+== hall-first ==
+You have not been here before.
+
+The second paragraph of a first visit.
+
+== letter ==
+The letter reads:
+| Dear friend,
+| the ring is in the attic.
+| Yours.

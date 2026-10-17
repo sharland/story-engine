@@ -1,0 +1,24 @@
+== intro ==
+The coach north leaves at first light, and you mean to be on it.
+
+== yard ==
+A cobbled yard, wet with the night's rain. The inn door stands open to the
+east. The north road runs off between dark hedges.
+
+== road ==
+The road runs north towards the hills.
+
+== letter ==
+The letter is in your sister's hand:
+| "Come home. Come quickly.
+| Father is asking for you."
+
+== hale-coach ==
+"Leaves when the horn goes," says Mrs Hale, "and it doesn't wait for anyone."
+
+== departure ==
+Grey light is coming up behind the hedges. Somewhere a horse stamps and blows.
+
+== ending-road ==
+The coach lurches forward. The inn shrinks behind you, and the hills come up
+to meet you.

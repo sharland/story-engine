@@ -1,0 +1,261 @@
+# Characters: descriptions, talk, ask/tell topics with conditions and
+# "once", give, a wandering character, a following character (started by a
+# pack script action). Story structure: acts, an act's effects, a timed
+# event, a region that opens in a later act, score awards. Script
+# conditions and effects.
+# pack: ../fixtures/testbed
+# seed: 2
+## Conversation
+This is the testbed. Nothing here is a story; every room exists to exercise part of the engine.
+Part One: Morning
+Hall
+A square hall with a flagstone floor. A door leads north, the kitchen is east, an archway opens west to the garden and stone steps go down. A trapdoor is set in the ceiling.
+You have not been here before.
+The second paragraph of a first visit.
+An oil lamp stands on the floor.
+An upright piano stands against the wall.
+You can see a waxed coat here.
+
+> w
+Garden
+A walled garden. The house is east and a shed stands to the north.
+You can see a ladder and some pebbles here.
+The gardener is weeding a bed of roses.
+Rufus is here.
+
+> talk to gardener
+The gardener straightens up and waits.
+
+> ask gardener about roses
+"They need rain," he says.
+
+> ask gardener about the rose bed
+"They need rain," he says.
+
+> tell gardener about shed
+"Shed's shut till evening," he says.
+
+> ask gardener about secret
+He leans close. "The ring is in the attic."
+
+> ask gardener about secret
+The gardener shrugs.
+
+> ask gardener about cabbages
+The gardener shrugs.
+
+> ask rufus about bones
+Rufus has nothing to say about that.
+
+> ask pebbles about bones
+You can't talk to those.
+
+## A script action starts a character following the player
+> whistle
+Rufus bounds over and sticks to your heels.
+
+> e
+Hall
+A square hall with a flagstone floor. A door leads north, the kitchen is east, an archway opens west to the garden and stone steps go down. A trapdoor is set in the ceiling.
+An oil lamp stands on the floor.
+An upright piano stands against the wall.
+You can see a waxed coat here.
+Rufus is here.
+The cat pads in.
+
+> look
+Hall
+A square hall with a flagstone floor. A door leads north, the kitchen is east, an archway opens west to the garden and stone steps go down. A trapdoor is set in the ceiling.
+An oil lamp stands on the floor.
+An upright piano stands against the wall.
+You can see a waxed coat here.
+The cat is here.
+Rufus is here.
+The cat slips away.
+
+> w
+Garden
+A walled garden. The house is east and a shed stands to the north.
+You can see a ladder and some pebbles here.
+The gardener is weeding a bed of roses.
+The cat is here.
+Rufus is here.
+The cat slips away.
+
+> e
+Hall
+A square hall with a flagstone floor. A door leads north, the kitchen is east, an archway opens west to the garden and stone steps go down. A trapdoor is set in the ceiling.
+An oil lamp stands on the floor.
+An upright piano stands against the wall.
+You can see a waxed coat here.
+The cat is here.
+Rufus is here.
+The cat slips away.
+
+> whistle
+Rufus bounds over and sticks to your heels.
+The cat pads in.
+
+> w
+Garden
+A walled garden. The house is east and a shed stands to the north.
+You can see a ladder and some pebbles here.
+The gardener is weeding a bed of roses.
+Rufus is here.
+
+> whistle
+Rufus bounds over and sticks to your heels.
+The cat pads in.
+
+> e
+Hall
+A square hall with a flagstone floor. A door leads north, the kitchen is east, an archway opens west to the garden and stone steps go down. A trapdoor is set in the ceiling.
+An oil lamp stands on the floor.
+An upright piano stands against the wall.
+You can see a waxed coat here.
+Rufus is here.
+
+> x rufus
+A shaggy dog called Rufus.
+The cat pads in.
+
+> w
+Garden
+A walled garden. The house is east and a shed stands to the north.
+You can see a ladder and some pebbles here.
+The gardener is weeding a bed of roses.
+Rufus is here.
+
+## Acts, a timed event and a region that opens
+> score
+You have scored 0 out of a possible 20, in 21 turns.
+
+> n
+The shed is padlocked. The gardener keeps it shut until evening.
+
+> e
+Hall
+A square hall with a flagstone floor. A door leads north, the kitchen is east, an archway opens west to the garden and stone steps go down. A trapdoor is set in the ceiling.
+An oil lamp stands on the floor.
+An upright piano stands against the wall.
+You can see a waxed coat here.
+Rufus is here.
+The cat pads in.
+
+> e
+Kitchen
+A narrow kitchen. A table stands by the wall. The cupboard is shut.
+You can see a bottle of milk here.
+On the table you can see an apple and a brass key.
+Rufus is here.
+
+> take apple
+Taken.
+
+> w
+Hall
+A square hall with a flagstone floor. A door leads north, the kitchen is east, an archway opens west to the garden and stone steps go down. A trapdoor is set in the ceiling.
+An oil lamp stands on the floor.
+An upright piano stands against the wall.
+You can see a waxed coat here.
+The cat is here.
+Rufus is here.
+The cat slips away.
+
+> w
+Garden
+A walled garden. The house is east and a shed stands to the north.
+You can see a ladder and some pebbles here.
+The gardener is weeding a bed of roses.
+The cat is here.
+Rufus is here.
+The cat slips away.
+
+> give apple to gardener
+The gardener takes the apple and bites into it. "Thank you. I'll open the shed this evening."
+[Your score has gone up by 5.]
+Part Two: Evening
+The light turns gold.
+
+> ask gardener about shed
+"It's open now," he says.
+The cat pads in.
+
+> score
+You have scored 5 out of a possible 20, in 29 turns.
+
+> z
+Time passes.
+The cat slips away.
+
+> z
+Time passes.
+A church bell tolls somewhere far off.
+
+> n
+Shed
+A tool shed. A bell hangs from a beam.
+Rufus is here.
+
+> s
+Garden
+A walled garden. The house is east and a shed stands to the north.
+You can see a ladder and some pebbles here.
+The gardener is weeding a bed of roses.
+Rufus is here.
+The cat pads in.
+
+> n
+Shed
+A tool shed. A bell hangs from a beam.
+Rufus is here.
+
+## Script effect and script condition
+> count
+You count 0 things in your hands.
+
+> s
+Garden
+A walled garden. The house is east and a shed stands to the north.
+You can see a ladder and some pebbles here.
+The gardener is weeding a bed of roses.
+Rufus is here.
+
+> take pebbles
+Taken.
+
+> count
+You count 1 thing in your hands.
+
+> jump
+You jump on the spot. Nothing changes.
+The cat pads in.
+
+> e
+Hall
+A square hall with a flagstone floor. A door leads north, the kitchen is east, an archway opens west to the garden and stone steps go down. A trapdoor is set in the ceiling.
+An oil lamp stands on the floor.
+An upright piano stands against the wall.
+You can see a waxed coat here.
+Rufus is here.
+
+> take lamp
+Taken.
+
+> take coat
+You check the pockets first. Empty.
+Taken.
+The cat pads in.
+
+> jump
+You are carrying too much to jump.
+
+> drop all
+pebbles: Dropped.
+oil lamp: Dropped.
+waxed coat: Dropped.
+The cat slips away.
+
+> jump
+You jump on the spot. Nothing changes.
+The cat pads in.

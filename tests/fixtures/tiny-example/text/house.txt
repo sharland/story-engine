@@ -1,0 +1,5 @@
+== intro ==
+You have come a long way to reach this house.
+
+== hall ==
+A cold hall that smells of old paper.

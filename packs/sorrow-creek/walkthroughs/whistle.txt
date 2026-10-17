@@ -1,0 +1,17 @@
+# The script-driven whistle: calm the mare, walk away, whistle her over.
+# expect: home
+# score: 25
+w
+wake sheriff
+open jar
+take sugar
+e
+e
+take rope
+w
+s
+give sugar to juniper
+n
+whistle
+lasso her
+e

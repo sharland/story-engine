@@ -1,0 +1,33 @@
+{
+  "characters": {
+    "drone": {
+      "name": "maintenance drone", "nouns": ["drone", "robot"], "adjectives": ["maintenance"],
+      "pronoun": "it", "location": "spine",
+      "description": "A squat machine on three wheels, with a single camera eye and a tool arm folded against its side.",
+      "initial": "The maintenance drone idles here, its eye light pulsing.",
+      "wander": { "rooms": ["spine", "quarters", "galley", "suit-room"], "chance": 0.3 },
+      "arrive": "The maintenance drone rolls in.",
+      "depart": "The maintenance drone rolls away.",
+      "talk": "The drone turns its eye towards you. \"Ready for queries,\" it says.",
+      "noTopic": "The drone's eye light flickers. \"Query not recognised.\"",
+      "topics": [
+        { "keys": ["power", "blackout", "reactor", "coupling"], "if": { "act": "blackout" },
+          "text": "\"Main power coupling failed during the debris strike,\" the drone says. \"A spare is held in stores.\"" },
+        { "keys": ["power", "blackout", "reactor", "coupling"],
+          "text": "\"Main power nominal,\" the drone says." },
+        { "keys": ["stores", "code", "keypad", "door"],
+          "text": "\"The stores code is recorded in the maintenance log,\" the drone says. \"The log is in the galley.\"" },
+        { "keys": ["dish", "antenna", "beacon", "signal"], "if": { "var": "dish.aligned" },
+          "text": "\"Dish alignment nominal. The beacon can be sent from the control room.\"" },
+        { "keys": ["dish", "antenna", "beacon", "signal"],
+          "text": "\"Dish alignment fault,\" the drone says. \"Manual correction requires a walk outside. Suit air is limited.\"" },
+        { "keys": ["wren", "ship", "tender", "supply"],
+          "text": "\"Supply tender Wren,\" the drone says. \"It cannot dock without the beacon.\"" },
+        { "keys": ["suit", "air"],
+          "text": "\"Your suit holds air for a short job only,\" the drone says. \"Do not dawdle on the hull.\"" },
+        { "keys": ["dark", "torch", "light", "shaft"],
+          "text": "\"The shaft and reactor bay are unlit without main power,\" the drone says. \"You keep a torch in your locker.\"" }
+      ]
+    }
+  }
+}

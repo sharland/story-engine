@@ -1,0 +1,38 @@
+# The worked example from docs/DESIGN.md, played to its score.
+# pack: ../fixtures/tiny-example
+# seed: 1
+You have come a long way to reach this house.
+Porch
+A sagging porch. The front door is to the north.
+An iron key lies under the mat.
+
+> ring bell
+Nobody comes.
+
+> open door
+It seems to be locked.
+
+> take key
+Taken.
+
+> unlock door
+(with the iron key)
+You unlock the front door.
+
+> open door
+You open the front door.
+[Your score has gone up by 5.]
+
+> north
+Darkness
+It is pitch dark. You cannot see a thing.
+
+> south
+Porch
+A sagging porch. The front door is to the north. The door stands open.
+
+> ring key
+You can't ring that.
+
+> score
+You have scored 5 out of a possible 5, in 8 turns.

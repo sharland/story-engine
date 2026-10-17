@@ -1,0 +1,8 @@
+# Opening the outer hatch without a suit.
+# expect: vacuum
+e
+s
+open hatch
+s
+close inner hatch
+open outer hatch

@@ -1,0 +1,286 @@
+# The science-fiction demo pack: failure branches of each puzzle.
+# pack: ../../packs/halcyon-relay
+# seed: 1
+## Darkness without the torch; a sealed door until power returns; the drone
+The alarm wakes you, then stops, which is worse.
+You are the only crew aboard Halcyon Relay, a communications station in a slow orbit around the gas giant below. The supply tender Wren is due within hours, and it cannot dock unless the relay's beacon guides it in. The beacon is silent. So is everything else.
+I. Blackout
+Crew Quarters
+A narrow cabin with two bunks, one of them yours and one of them empty for as long as you have been aboard. A storage locker is bolted to the bulkhead. The hatch to the spine corridor is east. Amber emergency strips glow along the floor.
+
+> e
+Spine Corridor
+The station's central corridor, ribbed with conduit. The crew quarters are west and the galley east. A heavy door to the north leads to the control room, a ladder well drops down into the maintenance shaft, and the suit room is south. Only the amber emergency strips are lit.
+The maintenance drone idles here, its eye light pulsing.
+
+> ask drone about power
+"Main power coupling failed during the debris strike," the drone says. "A spare is held in stores."
+The maintenance drone rolls away.
+
+> ask drone about torch
+You can't see any such thing.
+
+> ask drone about cheese
+You can't see any such thing.
+
+> talk to drone
+You can't see any such thing.
+
+> n
+The control room door is sealed. Without main power it will not open.
+
+> d
+Darkness
+It is pitch dark. You cannot see a thing.
+
+> look
+Darkness
+It is pitch dark. You cannot see a thing.
+
+> u
+Spine Corridor
+The station's central corridor, ribbed with conduit. The crew quarters are west and the galley east. A heavy door to the north leads to the control room, a ladder well drops down into the maintenance shaft, and the suit room is south. Only the amber emergency strips are lit.
+The maintenance drone idles here, its eye light pulsing.
+
+## The keypad: wrong code, typing elsewhere, the door by hand
+> e
+Galley
+A cramped galley with a fold-down table, a water dispenser and the smell of reheated protein. The stores are behind a door to the east, with a keypad beside it. The spine corridor is west.
+On the table you can see a data slate and a mug.
+
+> open door
+The door is opened from the keypad beside it.
+
+> unlock door
+The door is opened from the keypad beside it.
+
+> type 1234
+The keypad gives a flat buzz. The display reads LOCKED.
+
+> type 4471
+The keypad beeps twice and the stores door slides open.
+[Your score has gone up by 10.]
+The maintenance drone rolls in.
+
+> type 4471
+The keypad display reads OPEN.
+The maintenance drone rolls away.
+
+> e
+Stores
+Shelves of sealed crates line the walls, each labelled in the station's cramped stencil. The galley is back to the west.
+A replacement power coupling sits in a padded cradle on the lowest shelf.
+
+> w
+Galley
+A cramped galley with a fold-down table, a water dispenser and the smell of reheated protein. The stores are behind a door to the east, with a keypad beside it. The spine corridor is west.
+On the table you can see a data slate and a mug.
+The maintenance drone rolls in.
+
+> w
+Spine Corridor
+The station's central corridor, ribbed with conduit. The crew quarters are west and the galley east. A heavy door to the north leads to the control room, a ladder well drops down into the maintenance shaft, and the suit room is south. Only the amber emergency strips are lit.
+
+> type 4471
+There is no keypad here.
+The maintenance drone rolls in.
+
+## The reactor: two couplings, a lever with nothing connected
+> w
+Crew Quarters
+A narrow cabin with two bunks, one of them yours and one of them empty for as long as you have been aboard. A storage locker is bolted to the bulkhead. The hatch to the spine corridor is east. Amber emergency strips glow along the floor.
+
+> open locker
+Opening the storage locker reveals a hand torch and a photograph.
+
+> take torch
+Taken.
+
+> e
+Spine Corridor
+The station's central corridor, ribbed with conduit. The crew quarters are west and the galley east. A heavy door to the north leads to the control room, a ladder well drops down into the maintenance shaft, and the suit room is south. Only the amber emergency strips are lit.
+The maintenance drone rolls in.
+
+> d
+Darkness
+It is pitch dark. You cannot see a thing.
+
+> turn on torch
+You switch on the hand torch.
+Maintenance Shaft
+A vertical shaft lined with cable trays. Rungs lead up to the spine corridor and down to the reactor bay.
+
+> d
+Reactor Bay
+The squat fusion core hums behind its shielding, still running but cut off from the rest of the station. A junction panel on the wall has a socket where the main power coupling belongs, and a breaker lever beside it. Rungs lead up into the shaft.
+A blackened coupling lies on the deck where the surge blew it out of its socket.
+
+> pull lever
+You haul the lever up. It snaps straight back down: nothing is connected across the socket.
+
+> take coupling
+Taken.
+
+> put burnt coupling in socket
+It is scorched beyond use. It would only short out again.
+
+> u
+Maintenance Shaft
+A vertical shaft lined with cable trays. Rungs lead up to the spine corridor and down to the reactor bay.
+
+> u
+Spine Corridor
+The station's central corridor, ribbed with conduit. The crew quarters are west and the galley east. A heavy door to the north leads to the control room, a ladder well drops down into the maintenance shaft, and the suit room is south. Only the amber emergency strips are lit.
+The maintenance drone rolls in.
+
+> e
+Galley
+A cramped galley with a fold-down table, a water dispenser and the smell of reheated protein. The stores are behind a door to the east, with a keypad beside it. The spine corridor is west.
+On the table you can see a data slate and a mug.
+
+> e
+Stores
+Shelves of sealed crates line the walls, each labelled in the station's cramped stencil. The galley is back to the west.
+A replacement power coupling sits in a padded cradle on the lowest shelf.
+
+> take coupling
+Taken.
+
+> w
+Galley
+A cramped galley with a fold-down table, a water dispenser and the smell of reheated protein. The stores are behind a door to the east, with a keypad beside it. The spine corridor is west.
+On the table you can see a data slate and a mug.
+
+> w
+Spine Corridor
+The station's central corridor, ribbed with conduit. The crew quarters are west and the galley east. A heavy door to the north leads to the control room, a ladder well drops down into the maintenance shaft, and the suit room is south. Only the amber emergency strips are lit.
+The maintenance drone idles here, its eye light pulsing.
+
+> d
+Maintenance Shaft
+A vertical shaft lined with cable trays. Rungs lead up to the spine corridor and down to the reactor bay.
+
+> d
+Reactor Bay
+The squat fusion core hums behind its shielding, still running but cut off from the rest of the station. A junction panel on the wall has a socket where the main power coupling belongs, and a breaker lever beside it. Rungs lead up into the shaft.
+
+> put coupling in socket
+Which do you mean, the power coupling or the burnt coupling?
+
+> new
+You put the power coupling in the socket.
+
+> pull lever
+You haul the breaker lever up. It locks with a clunk.
+[Your score has gone up by 15.]
+II. Power
+Somewhere below you a relay clacks shut. Fans spin up one after another down the length of the station, and white light floods back into every room.
+
+> pull lever
+The lever is locked in the ON position. Best leave it there.
+
+> take coupling
+Pull the coupling out now and the lights go off again. Leave it.
+
+> turn off torch
+You switch off the hand torch.
+
+## The airlock: interlocks, and keeping the suit on
+> u
+Maintenance Shaft
+A vertical shaft lined with cable trays. Rungs lead up to the spine corridor and down to the reactor bay.
+A chime sounds from every speaker on the station: "Halcyon, this is Wren, on approach. We have no beacon. Please advise."
+
+> u
+Spine Corridor
+The station's central corridor, ribbed with conduit. The crew quarters are west and the galley east. A heavy door to the north leads to the control room, a ladder well drops down into the maintenance shaft, and the suit room is south. Every light in the corridor is back on.
+
+> s
+Suit Room
+Pressure suits hang in a rack along one wall, though only one of them has ever passed inspection. The spine corridor is north. The airlock's inner hatch is south.
+Your pressure suit hangs on the rack, its seals checked and green.
+The maintenance drone idles here, its eye light pulsing.
+
+> wear suit
+(first taking the pressure suit)
+Taken.
+You put on the pressure suit.
+
+> open hatch
+You open the inner hatch.
+
+> s
+Airlock
+A bare chamber just big enough for two people in suits. The inner hatch leads north, back into the station. The outer hatch leads south, out onto the hull.
+
+> open hatch
+Which do you mean, the inner hatch or the outer hatch?
+
+> open outer hatch
+A warning light flashes. The outer hatch will not open while the inner hatch is open.
+
+> close inner hatch
+You close the inner hatch.
+
+> open outer hatch
+You open the outer hatch.
+The airlock pumps whine, then fall silent. Your suit stiffens as the pressure drops.
+
+> open inner hatch
+A warning light flashes. The inner hatch will not open while the outer hatch is open.
+
+> take off suit
+Not with the outer hatch open. Not unless you want to die.
+
+> s
+Outer Hull
+You stand on the station's outer skin, boots locked to the plating. The gas giant fills half the sky, banded in rust and cream. A maintenance ladder leads up to the dish mount. The outer hatch is north.
+You check the air gauge on your wrist. Not long.
+
+> drop suit
+Not with the outer hatch open. Not unless you want to die.
+
+> u
+Dish Mount
+The relay dish is a great white bowl on a gimballed mount, with a stiff handwheel at its base for manual adjustment. The strike has knocked it askew, and it points uselessly at empty space. The ladder leads back down to the hull.
+
+> x dish
+A white bowl four metres across. It is pointing the wrong way. The handwheel at its base would let you align it.
+
+> d
+Outer Hull
+You stand on the station's outer skin, boots locked to the plating. The gas giant fills half the sky, banded in rust and cream. A maintenance ladder leads up to the dish mount. The outer hatch is north.
+A tone sounds in your helmet. Suit air is low.
+
+> n
+Airlock
+A bare chamber just big enough for two people in suits. The inner hatch leads north, back into the station. The outer hatch leads south, out onto the hull.
+Your suit tops up its air from the airlock supply.
+
+> close outer hatch
+You close the outer hatch.
+
+> open inner hatch
+You open the inner hatch.
+
+> n
+Suit Room
+Pressure suits hang in a rack along one wall, though only one of them has ever passed inspection. The spine corridor is north. The airlock's inner hatch is south.
+
+> n
+Spine Corridor
+The station's central corridor, ribbed with conduit. The crew quarters are west and the galley east. A heavy door to the north leads to the control room, a ladder well drops down into the maintenance shaft, and the suit room is south. Every light in the corridor is back on.
+
+## The control room before the dish is aligned
+> n
+Control Room
+A horseshoe of consoles faces a window full of slowly turning cloud bands. The beacon console sits in the middle. The spine corridor is south.
+
+> x console
+The beacon console. A large TRANSMIT key sits under a hinged guard. The dish alignment readout blinks red.
+
+> transmit
+You press TRANSMIT. The console accepts the command, but the alignment readout blinks red: the dish is pointing at empty space.
+
+> push console
+To send the beacon, TRANSMIT.

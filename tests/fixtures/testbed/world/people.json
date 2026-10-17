@@ -1,0 +1,28 @@
+{
+  "characters": {
+    "gardener": {
+      "name": "gardener", "pronoun": "him", "location": "garden",
+      "description": "A stooped man in a straw hat.",
+      "initial": "The gardener is weeding a bed of roses.",
+      "talk": "The gardener straightens up and waits.",
+      "topics": [
+        { "keys": ["roses", "rose"], "text": "\"They need rain,\" he says." },
+        { "keys": ["shed"], "if": { "act": "morning" }, "text": "\"Shed's shut till evening,\" he says." },
+        { "keys": ["shed"], "text": "\"It's open now,\" he says." },
+        { "id": "secret", "keys": ["secret"], "once": true, "text": "He leans close. \"The ring is in the attic.\"" }
+      ],
+      "noTopic": "The gardener shrugs."
+    },
+    "cat": {
+      "name": "cat", "pronoun": "her", "location": "kitchen",
+      "description": "A thin grey cat.",
+      "wander": { "rooms": ["kitchen", "hall", "garden"], "chance": 0.5 },
+      "arrive": "The cat pads in.",
+      "depart": "The cat slips away."
+    },
+    "dog": {
+      "name": "Rufus", "nouns": ["rufus", "dog"], "pronoun": "him", "location": "garden",
+      "description": "A shaggy dog called Rufus."
+    }
+  }
+}

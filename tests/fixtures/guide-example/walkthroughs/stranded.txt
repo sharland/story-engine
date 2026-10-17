@@ -1,0 +1,7 @@
+# expect: stranded
+e
+give purse to hale
+z
+z
+z
+z

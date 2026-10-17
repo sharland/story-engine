@@ -1,0 +1,6 @@
+# expect: poisoned
+take lamp
+turn on lamp
+d
+take mushroom
+eat it
