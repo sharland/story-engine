@@ -39,6 +39,7 @@ export type Condition =
   | { actAtLeast: string }
   | { light: boolean }
   | { chance: number }
+  | { said: string }
   | { script: string; args?: unknown };
 
 export type Effect =
@@ -56,6 +57,7 @@ export type Effect =
   | { cancel: string }
   | { if: Condition; then?: Effect[]; else?: Effect[] }
   | { look: true }
+  | { converse: string; node?: string }
   | { script: string; args?: unknown };
 
 // ---------------------------------------------------------------------------
@@ -224,6 +226,34 @@ export interface DirectionDef {
   opposite?: string;
 }
 
+export interface DialogueOptionDef {
+  id: string;
+  text: TextDef;
+  if?: Condition;
+  locked?: TextDef;
+  once?: boolean;
+  keys?: string[];
+  line?: TextDef;
+  reply?: TextDef;
+  do?: Effect[];
+  then?: string;
+}
+
+export interface DialogueNodeDef {
+  say?: TextDef;
+  do?: Effect[];
+  options?: DialogueOptionDef[];
+  noLeave?: boolean;
+}
+
+export interface DialogueDef {
+  entry?: Array<{ if?: Condition; node: string }>;
+  leave?: TextDef;
+  resume?: boolean;
+  resumeText?: TextDef;
+  nodes: Record<string, DialogueNodeDef>;
+}
+
 export interface DataFile {
   rooms?: Record<string, RoomDef>;
   objects?: Record<string, ObjectDef>;
@@ -238,6 +268,7 @@ export interface DataFile {
   verbs?: Record<string, VerbDef>;
   directions?: Record<string, DirectionDef>;
   messages?: Record<string, string>;
+  dialogues?: Record<string, DialogueDef>;
   validator?: { assumeReachable?: string[]; assumeObtainable?: string[]; assumeUsed?: string[] };
 }
 
@@ -375,6 +406,8 @@ export interface World {
   /** direction word -> direction id */
   directionWords: Map<string, string>;
   messages: Record<string, string>;
+  /** Conversation menus, by character id. */
+  dialogues: Map<string, DialogueDef>;
   texts: Map<string, string>;
   scripts: import('./script-api.ts').ScriptTable;
   validator: { assumeReachable: string[]; assumeObtainable: string[]; assumeUsed: string[] };
@@ -405,6 +438,14 @@ export interface GameState {
   her: string | null;
   verbose: boolean;
   ended: { ending: string; win: boolean } | null;
+  /** The conversation menu open now, if any. */
+  conversation: { with: string; node: string; shown: string[] } | null;
+  /** Every dialogue option chosen, as "character.option". */
+  said: string[];
+  /** Interrupted conversations: character id -> node to resume at. */
+  paused: Record<string, string>;
+  /** The character who last spoke to the player, for bare "yes" and "no". */
+  lastSpeaker: string | null;
 }
 
 export interface Issue {

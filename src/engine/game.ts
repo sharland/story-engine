@@ -8,8 +8,8 @@ import { answer, compileGrammar, knownWords, parse, splitInput, type ParsedComma
 import { nextRandom, seedState } from './rng.ts';
 import type { ScriptContext } from './script-api.ts';
 import { PSEUDO_ACTIONS } from './stdlib.ts';
-import { capitalise, fillTemplate, joinList, matchTopic, passageRef, toBlocks, unescapeAt } from './text.ts';
-import type { Condition, Effect, GameState, Matcher, Rule, TextDef, Thing, Value, World } from './types.ts';
+import { capitalise, fillTemplate, joinList, matchTopic, normaliseWords, passageRef, toBlocks, unescapeAt } from './text.ts';
+import type { Condition, DialogueDef, DialogueOptionDef, Effect, GameState, Matcher, Rule, TextDef, Thing, Value, World } from './types.ts';
 import {
   PLAYER,
   blockedBy,
@@ -34,11 +34,13 @@ export interface Host {
   load?(slot: string): string | null;
 }
 
-export type BlockStyle = 'title' | 'heading' | 'text' | 'parser';
+export type BlockStyle = 'title' | 'heading' | 'text' | 'parser' | 'option';
 
 export interface Block {
   style: BlockStyle;
   text: string;
+  /** For style "option": the number to type, or null for a locked line. */
+  option?: number | null;
 }
 
 export interface GameOptions {
@@ -60,6 +62,9 @@ type Params = Record<string, string | number>;
 
 /** Template tags that take a thing: {the:noun}, {is:second}, {s:some-id} ... */
 export const THING_TAGS = ['the', 'The', 'a', 'A', 'name', 'it', 'It', 'that', 'That', 'is', 'has', 's', 'es'];
+
+/** Words that end a conversation while a menu is open. */
+const LEAVE_WORDS = ['leave', 'bye', 'goodbye', 'farewell'];
 
 const ALLOWED_AFTER_END = ['restart', 'restore', 'undo', 'quit', 'about', 'help', 'score'];
 
@@ -90,6 +95,10 @@ export function initialState(world: World, seed: number): GameState {
     her: null,
     verbose: true,
     ended: null,
+    conversation: null,
+    said: [],
+    paused: {},
+    lastSpeaker: null,
   };
 }
 
@@ -106,6 +115,8 @@ export class Game {
   private last: ParsedCommand | null = null;
   private ctxStack: ActionCtx[] = [];
   private started = false;
+  /** The open conversation's menu needs printing at the end of this input. */
+  private menuDue = false;
   quitRequested = false;
 
   constructor(world: World, options: GameOptions = {}) {
@@ -127,6 +138,7 @@ export class Game {
       this.started = true;
       this.begin();
     }
+    this.flushMenu();
     return this.flush();
   }
 
@@ -140,7 +152,9 @@ export class Game {
     const commands = splitInput(line);
     if (commands.length === 0) this.msg('emptyCommand', {}, 'parser');
     for (const tokens of commands) {
-      if (this.handleTokens(tokens) || this.quitRequested) break;
+      const stop = this.handleTokens(tokens) || this.quitRequested;
+      this.flushMenu();
+      if (stop) break;
     }
     return this.flush();
   }
@@ -164,10 +178,15 @@ export class Game {
     if (s.pack.version !== this.world.manifest.version) {
       throw new Error(`saved with version ${s.pack.version} of this story, this is ${this.world.manifest.version}`);
     }
+    s.conversation ??= null;
+    s.said ??= [];
+    s.paused ??= {};
+    s.lastSpeaker ??= null;
     this.state = s;
     this.undoStack = [];
     this.pending = null;
     this.started = true;
+    this.menuDue = s.conversation !== null;
   }
 
   // -------------------------------------------------------------------------
@@ -447,6 +466,7 @@ export class Game {
     if ('act' in c) return s.act === c.act;
     if ('light' in c) return this.isLit() === c.light;
     if ('chance' in c) return this.random() < c.chance;
+    if ('said' in c) return this.state.said.includes(c.said);
     if ('script' in c) {
       const fn = this.world.scripts.conditions.get(c.script);
       if (!fn) throw new Error(`No script condition "${c.script}"`);
@@ -487,6 +507,7 @@ export class Game {
     else if ('cancel' in e) this.cancel(e.cancel);
     else if ('if' in e) this.run(this.test(e.if) ? e.then : e.else);
     else if ('look' in e) this.describeRoom(true);
+    else if ('converse' in e) this.openConversation(e.converse, e.node ?? null, false);
     else if ('script' in e) {
       const fn = this.world.scripts.effects.get(e.script);
       if (!fn) throw new Error(`No script effect "${e.script}"`);
@@ -735,6 +756,7 @@ export class Game {
   /** Returns true if the rest of the input line should be dropped. */
   private handleTokens(tokens: string[]): boolean {
     const fresh = () => parse(this.parserEnv(), this.grammar, tokens, this.known);
+    if (this.state.conversation && !this.pending) return this.handleConversationInput(tokens, fresh);
     if (this.pending) {
       const p = this.pending;
       this.pending = null;
@@ -773,6 +795,14 @@ export class Game {
     }
     const verb = this.world.verbs.get(cmd.action)!;
     if (this.state.ended && !ALLOWED_AFTER_END.includes(cmd.action)) return this.msg('gameOver');
+    if (cmd.action === 'answer' && cmd.nouns.length === 0) {
+      const who = this.answerTarget();
+      if (!who) {
+        const anyone = this.scope().some((t) => t.kind === 'character');
+        return this.msg(anyone ? 'answerWho' : 'nobodyToAnswer', {}, 'parser');
+      }
+      cmd = { ...cmd, nouns: [who] };
+    }
     this.last = cmd;
     if (verb.meta) {
       this.meta(cmd);
@@ -915,6 +945,7 @@ export class Game {
         if (!prev) return this.msg('cantUndo');
         this.state = JSON.parse(prev) as GameState;
         this.msg('undone');
+        this.menuDue = this.state.conversation !== null;
         return;
       }
       case 'help':
@@ -954,6 +985,264 @@ export class Game {
     }
     this.print(`Licence: ${m.licence}.`);
     for (const c of m.credits ?? []) this.print(c);
+  }
+
+  // -------------------------------------------------------------------------
+  // Conversation menus
+
+  /**
+   * Open a character's dialogue: at a given node, or where an interrupted
+   * conversation left off (for "talk to"), or at its entry node. Returns
+   * false if the character has no dialogue, is not here, or has no entry
+   * node that applies.
+   */
+  openConversation(who: string, node: string | null, resumable: boolean): boolean {
+    const d = this.world.dialogues.get(who);
+    if (!d || !isPresent(this.world, this.state, who)) return false;
+    if (this.state.conversation?.with === who && !node) {
+      this.menuDue = true;
+      return true;
+    }
+    const paused = this.state.paused[who];
+    let target = node;
+    let resumed = false;
+    if (!target && resumable && d.resume !== false && paused && d.nodes[paused]) {
+      target = paused;
+      resumed = true;
+    }
+    target ??= this.entryNode(d);
+    if (!target) return false;
+    this.closeConversation(true);
+    delete this.state.paused[who];
+    this.state.conversation = { with: who, node: target, shown: [] };
+    this.state.lastSpeaker = who;
+    this.setPronoun(who);
+    if (resumed) {
+      if (d.resumeText) this.sayAbout(who, d.resumeText);
+      else this.msg('resumeConversation', { noun: who });
+    } else this.enterNode(who, target);
+    this.menuDue = this.state.conversation !== null;
+    return true;
+  }
+
+  private entryNode(d: DialogueDef): string | null {
+    for (const e of d.entry ?? []) if (!e.if || this.test(e.if)) return e.node;
+    return d.nodes.start ? 'start' : null;
+  }
+
+  /** Who a bare answer is for: the last to speak, or the only person here. */
+  private answerTarget(): string | null {
+    const last = this.state.lastSpeaker;
+    if (last && isPresent(this.world, this.state, last)) return last;
+    const people = this.scope().filter((t) => t.kind === 'character');
+    return people.length === 1 ? people[0].id : null;
+  }
+
+  private enterNode(who: string, node: string): void {
+    const n = this.world.dialogues.get(who)!.nodes[node];
+    if (!n) return;
+    if (n.say) this.sayAbout(who, n.say);
+    this.ctxStack.push({ action: null, noun: who, second: null, topic: null, dir: null });
+    try {
+      this.run(n.do);
+    } finally {
+      this.ctxStack.pop();
+    }
+  }
+
+  /** Close the open conversation; if interrupted, remember where it was. */
+  private closeConversation(interrupted: boolean): void {
+    const c = this.state.conversation;
+    if (!c) return;
+    if (interrupted) this.state.paused[c.with] = c.node;
+    else delete this.state.paused[c.with];
+    this.state.conversation = null;
+    this.menuDue = false;
+  }
+
+  /** The options of the open node: numbered ones in order, and locked ones. */
+  private visibleOptions(): Array<{ option: DialogueOptionDef; number: number | null }> {
+    const c = this.state.conversation!;
+    const node = this.world.dialogues.get(c.with)?.nodes[c.node];
+    const out: Array<{ option: DialogueOptionDef; number: number | null }> = [];
+    let n = 0;
+    this.ctxStack.push({ action: null, noun: c.with, second: null, topic: null, dir: null });
+    try {
+      for (const option of node?.options ?? []) {
+        if (option.once && this.state.said.includes(`${c.with}.${option.id}`)) continue;
+        if (!option.if || this.test(option.if)) out.push({ option, number: ++n });
+        else if (option.locked) out.push({ option, number: null });
+      }
+    } finally {
+      this.ctxStack.pop();
+    }
+    return out;
+  }
+
+  private flushMenu(): void {
+    if (this.menuDue) this.printMenu();
+  }
+
+  private printMenu(): void {
+    this.menuDue = false;
+    const c = this.state.conversation;
+    if (!c) return;
+    if (this.state.ended || this.quitRequested || !isPresent(this.world, this.state, c.with)) {
+      this.closeConversation(!this.state.ended);
+      return;
+    }
+    const node = this.world.dialogues.get(c.with)?.nodes[c.node];
+    const options = this.visibleOptions();
+    c.shown = options.filter((o) => o.number !== null).map((o) => o.option.id);
+    if (c.shown.length === 0 && node?.noLeave) {
+      // Nothing to choose and no way out: never trap the player.
+      this.closeConversation(false);
+      return;
+    }
+    this.ctxStack.push({ action: null, noun: c.with, second: null, topic: null, dir: null });
+    try {
+      for (const { option, number } of options) {
+        const label = this.render(option.text);
+        if (number === null) {
+          this.out.push({ style: 'option', option: null, text: `     ${label} ${this.render(option.locked)}`.trimEnd() });
+        } else this.out.push({ style: 'option', option: number, text: `  ${number}. ${label}` });
+      }
+      if (!node?.noLeave) this.out.push({ style: 'option', option: 0, text: `  0. ${this.messageText('leaveConversation')}` });
+    } finally {
+      this.ctxStack.pop();
+    }
+  }
+
+  /** The number an option is shown under right now, or null. For walkthroughs and tests. */
+  optionNumber(key: string): number | null {
+    const c = this.state.conversation;
+    const dot = key.indexOf('.');
+    if (!c || key.slice(0, dot) !== c.with) return null;
+    const i = c.shown.indexOf(key.slice(dot + 1));
+    return i < 0 ? null : i + 1;
+  }
+
+  /** Input while a menu is open. Returns true if the rest of the line should be dropped. */
+  private handleConversationInput(tokens: string[], fresh: () => ParseOutcome): boolean {
+    const c = this.state.conversation!;
+    const d = this.world.dialogues.get(c.with)!;
+    const noLeave = !!d.nodes[c.node]?.noLeave;
+    const words = tokens.filter((t) => t !== ',');
+    if (words.length === 1 && /^\d+$/.test(words[0])) {
+      const n = Number(words[0]);
+      if (n === 0 && !noLeave) return this.leaveConversation();
+      const id = n > 0 ? c.shown[n - 1] : undefined;
+      if (!id) {
+        this.msg('notAnOption', { n }, 'parser');
+        return true;
+      }
+      this.choose(id);
+      return this.state.ended !== null;
+    }
+    if (words.length === 1 && LEAVE_WORDS.includes(words[0])) {
+      if (!noLeave) return this.leaveConversation();
+      this.msg('chooseOption', {}, 'parser');
+      return true;
+    }
+    const byKey = this.optionByKeys(words.join(' '));
+    if (byKey) {
+      this.choose(byKey);
+      return this.state.ended !== null;
+    }
+    const o = fresh();
+    if (o.kind === 'ok') {
+      const cmd = o.command;
+      // Saying or answering something to the person you're talking to.
+      if ((cmd.action === 'answer' || cmd.action === 'say') && (cmd.nouns.length === 0 || cmd.nouns[0] === c.with)) {
+        const id = cmd.topic ? this.optionByKeys(cmd.topic) : null;
+        if (id) {
+          this.choose(id);
+          return this.state.ended !== null;
+        }
+        this.msg('chooseOption', {}, 'parser');
+        return true;
+      }
+      // Meta commands leave the menu open ("again" repeats a normal command).
+      if (this.world.verbs.get(cmd.action)?.meta && cmd.action !== 'again') {
+        const r = this.handleOutcome(o);
+        if (this.state.conversation) this.menuDue = true;
+        return r;
+      }
+      if (cmd.action === 'talk' && cmd.nouns[0] === c.with) {
+        this.menuDue = true;
+        return false;
+      }
+      if (noLeave) {
+        this.msg('chooseOption', {}, 'parser');
+        return true;
+      }
+      this.closeConversation(true);
+      return this.handleOutcome(o);
+    }
+    if (o.kind === 'question' && !noLeave) {
+      this.closeConversation(true);
+      return this.handleOutcome(o);
+    }
+    // A typing mistake keeps the menu open.
+    return this.handleOutcome(o.kind === 'question' ? { kind: 'error', key: 'chooseOption', params: {} } : o);
+  }
+
+  private optionByKeys(typed: string): string | null {
+    const c = this.state.conversation!;
+    const node = this.world.dialogues.get(c.with)?.nodes[c.node];
+    const wanted = normaliseWords(typed).filter((w) => !['a', 'an', 'the'].includes(w)).join(' ');
+    for (const id of c.shown) {
+      const option = node?.options?.find((o) => o.id === id);
+      for (const k of option?.keys ?? []) {
+        if (normaliseWords(k).filter((w) => !['a', 'an', 'the'].includes(w)).join(' ') === wanted) return id;
+      }
+    }
+    return null;
+  }
+
+  private leaveConversation(): boolean {
+    const c = this.state.conversation!;
+    const d = this.world.dialogues.get(c.with)!;
+    if (d.leave) this.sayAbout(c.with, d.leave);
+    this.closeConversation(false);
+    return false;
+  }
+
+  /** Choose an option: one game turn. */
+  private choose(id: string): void {
+    const c = this.state.conversation!;
+    const who = c.with;
+    const node = this.world.dialogues.get(who)!.nodes[c.node];
+    const option = node.options!.find((o) => o.id === id)!;
+    this.pushUndo();
+    this.state.turns += 1;
+    const wasLit = this.isLit();
+    const wasAt = this.state.location;
+    this.ctxStack.push({ action: null, noun: who, second: null, topic: null, dir: null });
+    try {
+      this.say(option.line ?? option.text);
+      this.say(option.reply);
+      const key = `${who}.${id}`;
+      if (!this.state.said.includes(key)) this.state.said.push(key);
+      this.state.lastSpeaker = who;
+      this.run(option.do);
+    } finally {
+      this.ctxStack.pop();
+    }
+    if (this.state.ended || this.quitRequested) {
+      this.closeConversation(false);
+      return;
+    }
+    const still = this.state.conversation;
+    if (still === c) {
+      if (option.then === 'end') this.closeConversation(false);
+      else if (option.then) {
+        still.node = option.then;
+        this.enterNode(who, option.then);
+      }
+    }
+    this.menuDue = this.state.conversation !== null;
+    if (!this.state.ended) this.endTurn(wasLit, wasAt);
   }
 
   // -------------------------------------------------------------------------

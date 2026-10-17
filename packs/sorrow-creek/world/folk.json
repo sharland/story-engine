@@ -5,7 +5,7 @@
       "description": "A broad-shouldered woman with hay in her hair and worry in her face.",
       "initial": ["Ada Pruitt, who owns the livery, is pacing beside the empty stall.",
         { "if": { "var": "mare.following" }, "text": "She stops when she sees who you've brought." }],
-      "talk": "\"You seen my Juniper?\" she asks.",
+      "props": { "trust": 0, "asked": false },
       "noTopic": "Ada waves the question away. \"Ask me later. Find my mare.\"",
       "topics": [
         { "keys": ["juniper", "mare", "horse"],

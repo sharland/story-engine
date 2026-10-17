@@ -1,0 +1,30 @@
+{
+  "dialogues": {
+    "hale": {
+      "entry": [
+        { "if": { "act": "departure" }, "node": "paid" },
+        { "node": "start" }
+      ],
+      "leave": "Mrs Hale goes back to polishing glasses.",
+      "nodes": {
+        "start": {
+          "say": "\"Well?\" says Mrs Hale.",
+          "options": [
+            { "id": "bill", "text": "\"What do I owe you?\"", "keys": ["bill"], "once": true,
+              "reply": "\"Two shillings. Your bag stays with me until it's paid.\"" },
+            { "id": "coach", "text": "\"When does the coach leave?\"", "reply": "@hale-coach" },
+            { "id": "letter", "text": "\"My sister has written. I must go home.\"",
+              "if": { "has": "letter" }, "locked": "(if you had news to tell her)",
+              "reply": "Her face softens. \"Then pay up and go, and quick about it.\"", "then": "end" }
+          ]
+        },
+        "paid": {
+          "say": "\"Off you go,\" says Mrs Hale.",
+          "options": [
+            { "id": "thanks", "text": "\"Thank you for everything.\"", "reply": "She flaps a cloth at you.", "then": "end" }
+          ]
+        }
+      }
+    }
+  }
+}

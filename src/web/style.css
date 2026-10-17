@@ -103,6 +103,19 @@ button:hover, .file-button:hover { border-color: var(--dim); }
 .output .b-parser { color: var(--dim); }
 .output .b-error { color: var(--error); }
 .output .echo { color: var(--prompt); margin-top: 0.9em; }
+.output .b-option { margin: 0 0 0.15em; }
+.output button.option {
+  font: inherit;
+  color: var(--heading);
+  background: none;
+  border: 0;
+  border-radius: 2px;
+  padding: 0;
+  text-align: left;
+  white-space: pre-wrap;
+}
+.output button.option:hover:not(:disabled) { text-decoration: underline; }
+.output button.option:disabled { color: inherit; cursor: default; }
 .command { display: flex; align-items: center; gap: 8px; padding-top: 8px; border-top: 1px solid var(--border); }
 .prompt { color: var(--prompt); }
 .command input {

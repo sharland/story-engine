@@ -16,6 +16,7 @@
       "exits": {
         "east": "hall",
         "north": "shed",
+        "west": "orchard",
         "around": { "say": "You walk around the garden and end up where you started." }
       }
     },

@@ -11,6 +11,7 @@ const SUCCEEDS: Record<string, string> = {
   touch: 'yes', smell: 'yes', listen: 'yes', taste: 'yes', attack: 'never', throw: 'never', climb: 'never',
   jump: 'yes', sleep: 'yes', yell: 'yes', use: 'never', give: 'never', show: 'never',
   ask: 'if a topic matched', tell: 'if a topic matched', talk: 'if it is a character', say: 'never',
+  answer: 'if a topic matched',
 };
 
 export function verbTable(): string {

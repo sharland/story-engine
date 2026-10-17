@@ -4,6 +4,7 @@
 
 import type { ActionCtx, Game } from './game.ts';
 import { matchTopic } from './text.ts';
+import type { Thing } from './types.ts';
 import { isInside, PLAYER } from './world.ts';
 
 export type Handler = (g: Game, c: ActionCtx) => boolean;
@@ -383,9 +384,25 @@ export const ACTIONS: Record<string, Handler> = {
       g.msg('notCharacter');
       return false;
     }
-    if (t.talk) g.sayAbout(t.id, t.talk);
-    else g.msg('talkDefault');
+    const hasDialogue = g.world.dialogues.has(t.id);
+    if (hasDialogue && g.openConversation(t.id, null, true)) return true;
+    if (t.talk) {
+      g.sayAbout(t.id, t.talk);
+      g.state.lastSpeaker = t.id;
+    } else g.msg(hasDialogue ? 'noDialogue' : 'talkDefault');
     return true;
+  },
+
+  answer(g, c) {
+    const t = g.thing(noun(c));
+    if (t.kind !== 'character') {
+      g.msg('notCharacter');
+      return false;
+    }
+    if (topicReply(g, t, c.topic)) return true;
+    if (t.noTopic) g.sayAbout(t.id, t.noTopic);
+    else g.msg('noAnswer');
+    return false;
   },
 
   say(g, c) {
@@ -495,16 +512,23 @@ function converse(g: Game, c: ActionCtx): boolean {
     g.msg('notCharacter');
     return false;
   }
+  if (topicReply(g, t, c.topic)) return true;
+  if (t.noTopic) g.sayAbout(t.id, t.noTopic);
+  else g.msg('noTopic');
+  return false;
+}
+
+/** The first of a character's topics that matches, said and run. */
+function topicReply(g: Game, t: Thing, typed: string | null): boolean {
   for (const topic of t.topics) {
-    if (!matchTopic(topic.keys, c.topic)) continue;
+    if (!matchTopic(topic.keys, typed)) continue;
     if (topic.once && g.state.fired.includes(topic.id)) continue;
     if (topic.if && !g.test(topic.if)) continue;
     if (topic.once) g.state.fired.push(topic.id);
     g.sayAbout(t.id, topic.text);
+    g.state.lastSpeaker = t.id;
     g.run(topic.do);
     return true;
   }
-  if (t.noTopic) g.sayAbout(t.id, t.noTopic);
-  else g.msg('noTopic');
   return false;
 }

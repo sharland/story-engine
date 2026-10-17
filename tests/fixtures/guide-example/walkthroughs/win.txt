@@ -1,9 +1,12 @@
 # expect: on-the-road
 # score: 15
 e
+talk to hale
+@hale.bill
 take letter
 read letter
-ask hale about bag
+talk to hale
+@hale.letter
 give purse to hale
 w
 n

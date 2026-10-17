@@ -7,6 +7,7 @@ import {
   ACT_SPEC,
   CHARACTER_SPEC,
   Checker,
+  DIALOGUE_SPEC,
   DIRECTION_SPEC,
   ENDING_SPEC,
   EVENT_SPEC,
@@ -42,6 +43,7 @@ import { nameWords, parsePassages, suggest } from './text.ts';
 import type {
   ActDef,
   CharacterDef,
+  DialogueDef,
   DirectionDef,
   EndingDef,
   EventDef,
@@ -72,6 +74,8 @@ export interface CompileResult {
   playerMoves: Array<{ room: string; where: string }>;
   passagesUsed: Set<string>;
   targets: Checker['targets'];
+  /** Conversations opened by a converse effect at a named node. */
+  conversesTo: Checker['conversesTo'];
   /** Where each id was defined, for messages. */
   definedIn: Map<string, string>;
 }
@@ -112,6 +116,7 @@ export function compilePack(src: PackSource): CompileResult {
     playerMoves: c.playerMoves,
     passagesUsed: c.passagesUsed,
     targets: c.targets,
+    conversesTo: c.conversesTo,
     definedIn,
   });
 
@@ -129,7 +134,7 @@ export function compilePack(src: PackSource): CompileResult {
 
   // Merge data files
   const maps: Record<string, Map<string, Located<unknown>>> = {};
-  for (const s of ['rooms', 'objects', 'characters', 'regions', 'events', 'endings', 'scores', 'vars', 'verbs', 'directions', 'messages']) {
+  for (const s of ['rooms', 'objects', 'characters', 'regions', 'events', 'endings', 'scores', 'vars', 'verbs', 'directions', 'messages', 'dialogues']) {
     maps[s] = new Map();
   }
   const acts: Array<Located<unknown>> = [];
@@ -230,6 +235,7 @@ export function compilePack(src: PackSource): CompileResult {
   for (const [, l] of maps.verbs) checkObject(c, l.def, l.file, VERB_SPEC);
   for (const [, l] of maps.directions) checkObject(c, l.def, l.file, DIRECTION_SPEC);
   for (const [, l] of maps.messages) MESSAGE_CHECK(c, l.def, l.file);
+  for (const [, l] of maps.dialogues) checkObject(c, l.def, l.file, DIALOGUE_SPEC);
 
   // Build
   const directions = new Map<string, { id: string; words: string[]; opposite: string | null }>();
@@ -376,6 +382,16 @@ export function compilePack(src: PackSource): CompileResult {
   }
   const vars: Record<string, Value> = {};
   for (const [id, { def }] of maps.vars) vars[id] = def as Value;
+  const dialogues = new Map<string, DialogueDef>();
+  for (const [id, { def, file }] of maps.dialogues) {
+    if (!isPlainObject(def) || !isPlainObject(def.nodes)) continue;
+    const d = def as unknown as DialogueDef;
+    dialogues.set(id, d);
+    if (!maps.characters.has(id)) {
+      c.error(file, maps.objects.has(id) ? 'not-a-character' : 'dangling-ref', `Dialogues belong to characters; "${id}" is not a character`);
+    }
+    checkDialogue(c, id, d, file);
+  }
   const messages: Record<string, string> = { ...STANDARD_MESSAGES };
   for (const [id, { def }] of maps.messages) if (typeof def === 'string') messages[id] = def;
 
@@ -407,6 +423,7 @@ export function compilePack(src: PackSource): CompileResult {
     directions,
     directionWords,
     messages,
+    dialogues,
     texts,
     scripts,
     validator: { assumeReachable, assumeObtainable, assumeUsed },
@@ -616,6 +633,8 @@ function resolveRefs(c: Checker, w: World, definedIn: Map<string, string>): void
     c.error(r.where, 'dangling-ref', `Unknown ${what} "${r.id}"${s ? ` (did you mean "${s}"?)` : ''}`);
   };
   const entityIds = () => [...w.rooms.keys(), ...w.things.keys()];
+  const noDialogue = (where: string, who: string) =>
+    c.error(where, 'dangling-ref', `No dialogue for "${who}" in "dialogues"${suggestText(who, [...w.dialogues.keys()])}`);
 
   for (const r of c.refs) {
     switch (r.kind) {
@@ -681,12 +700,70 @@ function resolveRefs(c: Checker, w: World, definedIn: Map<string, string>): void
       case 'scriptCondition':
         if (!w.scripts.conditions.has(r.id)) dangling(r, 'script condition', w.scripts.conditions.keys());
         break;
+      case 'dialogue':
+        if (!w.dialogues.has(r.id)) noDialogue(r.where, r.id);
+        break;
+      case 'dialogueNode': {
+        const [who, node] = r.id.split(':');
+        const d = w.dialogues.get(who);
+        if (d && !(node in d.nodes)) {
+          c.error(r.where, 'dangling-ref', `Unknown node "${node}" in ${who}'s dialogue${suggestText(node, Object.keys(d.nodes))}`);
+        }
+        break;
+      }
+      case 'saidOption': {
+        const dot = r.id.indexOf('.');
+        const who = r.id.slice(0, dot);
+        const option = r.id.slice(dot + 1);
+        const d = w.dialogues.get(who);
+        if (!d) noDialogue(r.where, who);
+        else if (!dialogueOptionIds(d).includes(option)) {
+          c.error(r.where, 'dangling-ref', `Unknown option "${option}" in ${who}'s dialogue${suggestText(option, dialogueOptionIds(d))}`);
+        }
+        break;
+      }
       case 'scriptEffect':
         if (!w.scripts.effects.has(r.id)) dangling(r, 'script effect', w.scripts.effects.keys());
         break;
     }
   }
   void definedIn;
+}
+
+/** All option ids of a dialogue. */
+export function dialogueOptionIds(d: DialogueDef): string[] {
+  return Object.values(d.nodes).flatMap((n) => (n?.options ?? []).map((o) => o.id));
+}
+
+/** Node references inside a dialogue, and option id uniqueness. */
+function checkDialogue(c: Checker, who: string, d: DialogueDef, file: string): void {
+  const nodes = Object.keys(d.nodes);
+  const seen = new Map<string, string>();
+  for (const [i, e] of (d.entry ?? []).entries()) {
+    if (typeof e?.node === 'string' && !nodes.includes(e.node)) {
+      c.error(`${file}.entry[${i}]`, 'dangling-ref', `Unknown node "${e.node}" in ${who}'s dialogue${suggestText(e.node, nodes)}`);
+    }
+  }
+  if (!d.entry && !nodes.includes('start')) {
+    c.error(file, 'missing-field', `${who}'s dialogue has no "entry" list and no node called "start"`);
+  }
+  for (const [name, node] of Object.entries(d.nodes)) {
+    for (const [i, o] of (node?.options ?? []).entries()) {
+      const where = `${file}.nodes.${name}.options[${i}]`;
+      if (typeof o?.id !== 'string') continue;
+      const prev = seen.get(o.id);
+      if (prev) c.error(where, 'duplicate-id', `Option id "${o.id}" is already used in ${prev}`);
+      seen.set(o.id, where);
+      if (typeof o.then === 'string' && o.then !== 'end' && !nodes.includes(o.then)) {
+        c.error(`${where}.then`, 'dangling-ref', `Unknown node "${o.then}" in ${who}'s dialogue${suggestText(o.then, nodes)}`);
+      }
+    }
+  }
+}
+
+function suggestText(word: string, options: string[]): string {
+  const s = suggest(word, options);
+  return s ? ` (did you mean "${s}"?)` : '';
 }
 
 /** Initial values of an entity's properties, used to build a fresh state. */

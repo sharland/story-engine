@@ -24,7 +24,10 @@ export type RefKind =
   | 'action'
   | 'direction'
   | 'scriptCondition'
-  | 'scriptEffect';
+  | 'scriptEffect'
+  | 'dialogue'
+  | 'dialogueNode'
+  | 'saidOption';
 
 export interface Ref {
   kind: RefKind;
@@ -48,6 +51,8 @@ export class Checker {
   moves: MoveRecord[] = [];
   playerMoves: Array<{ room: string; where: string }> = [];
   passagesUsed = new Set<string>();
+  /** Dialogue nodes opened directly by converse effects. */
+  conversesTo: Array<{ character: string; node: string }> = [];
   /** Acts started, endings reached, scores awarded and events scheduled by effects. */
   targets: Array<{ kind: 'act' | 'end' | 'award' | 'schedule'; id: string }> = [];
 
@@ -253,6 +258,14 @@ export const CONDITION_FORMS: Record<string, Spec> = {
       },
     },
   },
+  said: {
+    fields: {
+      said: (c, v, w) => {
+        if (typeof v !== 'string' || !v.includes('.')) c.error(w, 'type', 'Expected "character.option", such as "guard.ask-name"');
+        else c.ref('saidOption', v, w);
+      },
+    },
+  },
   script: { fields: { script: ref('scriptCondition'), args: () => {} } },
 };
 
@@ -330,6 +343,7 @@ export const EFFECT_FORMS: Record<string, Spec> = {
       },
     },
   },
+  converse: { fields: { converse: ref('dialogue'), node: str } },
   script: { fields: { script: ref('scriptEffect'), args: () => {} } },
 };
 
@@ -345,6 +359,10 @@ export function effect(c: Checker, v: unknown, where: string): void {
     }
   }
   if (head === 'movePlayer' && typeof v.movePlayer === 'string') c.playerMoves.push({ room: v.movePlayer, where });
+  if (head === 'converse' && typeof v.converse === 'string' && typeof v.node === 'string') {
+    c.ref('dialogueNode', `${v.converse}:${v.node}`, `${where}.node`);
+    c.conversesTo.push({ character: v.converse, node: v.node });
+  }
   if ((head === 'act' || head === 'end' || head === 'award' || head === 'schedule') && typeof v[head] === 'string') {
     c.targets.push({ kind: head, id: v[head] as string });
   }
@@ -573,6 +591,43 @@ export const MANIFEST_SPEC: Spec = {
   },
 };
 
+const dialogueOption: FieldCheck = (c, v, where) => {
+  checkObject(c, v, where, DIALOGUE_OPTION_SPEC);
+};
+
+export const DIALOGUE_OPTION_SPEC: Spec = {
+  required: ['id', 'text'],
+  fields: {
+    id: (c, v, w) => {
+      if (typeof v !== 'string' || !ID_PATTERN.test(v)) c.error(w, 'bad-id', 'Option ids follow the id rules (a-z first, then a-z, 0-9, - and _)');
+    },
+    text,
+    if: condition,
+    locked: text,
+    once: bool,
+    keys: strings,
+    line: text,
+    reply: text,
+    do: effects,
+    then: str,
+  },
+};
+
+export const DIALOGUE_NODE_SPEC: Spec = {
+  fields: { say: text, do: effects, options: list(dialogueOption), noLeave: bool },
+};
+
+export const DIALOGUE_SPEC: Spec = {
+  required: ['nodes'],
+  fields: {
+    entry: list((c, v, w) => checkObject(c, v, w, { required: ['node'], fields: { if: condition, node: str } })),
+    leave: text,
+    resume: bool,
+    resumeText: text,
+    nodes: record((c, v, w) => checkObject(c, v, w, DIALOGUE_NODE_SPEC)),
+  },
+};
+
 export const SECTIONS = [
   'rooms',
   'objects',
@@ -587,5 +642,6 @@ export const SECTIONS = [
   'verbs',
   'directions',
   'messages',
+  'dialogues',
   'validator',
 ];

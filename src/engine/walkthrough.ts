@@ -5,6 +5,7 @@
 //   # score: 50              final score to check (optional)
 //   take the first thing
 //   north
+//   @guard.ask-name          choose a conversation option by id, whatever its number
 //
 // Blank lines and other "#" lines are ignored.
 
@@ -60,8 +61,18 @@ export function playWalkthrough(world: World, content: string, file: string): Wa
       }
       return;
     }
-    const blocks = game.input(cmd);
-    lines.push(`> ${cmd}`, renderBlocks(blocks));
+    let typed = cmd;
+    const option = /^@([A-Za-z0-9_-]+\.[A-Za-z0-9_-]+)$/.exec(cmd);
+    if (option) {
+      const n = game.optionNumber(option[1]);
+      if (n === null) {
+        problems.push(`Command ${i + 1} ("${cmd}"): that option is not on screen`);
+        return;
+      }
+      typed = String(n);
+    }
+    const blocks = game.input(typed);
+    lines.push(`> ${typed === cmd ? cmd : `${typed} (${cmd})`}`, renderBlocks(blocks));
     const parserTrouble = blocks.find((b) => b.style === 'parser');
     if (parserTrouble) problems.push(`Command ${i + 1} ("${cmd}"): ${parserTrouble.text}`);
   });

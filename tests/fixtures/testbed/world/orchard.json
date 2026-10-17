@@ -1,0 +1,73 @@
+{
+  "rooms": {
+    "orchard": {
+      "name": "Orchard",
+      "description": "Rows of old pear trees. Beehives stand in the grass. The garden is east.",
+      "exits": { "east": "garden" }
+    }
+  },
+  "characters": {
+    "keeper": {
+      "name": "beekeeper", "nouns": ["beekeeper", "keeper", "woman"], "pronoun": "her", "location": "orchard",
+      "description": "A woman in a veiled hat.",
+      "initial": "A beekeeper in a veiled hat is here.",
+      "props": { "cross": false },
+      "topics": [
+        { "keys": ["honey"], "text": "\"Best in the county,\" she says." }
+      ],
+      "noTopic": "The beekeeper says nothing."
+    }
+  },
+  "dialogues": {
+    "keeper": {
+      "entry": [
+        { "if": { "var": "keeper.cross" }, "node": "cold" },
+        { "node": "start" }
+      ],
+      "leave": "\"Mind the hives,\" she says.",
+      "resumeText": "\"Where was I?\" she says.",
+      "nodes": {
+        "start": {
+          "say": "The beekeeper lifts her veil. \"Come for honey?\"",
+          "options": [
+            { "id": "honey", "text": "\"Yes, please.\"", "keys": ["yes", "honey"], "reply": "\"Then you'll need a jar.\"", "then": "jar" },
+            { "id": "bees", "text": "\"Tell me about the bees.\"", "once": true, "reply": "\"They're calm today.\"",
+              "do": [{ "schedule": "buzz", "in": 1 }] },
+            { "id": "sting", "text": "\"Do they ever sting?\"", "if": { "said": "keeper.bees" }, "reply": "\"Only the rude.\"" },
+            { "id": "smoke", "text": "\"Can I borrow the smoker?\"", "if": { "has": "lamp" }, "locked": "(you need a light)",
+              "reply": "\"Light it from your lamp, then.\"" },
+            { "id": "hives", "text": "\"Show me the hives.\"", "line": "You ask to see the hives.",
+              "reply": "\"Wait there.\" She walks off into the garden.", "do": [{ "move": "keeper", "to": "garden" }] },
+            { "id": "rude", "text": "\"Your bees are a menace.\"", "reply": "She lowers her veil.",
+              "do": [{ "set": "keeper.cross", "to": true }], "then": "end" }
+          ]
+        },
+        "jar": {
+          "say": "\"Have you got a jar?\"",
+          "noLeave": true,
+          "options": [
+            { "id": "no-jar", "text": "\"No.\"", "keys": ["no"], "reply": "\"Come back when you have.\"", "then": "end" },
+            { "id": "stall", "text": "\"Give me a moment.\"", "reply": "She waits." }
+          ]
+        },
+        "cold": {
+          "say": "The beekeeper keeps her veil down.",
+          "options": [
+            { "id": "sorry", "text": "\"I'm sorry.\"", "reply": "\"Hmph. Very well.\"",
+              "do": [{ "set": "keeper.cross", "to": false }], "then": "start" }
+          ]
+        }
+      }
+    }
+  },
+  "events": {
+    "buzz": { "say": "A bee drifts past your ear." }
+  },
+  "rules": [
+    {
+      "id": "keeper-greets",
+      "on": "arrive", "in": "orchard", "once": true, "if": { "here": "keeper" },
+      "do": [{ "converse": "keeper" }]
+    }
+  ]
+}

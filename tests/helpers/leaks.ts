@@ -6,6 +6,9 @@ import { join } from 'node:path';
 import {
   ACT_SPEC,
   CHARACTER_SPEC,
+  DIALOGUE_NODE_SPEC,
+  DIALOGUE_OPTION_SPEC,
+  DIALOGUE_SPEC,
   DIRECTION_SPEC,
   ENDING_SPEC,
   EVENT_SPEC,
@@ -34,15 +37,20 @@ export interface PackContent {
  */
 export const ENGINE_WORDS = new Set<string>([
   ...Object.keys(STANDARD_VERBS),
+  // The words of the standard verbs' patterns: "hint", "reply", "yes".
+  ...Object.values(STANDARD_VERBS).flatMap((v) => v.patterns.flatMap((p) => p.split(/[\s/]+/))).filter((w) => /^[a-z]+$/.test(w)),
   ...Object.keys(STANDARD_DIRECTIONS),
   ...Object.keys(STANDARD_MESSAGES),
   ...STANDARD_PROPS,
   ...SECTIONS,
-  ...[ROOM_SPEC, OBJECT_SPEC, CHARACTER_SPEC, ACT_SPEC, RULE_SPEC, EVENT_SPEC, ENDING_SPEC, VERB_SPEC, DIRECTION_SPEC, REGION_SPEC, MANIFEST_SPEC]
+  ...[ROOM_SPEC, OBJECT_SPEC, CHARACTER_SPEC, ACT_SPEC, RULE_SPEC, EVENT_SPEC, ENDING_SPEC, VERB_SPEC, DIRECTION_SPEC, REGION_SPEC, MANIFEST_SPEC,
+    DIALOGUE_SPEC, DIALOGUE_NODE_SPEC, DIALOGUE_OPTION_SPEC]
     .flatMap((spec) => Object.keys(spec.fields)),
   ...['break', 'case', 'catch', 'class', 'const', 'continue', 'default', 'delete', 'do', 'else', 'export', 'false',
     'for', 'function', 'if', 'import', 'in', 'let', 'new', 'null', 'return', 'switch', 'this', 'throw', 'true', 'try',
     'type', 'typeof', 'var', 'void', 'while'],
+  // JavaScript built-ins.
+  ...['promise', 'map', 'set', 'error', 'object', 'array', 'string', 'number', 'boolean', 'math', 'json', 'date'],
   // Browser globals that are also ordinary words a story might use.
   ...['window', 'document', 'history', 'location', 'navigator', 'console', 'screen', 'event'],
 ]);

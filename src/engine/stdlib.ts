@@ -85,6 +85,16 @@ export const STANDARD_VERBS: Record<string, StandardVerb> = {
   tell: { patterns: ['tell/inform OBJ about TEXT'] },
   talk: { patterns: ['talk/speak to/with OBJ', 'greet OBJ'] },
   say: { patterns: ['say/utter TEXT', 'say/utter TEXT to OBJ'] },
+  answer: {
+    patterns: [
+      'answer/reply/respond TEXT',
+      'answer/reply/respond OBJ with TEXT',
+      'answer/reply/respond TEXT to OBJ',
+      'answer/reply/respond to OBJ with TEXT',
+      'yes/yeah/yep/aye',
+      'no/nope',
+    ],
+  },
 };
 
 /** Pseudo-actions that rules can hook but players cannot type. */
@@ -282,4 +292,14 @@ export const STANDARD_MESSAGES: Record<string, string> = {
   talkDefault: '{The:noun} wait{s:noun} for you to ask about something.',
   saidNothing: 'Nothing happens.',
   saidToNobody: "{The:noun} do{es:noun}n't respond.",
+  noDialogue: '{The:noun} {has:noun} nothing to say to you.',
+  noAnswer: '{The:noun} {has:noun} no reply to that.',
+  answerWho: 'Say who you are answering: ANSWER someone WITH something.',
+  nobodyToAnswer: 'There is nobody here to answer.',
+
+  // Conversation menus
+  leaveConversation: 'Leave',
+  notAnOption: 'There is no option {n}.',
+  chooseOption: 'Choose one of the numbered options.',
+  resumeConversation: '{The:noun} pick{s:noun} up where you left off.',
 };

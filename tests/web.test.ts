@@ -102,6 +102,33 @@ for (const [pack, walkthrough] of [
   });
 }
 
+test('conversation options are buttons: clicking them gives the same transcript as typing the numbers', async (t) => {
+  if (skip) return t.skip(skip);
+  const file = 'walkthroughs/talk.txt';
+  const content = readFileSync(join(root, 'packs/sorrow-creek', file), 'utf8');
+  const expected = playWalkthrough(loadWorld(await loadPack(join(root, 'packs/sorrow-creek'))), content, file);
+  assert.ok(expected.ok, expected.problems.join('\n'));
+  // Node's transcript shows "> 3 (@ada.whistle)"; the page shows what was sent, "> 3".
+  const transcript = expected.transcript.replace(/^> (\d+) \(@[^)]+\)$/gm, '> $1');
+  const numbers = [...expected.transcript.matchAll(/^> (\d+) \(@[^)]+\)$/gm)].map((m) => m[1]);
+  assert.equal(numbers.length, 4);
+  const page = await open(fileUrl(`pack=sorrow-creek&seed=${parseWalkthrough(content).seed}`));
+  for (const c of parseWalkthrough(content).commands) {
+    if (!c.startsWith('@')) {
+      await type(page, c);
+      continue;
+    }
+    const before = await page.locator('#output p').count();
+    await page.locator(`#output button.option[data-option="${numbers.shift()}"]:not([disabled])`).click();
+    await page.waitForFunction((n) => document.querySelectorAll('#output p').length > n, before);
+  }
+  assert.equal(await outputText(page), transcript.split('\n').filter((l) => l !== '').join('\n'));
+  // Only the newest menu's buttons work; earlier ones went stale.
+  assert.equal(await page.locator('#output button.option:not([disabled])').count(), 0);
+  assert.ok((await page.locator('#output button.option[disabled]').count()) > 10);
+  await page.close();
+});
+
 test('served over HTTP: the pack picker switches packs, and save and restore use browser storage', async (t) => {
   if (skip) return t.skip(skip);
   const page = await open(`${httpBase}/?pack=sorrow-creek&seed=4`);

@@ -35,6 +35,7 @@ export function validate(src: PackSource, options: ValidateOptions = {}): Valida
       unobtainable(world, compiled, reachable, issues);
       vocabularyClashes(world, issues);
       unused(world, compiled, issues);
+      dialogueGraphs(world, compiled, issues);
     } catch (e) {
       if (!hasErrors()) throw e;
     }
@@ -203,6 +204,46 @@ function couldMeet(w: World, a: string, b: string): boolean {
   const places = (t: typeof ta) => new Set([...(t.location ? [t.location] : []), ...t.foundIn]);
   const pa = places(ta);
   return [...places(tb)].some((p) => pa.has(p));
+}
+
+/** Every node of a dialogue can be reached, and none traps the player. */
+function dialogueGraphs(w: World, c: CompileResult, issues: Issue[]): void {
+  const scripted = w.scripts.effects.size > 0 || w.scripts.actions.size > 0;
+  for (const [who, d] of w.dialogues) {
+    const nodes = d.nodes ?? {};
+    const seen = new Set<string>();
+    const queue: string[] = [];
+    const reach = (n: string) => {
+      if (n in nodes && !seen.has(n)) {
+        seen.add(n);
+        queue.push(n);
+      }
+    };
+    for (const e of d.entry ?? []) reach(e.node);
+    reach('start');
+    for (const t of c.conversesTo) if (t.character === who) reach(t.node);
+    while (queue.length > 0) {
+      for (const o of nodes[queue.pop()!]?.options ?? []) if (o.then && o.then !== 'end') reach(o.then);
+    }
+    for (const [name, node] of Object.entries(nodes)) {
+      if (!seen.has(name)) {
+        issues.push({
+          level: scripted ? 'warning' : 'error',
+          code: 'unreachable-node',
+          message:
+            `Node "${name}" of ${who}'s dialogue can't be reached from its entry, a "then" or a converse effect` +
+            (scripted ? ' (unless a script opens it)' : ''),
+        });
+      }
+      if (node?.noLeave && (node.options ?? []).length === 0) {
+        issues.push({
+          level: 'error',
+          code: 'dead-end-node',
+          message: `Node "${name}" of ${who}'s dialogue has "noLeave" but no options, so there is nothing to choose`,
+        });
+      }
+    }
+  }
 }
 
 function unused(w: World, c: CompileResult, issues: Issue[]): void {

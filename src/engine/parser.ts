@@ -27,6 +27,8 @@ export type Bindings = Partial<Record<Slot, string[]>>;
 export interface Candidate {
   pattern: Pattern;
   bindings: Bindings;
+  /** The words typed, when the whole input matched this pattern. */
+  typed?: string[];
 }
 
 export interface ParsedCommand {
@@ -181,7 +183,7 @@ function matchPrefix(p: Pattern, tokens: string[], directionWords: Map<string, s
 export function parse(env: ParserEnv, grammar: Pattern[], tokens: string[], known: Set<string>): ParseOutcome {
   const candidates: Candidate[] = [];
   for (const p of grammar) {
-    for (const b of matchPattern(p, tokens, env.world.directionWords)) candidates.push({ pattern: p, bindings: b });
+    for (const b of matchPattern(p, tokens, env.world.directionWords)) candidates.push({ pattern: p, bindings: b, typed: tokens });
   }
   candidates.sort((a, b) => b.pattern.literals - a.pattern.literals || a.pattern.index - b.pattern.index);
 
@@ -213,9 +215,15 @@ export function parse(env: ParserEnv, grammar: Pattern[], tokens: string[], know
   }
 
   let firstError: ParseOutcome | null = null;
+  // Actions whose better-ranked pattern named someone or something not here.
+  const absent = new Set<string>();
   for (const c of candidates) {
+    // Free text must not swallow it: "answer her with yes" when she has gone
+    // is not "answer" with the text "her with yes".
+    if (c.bindings.TEXT && absent.has(c.pattern.action)) continue;
     const r = resolveCandidate(env, c, known);
     if (r.kind === 'ok' || r.kind === 'question') return r;
+    if (r.key === 'cantSeeThat' || r.key === 'pronounGone') absent.add(c.pattern.action);
     firstError ??= r;
   }
   return firstError!;
@@ -269,7 +277,12 @@ function resolveCandidate(env: ParserEnv, c: Candidate, known: Set<string>): Par
     nouns: [],
     all: false,
     second: null,
-    topic: c.bindings.TEXT ? c.bindings.TEXT.filter((t) => t !== ',').join(' ') : null,
+    // A bare "yes" or "no" is its own answer.
+    topic: c.bindings.TEXT
+      ? c.bindings.TEXT.filter((t) => t !== ',').join(' ')
+      : action === 'answer' && c.typed
+        ? c.typed.filter((t) => t !== ',').join(' ')
+        : null,
     dir: c.bindings.DIR ? env.world.directionWords.get(c.bindings.DIR[0]) ?? null : null,
     notes: [],
   };
