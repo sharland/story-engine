@@ -1,7 +1,7 @@
 # Spec: conversation menus
 
-Status: proposed, not built. Decisions marked **Decide** need an answer before
-building.
+Status: accepted, being built. All five decisions below were accepted as
+recommended, with resuming added to decision 4.
 
 ## Why
 
@@ -139,6 +139,8 @@ add the `saddle` object and the `@ada-...` passages.
 |---|---|
 | `entry` | Which node `talk to` opens: a list of `{"if": condition, "node": id}`, first match wins. Without `entry`, the node called `start`. |
 | `leave` | *Text* shown when the player ends the conversation. Optional. |
+| `resume` | `false` to always start from `entry` after an interrupted conversation. Default `true`: pick up where it was left. |
+| `resumeText` | *Text* shown when a conversation resumes. Default: the standard message "{The:noun} picks up where you left off." |
 | `nodes` | Object of node id → node. |
 
 ### Node
@@ -201,7 +203,9 @@ conversation begins after the room description and arrival rules.
   - the `converse` effect.
 - **Game state:**
   - `conversation: {with, node} | null` for the open menu;
-  - `said: string[]` for what has been said.
+  - `said: string[]` for what has been said;
+  - `paused: {character: node}` for interrupted conversations;
+  - `lastSpeaker` for bare `yes` and `no`.
   - Both are plain JSON, so save, restore and undo cover them with no special
     code.
 - **Turn loop:**
@@ -282,6 +286,12 @@ conversation begins after the room description and arrival rules.
    yes, quietly. The alternative, locking the player in the menu until they
    pick or leave, is what console RPGs do. But this is a typed game, and
    typing `north` and having it refused would feel broken.
+   **Resuming (added):** the character remembers an interrupted
+   conversation. The engine records the node the player was at. The next
+   `talk to` picks up there with the `resumeText` line, without repeating
+   the node's opening line or effects. Leaving properly (`0`, `bye`) clears
+   it, so the next `talk` starts from `entry`. Meta commands (`save`,
+   `score`, `undo`) and typing mistakes do not close the menu.
 5. **Do topics and menus mix on one character?** Recommendation: yes. `talk
    to` opens the menu and `ask about` still uses topics. A novel's minor
    characters can stay ask/tell (cheap to write), while the major ones get
