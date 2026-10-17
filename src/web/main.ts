@@ -152,7 +152,17 @@ function show(blocks: Block[], extraClass = ''): void {
   for (const b of blocks) {
     const p = document.createElement('p');
     p.className = `b-${b.style} ${extraClass}`.trim();
-    p.textContent = b.text;
+    const label = b.style === 'option' && typeof b.option === 'number' ? /^(\s*)(\S.*)$/s.exec(b.text) : null;
+    if (label) {
+      // A numbered conversation option: a button that sends its number.
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'option';
+      button.dataset.option = String(b.option);
+      button.textContent = label[2];
+      button.addEventListener('click', () => submit(String(b.option)));
+      p.append(label[1], button);
+    } else p.textContent = b.text;
     output.append(p);
     transcript.push(b.text);
   }
@@ -202,11 +212,10 @@ async function bundleFromFolder(files: FileList): Promise<PackBundle> {
 // ---------------------------------------------------------------------------
 // Wiring
 
-form.addEventListener('submit', (e) => {
-  e.preventDefault();
-  if (!game) return;
-  const command = input.value;
-  input.value = '';
+function submit(command: string): void {
+  if (!game || input.disabled) return;
+  // Options already on screen go stale once anything else happens.
+  for (const b of output.querySelectorAll<HTMLButtonElement>('button.option')) b.disabled = true;
   if (command.trim() !== '') {
     commandHistory.push(command);
     historyIndex = commandHistory.length;
@@ -218,6 +227,14 @@ form.addEventListener('submit', (e) => {
     input.disabled = true;
     show([{ style: 'parser', text: 'Choose New game to play again.' }]);
   }
+  input.focus();
+}
+
+form.addEventListener('submit', (e) => {
+  e.preventDefault();
+  const command = input.value;
+  input.value = '';
+  submit(command);
 });
 
 input.addEventListener('keydown', (e) => {
