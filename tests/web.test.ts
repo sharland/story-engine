@@ -36,12 +36,18 @@ before(async () => {
   }
   const types: Record<string, string> = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json' };
   server = createServer((req, res) => {
-    const path = join(site, decodeURIComponent(new URL(req.url ?? '/', 'http://x').pathname).replace(/^\/$/, '/index.html'));
+    // Under /strict/, serve with a policy that forbids blob: and data: scripts.
+    let pathname = decodeURIComponent(new URL(req.url ?? '/', 'http://x').pathname);
+    const strict = pathname.startsWith('/strict/');
+    if (strict) pathname = pathname.slice('/strict'.length);
+    const path = join(site, pathname.replace(/^\/$/, '/index.html'));
     if (!path.startsWith(site) || !existsSync(path)) {
       res.writeHead(404).end();
       return;
     }
-    res.writeHead(200, { 'content-type': types[extname(path)] ?? 'application/octet-stream' });
+    const headers: Record<string, string> = { 'content-type': types[extname(path)] ?? 'application/octet-stream' };
+    if (strict) headers['content-security-policy'] = "script-src 'self' 'unsafe-inline'";
+    res.writeHead(200, headers);
     createReadStream(path).pipe(res);
   });
   await new Promise<void>((r) => server!.listen(0, '127.0.0.1', r));
@@ -132,5 +138,13 @@ test('a pack folder chosen in the page loads and plays, scripts included', async
   await page.waitForFunction(() => document.querySelector('#output p')?.textContent?.startsWith("Ada Pruitt's"));
   await type(page, 'whistle');
   assert.match(await outputText(page), /> whistle\nYour whistle carries down the street\. Nothing comes of it\.$/);
+  await page.close();
+});
+
+test('built-in pack scripts work under a policy that forbids blob: and data: scripts', async (t) => {
+  if (skip) return t.skip(skip);
+  const page = await open(`${httpBase}/strict/?pack=sorrow-creek&seed=1`);
+  for (const c of ['w', 'open jar', 'take sugar', 'e', 's', 'give sugar to mare', 'n', 'whistle']) await type(page, c);
+  assert.match(await outputText(page), /> whistle\nYou put two fingers to your lips and whistle\. A moment later the mare trots up/);
   await page.close();
 });

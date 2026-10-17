@@ -7,7 +7,7 @@
 // has errors. The page gets the packs through packs.js, a classic script,
 // so it also works when opened straight from disk.
 
-import { build } from 'esbuild';
+import { build, transform } from 'esbuild';
 import { copyFileSync, mkdirSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
@@ -30,6 +30,7 @@ export async function buildSite(outDir: string, packsDir = join(root, 'packs')):
   for (const f of ['index.html', 'style.css']) copyFileSync(join(root, 'src/web', f), join(outDir, f));
 
   const entries = [];
+  const compiled: string[] = [];
   for (const name of readdirSync(packsDir, { withFileTypes: true }).filter((e) => e.isDirectory()).map((e) => e.name).sort()) {
     const dir = join(packsDir, name);
     const report = validate(await loadPack(dir));
@@ -38,10 +39,19 @@ export async function buildSite(outDir: string, packsDir = join(root, 'packs')):
     }
     const bundle = bundleForDisk(await bundlePack(dir));
     const manifest = bundle.manifest as { id: string; title: string };
+    // Compile each script module into the page itself, so built-in packs never
+    // need a runtime import (some hosts forbid importing from blob: or data: URLs).
+    for (const s of bundle.scripts) {
+      const { code } = await transform(s.source, { loader: 'js', format: 'iife', globalName: '__packScript', target: 'es2020' });
+      compiled.push(`{ source: ${JSON.stringify(s.source)}, module: (function () {\n${code}\nreturn __packScript;\n})() }`);
+    }
     writeFileSync(join(outDir, `${manifest.id}.pack.json`), JSON.stringify(bundle));
     entries.push({ id: manifest.id, title: manifest.title, bundle });
   }
-  writeFileSync(join(outDir, 'packs.js'), `window.STORY_PACKS = ${JSON.stringify(entries)};\n`);
+  writeFileSync(
+    join(outDir, 'packs.js'),
+    `window.STORY_PACKS = ${JSON.stringify(entries)};\nwindow.STORY_SCRIPT_MODULES = [\n${compiled.join(',\n')}\n];\n`,
+  );
   writeFileSync(join(outDir, '.nojekyll'), '');
   return entries.map((e) => e.id);
 }

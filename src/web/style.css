@@ -26,6 +26,19 @@
     color-scheme: light;
   }
 }
+:root[data-theme="light"] {
+  --bg: #f6f3ea;
+  --panel: #ebe6d8;
+  --text: #23261f;
+  --dim: #5f6658;
+  --title: #7a4f00;
+  --heading: #1f6b3d;
+  --prompt: #1f6b3d;
+  --error: #a3322a;
+  --border: #d3ccb8;
+  --focus: #7a4f00;
+  color-scheme: light;
+}
 * { box-sizing: border-box; }
 html, body { height: 100%; }
 body {
@@ -54,8 +67,12 @@ button:hover, .file-button:hover { border-color: var(--dim); }
   gap: 8px;
   align-items: center;
   justify-content: space-between;
-  padding: 8px 16px;
+  padding-block: 8px;
   border-bottom: 1px solid var(--border);
+}
+.bar, .status, .foot, .terminal {
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
 }
 .actions { display: flex; flex-wrap: wrap; gap: 8px; }
 .file-button input { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
@@ -64,7 +81,7 @@ button:hover, .file-button:hover { border-color: var(--dim); }
   display: flex;
   justify-content: space-between;
   gap: 16px;
-  padding: 4px 16px;
+  padding-block: 4px;
   background: var(--panel);
   color: var(--dim);
   font-size: 14px;
@@ -74,7 +91,7 @@ button:hover, .file-button:hover { border-color: var(--dim); }
   width: 100%;
   max-width: 84ch;
   margin: 0 auto;
-  padding: 16px;
+  padding-block: 16px;
   display: flex;
   flex-direction: column;
   min-height: 0;
@@ -104,7 +121,7 @@ button:hover, .file-button:hover { border-color: var(--dim); }
   display: flex;
   justify-content: space-between;
   gap: 16px;
-  padding: 6px 16px;
+  padding-block: 6px;
   font-size: 12px;
   color: var(--dim);
   border-top: 1px solid var(--border);
@@ -113,6 +130,5 @@ button:hover, .file-button:hover { border-color: var(--dim); }
 .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 .noscript { padding: 16px; }
 @media (max-width: 600px) {
-  .bar, .status, .foot { padding-left: 16px; padding-right: 16px; }
-  .terminal { padding: 12px 16px; }
+  .terminal { padding-block: 12px; }
 }

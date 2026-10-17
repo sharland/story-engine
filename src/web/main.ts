@@ -23,6 +23,8 @@ interface PackEntry {
 declare global {
   interface Window {
     STORY_PACKS?: PackEntry[];
+    /** Script modules of the built-in packs, compiled into the page by the build. */
+    STORY_SCRIPT_MODULES?: Array<{ source: string; module: ScriptModule }>;
     /** For automated tests: the running game. */
     storyEngine?: { game: Game | null };
   }
@@ -46,14 +48,23 @@ window.storyEngine = { game: null };
 // ---------------------------------------------------------------------------
 // Loading packs
 
-/** Turn script source into a module. Blob URLs first; data URLs if the page's origin refuses them. */
+/**
+ * Turn script source into a module: a copy compiled into the page if there is
+ * one, else a blob: URL import, else a data: URL import.
+ */
 async function importScript(source: string): Promise<ScriptModule> {
+  const built = window.STORY_SCRIPT_MODULES?.find((m) => m.source === source);
+  if (built) return built.module;
   const blobUrl = URL.createObjectURL(new Blob([source], { type: 'text/javascript' }));
   try {
     return (await import(/* webpackIgnore: true */ blobUrl)) as ScriptModule;
   } catch {
     const dataUrl = `data:text/javascript;charset=utf-8,${encodeURIComponent(source)}`;
-    return (await import(/* webpackIgnore: true */ dataUrl)) as ScriptModule;
+    try {
+      return (await import(/* webpackIgnore: true */ dataUrl)) as ScriptModule;
+    } catch {
+      throw new Error('this page is not allowed to load script files from a pack (the built-in packs still work)');
+    }
   } finally {
     URL.revokeObjectURL(blobUrl);
   }
@@ -237,12 +248,16 @@ $('new-game').addEventListener('click', () => {
 });
 
 $('transcript').addEventListener('click', () => {
-  const blob = new Blob([`${transcript.join('\n')}\n`], { type: 'text/plain' });
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = `${game?.world.manifest.id ?? 'story'}-transcript.txt`;
-  a.click();
-  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+  const text = `${transcript.join('\n')}\n`;
+  const done = (message: string) => show([{ style: 'parser', text: message }]);
+  try {
+    navigator.clipboard.writeText(text).then(
+      () => done('Transcript copied to the clipboard.'),
+      () => done('Copying was blocked here. Select the text above and copy it instead.'),
+    );
+  } catch {
+    done('Copying was blocked here. Select the text above and copy it instead.');
+  }
 });
 
 let lastLoaded: PackBundle | null = null;
