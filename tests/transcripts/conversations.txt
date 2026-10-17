@@ -1,0 +1,376 @@
+# Conversation menus: a conversation opened by a rule, numbered choices,
+# keys and typed answers, once, said, locked options, then to a node and to
+# end, entry conditions, noLeave, a timed event during a conversation,
+# commands that close a menu and resuming, the character walking off, undo,
+# save and restore, and answers outside a menu.
+# pack: ../fixtures/testbed
+# seed: 3
+# Arriving opens the conversation (a rule with a converse effect).
+This is the testbed. Nothing here is a story; every room exists to exercise part of the engine.
+Part One: Morning
+Hall
+A square hall with a flagstone floor. A door leads north, the kitchen is east, an archway opens west to the garden and stone steps go down. A trapdoor is set in the ceiling.
+You have not been here before.
+The second paragraph of a first visit.
+An oil lamp stands on the floor.
+An upright piano stands against the wall.
+You can see a waxed coat here.
+
+> w
+Garden
+A walled garden. The house is east and a shed stands to the north.
+You can see a ladder and some pebbles here.
+The gardener is weeding a bed of roses.
+Rufus is here.
+
+> w
+Orchard
+Rows of old pear trees. Beehives stand in the grass. The garden is east.
+A beekeeper in a veiled hat is here.
+The beekeeper lifts her veil. "Come for honey?"
+  1. "Yes, please."
+  2. "Tell me about the bees."
+     "Can I borrow the smoker?" (you need a light)
+  3. "Show me the hives."
+  4. "Your bees are a menace."
+  0. Leave
+
+## Once, said and a timed event: "bees" goes, "sting" appears, a bee passes.
+> 2
+"Tell me about the bees."
+"They're calm today."
+  1. "Yes, please."
+  2. "Do they ever sting?"
+     "Can I borrow the smoker?" (you need a light)
+  3. "Show me the hives."
+  4. "Your bees are a menace."
+  0. Leave
+
+> 2
+"Do they ever sting?"
+"Only the rude."
+A bee drifts past your ear.
+  1. "Yes, please."
+  2. "Do they ever sting?"
+     "Can I borrow the smoker?" (you need a light)
+  3. "Show me the hives."
+  4. "Your bees are a menace."
+  0. Leave
+
+## Mistakes keep the menu open.
+> 9
+There is no option 9.
+
+> x hives
+I don't know the word "hives".
+
+## Meta commands keep it open too.
+> score
+You have scored 0 out of a possible 20, in 4 turns.
+  1. "Yes, please."
+  2. "Do they ever sting?"
+     "Can I borrow the smoker?" (you need a light)
+  3. "Show me the hives."
+  4. "Your bees are a menace."
+  0. Leave
+
+## Talking to her again just shows the menu.
+> talk to her
+  1. "Yes, please."
+  2. "Do they ever sting?"
+     "Can I borrow the smoker?" (you need a light)
+  3. "Show me the hives."
+  4. "Your bees are a menace."
+  0. Leave
+
+## A normal command closes the menu; talking again resumes.
+> look
+Orchard
+Rows of old pear trees. Beehives stand in the grass. The garden is east.
+A beekeeper in a veiled hat is here.
+
+> talk to beekeeper
+"Where was I?" she says.
+  1. "Yes, please."
+  2. "Do they ever sting?"
+     "Can I borrow the smoker?" (you need a light)
+  3. "Show me the hives."
+  4. "Your bees are a menace."
+  0. Leave
+
+## Asking about a topic closes the menu as well.
+> ask her about honey
+"Best in the county," she says.
+
+> talk to her
+"Where was I?" she says.
+  1. "Yes, please."
+  2. "Do they ever sting?"
+     "Can I borrow the smoker?" (you need a light)
+  3. "Show me the hives."
+  4. "Your bees are a menace."
+  0. Leave
+
+## Walking away and coming back.
+> e
+Garden
+A walled garden. The house is east and a shed stands to the north.
+You can see a ladder and some pebbles here.
+The gardener is weeding a bed of roses.
+Rufus is here.
+The cat pads in.
+
+> w
+Orchard
+Rows of old pear trees. Beehives stand in the grass. The garden is east.
+A beekeeper in a veiled hat is here.
+
+> talk to her
+"Where was I?" she says.
+  1. "Yes, please."
+  2. "Do they ever sting?"
+     "Can I borrow the smoker?" (you need a light)
+  3. "Show me the hives."
+  4. "Your bees are a menace."
+  0. Leave
+
+## Leaving properly: the next talk starts from the entry node.
+> 0
+"Mind the hives," she says.
+
+> talk to her
+The beekeeper lifts her veil. "Come for honey?"
+  1. "Yes, please."
+  2. "Do they ever sting?"
+     "Can I borrow the smoker?" (you need a light)
+  3. "Show me the hives."
+  4. "Your bees are a menace."
+  0. Leave
+
+> bye
+"Mind the hives," she says.
+
+> talk to her
+The beekeeper lifts her veil. "Come for honey?"
+  1. "Yes, please."
+  2. "Do they ever sting?"
+     "Can I borrow the smoker?" (you need a light)
+  3. "Show me the hives."
+  4. "Your bees are a menace."
+  0. Leave
+
+> leave
+"Mind the hives," she says.
+
+## Keys, and then to another node with no Leave.
+> talk to her
+The beekeeper lifts her veil. "Come for honey?"
+  1. "Yes, please."
+  2. "Do they ever sting?"
+     "Can I borrow the smoker?" (you need a light)
+  3. "Show me the hives."
+  4. "Your bees are a menace."
+  0. Leave
+
+> yes
+"Yes, please."
+"Then you'll need a jar."
+"Have you got a jar?"
+  1. "No."
+  2. "Give me a moment."
+
+> 0
+There is no option 0.
+
+> bye
+Choose one of the numbered options.
+
+> north
+Choose one of the numbered options.
+
+> save
+Saved.
+  1. "No."
+  2. "Give me a moment."
+
+> 2
+"Give me a moment."
+She waits.
+  1. "No."
+  2. "Give me a moment."
+
+## Undo and restore come back to the menu.
+> undo
+Previous turn undone.
+  1. "No."
+  2. "Give me a moment."
+
+> restore
+Restored.
+Orchard
+Rows of old pear trees. Beehives stand in the grass. The garden is east.
+A beekeeper in a veiled hat is here.
+  1. "No."
+  2. "Give me a moment."
+
+## Then to end.
+> no
+"No."
+"Come back when you have."
+
+## Typed answers inside a menu.
+> talk to her
+The beekeeper lifts her veil. "Come for honey?"
+  1. "Yes, please."
+  2. "Do they ever sting?"
+     "Can I borrow the smoker?" (you need a light)
+  3. "Show me the hives."
+  4. "Your bees are a menace."
+  0. Leave
+
+> answer beekeeper with honey
+"Yes, please."
+"Then you'll need a jar."
+"Have you got a jar?"
+  1. "No."
+  2. "Give me a moment."
+
+> say no
+"No."
+"Come back when you have."
+
+## Being rude changes the entry node.
+> talk to her
+The beekeeper lifts her veil. "Come for honey?"
+  1. "Yes, please."
+  2. "Do they ever sting?"
+     "Can I borrow the smoker?" (you need a light)
+  3. "Show me the hives."
+  4. "Your bees are a menace."
+  0. Leave
+
+> 4
+"Your bees are a menace."
+She lowers her veil.
+
+> talk to her
+The beekeeper keeps her veil down.
+  1. "I'm sorry."
+  0. Leave
+
+> 1
+"I'm sorry."
+"Hmph. Very well."
+The beekeeper lifts her veil. "Come for honey?"
+  1. "Yes, please."
+  2. "Do they ever sting?"
+     "Can I borrow the smoker?" (you need a light)
+  3. "Show me the hives."
+  4. "Your bees are a menace."
+  0. Leave
+
+> 0
+"Mind the hives," she says.
+
+## A locked option opens once the player has a light.
+> e
+Garden
+A walled garden. The house is east and a shed stands to the north.
+You can see a ladder and some pebbles here.
+The gardener is weeding a bed of roses.
+The cat is here.
+Rufus is here.
+
+> e
+Hall
+A square hall with a flagstone floor. A door leads north, the kitchen is east, an archway opens west to the garden and stone steps go down. A trapdoor is set in the ceiling.
+An oil lamp stands on the floor.
+An upright piano stands against the wall.
+You can see a waxed coat here.
+
+> get lamp
+Taken.
+
+> w
+Garden
+A walled garden. The house is east and a shed stands to the north.
+You can see a ladder and some pebbles here.
+The gardener is weeding a bed of roses.
+The cat is here.
+Rufus is here.
+
+> w
+Orchard
+Rows of old pear trees. Beehives stand in the grass. The garden is east.
+A beekeeper in a veiled hat is here.
+
+> talk to her
+The beekeeper lifts her veil. "Come for honey?"
+  1. "Yes, please."
+  2. "Do they ever sting?"
+  3. "Can I borrow the smoker?"
+  4. "Show me the hives."
+  5. "Your bees are a menace."
+  0. Leave
+
+> 3
+"Can I borrow the smoker?"
+"Light it from your lamp, then."
+  1. "Yes, please."
+  2. "Do they ever sting?"
+  3. "Can I borrow the smoker?"
+  4. "Show me the hives."
+  5. "Your bees are a menace."
+  0. Leave
+
+## The character walks off, which pauses the conversation.
+> 4
+You ask to see the hives.
+"Wait there." She walks off into the garden.
+
+> talk to her
+You can't see the beekeeper any more.
+
+> yes
+There is nobody here to answer.
+
+> e
+Garden
+A walled garden. The house is east and a shed stands to the north.
+You can see a ladder and some pebbles here.
+A beekeeper in a veiled hat is here.
+The gardener is weeding a bed of roses.
+Rufus is here.
+
+> yes
+The beekeeper says nothing.
+
+> talk to her
+"Where was I?" she says.
+  1. "Yes, please."
+  2. "Do they ever sting?"
+  3. "Can I borrow the smoker?"
+  4. "Show me the hives."
+  5. "Your bees are a menace."
+  0. Leave
+
+> 0
+"Mind the hives," she says.
+
+## Typed answers outside a menu go to the last speaker's topics.
+> answer gardener with roses
+"They need rain," he says.
+
+> yes
+The gardener shrugs.
+
+> reply roses
+"They need rain," he says.
+The cat pads in.
+
+> answer her with yes
+The beekeeper says nothing.
+
+## The menu's numbers mean nothing once it is closed.
+> 1
+I don't know the word "1".

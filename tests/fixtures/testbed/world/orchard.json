@@ -10,7 +10,7 @@
     "keeper": {
       "name": "beekeeper", "nouns": ["beekeeper", "keeper", "woman"], "pronoun": "her", "location": "orchard",
       "description": "A woman in a veiled hat.",
-      "initial": "A beekeeper is tending the hives.",
+      "initial": "A beekeeper in a veiled hat is here.",
       "props": { "cross": false },
       "topics": [
         { "keys": ["honey"], "text": "\"Best in the county,\" she says." }
