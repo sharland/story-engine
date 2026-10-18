@@ -1,0 +1,78 @@
+# Walking away from Ada's question and coming back: she raises it again,
+# in her own words, until it is answered; after that, talking resumes.
+# (Reported from play on the live site: the menu didn't come back.)
+# pack: ../../packs/sorrow-creek
+# seed: 781615976
+Ada Pruitt's best mare has bolted, and Ada is in no state to go after her. The sheriff is asleep. That leaves you.
+Main Street
+Sorrow Creek's only street runs between a handful of false-fronted buildings, baking in the afternoon sun. The livery stable is east and the sheriff's office west. A trail drops south into the dry wash below town.
+
+> e
+Livery Stable
+The stable smells of hay and harness oil. Most of the stalls hold drowsing horses, but the end stall stands open and empty. A wooden peg is driven into the wall by the door. Main Street is back to the west.
+On the peg you can see a lariat.
+Ada Pruitt, who owns the livery, is pacing beside the empty stall.
+"You seen my Juniper?" Ada asks.
+  1. "Not yet. Which way did she go?"
+  2. "I'd know her if I had. What's she like?"
+  3. "I'm not here about a horse."
+  0. Leave
+
+## Walk off without answering, then come back.
+> w
+Main Street
+Sorrow Creek's only street runs between a handful of false-fronted buildings, baking in the afternoon sun. The livery stable is east and the sheriff's office west. A trail drops south into the dry wash below town.
+
+> e
+Livery Stable
+The stable smells of hay and harness oil. Most of the stalls hold drowsing horses, but the end stall stands open and empty. A wooden peg is driven into the wall by the door. Main Street is back to the west.
+On the peg you can see a lariat.
+Ada Pruitt, who owns the livery, is pacing beside the empty stall.
+Ada stops pacing. "Well? Have you seen her or not?"
+  1. "Not yet. Which way did she go?"
+  2. "I'd know her if I had. What's she like?"
+  3. "I'm not here about a horse."
+  0. Leave
+
+## Leave properly, then come back.
+> 0
+Ada turns back to the empty stall.
+
+> w
+Main Street
+Sorrow Creek's only street runs between a handful of false-fronted buildings, baking in the afternoon sun. The livery stable is east and the sheriff's office west. A trail drops south into the dry wash below town.
+
+> e
+Livery Stable
+The stable smells of hay and harness oil. Most of the stalls hold drowsing horses, but the end stall stands open and empty. A wooden peg is driven into the wall by the door. Main Street is back to the west.
+On the peg you can see a lariat.
+Ada Pruitt, who owns the livery, is pacing beside the empty stall.
+"Any sign of Juniper?" Ada asks.
+  1. "Not yet. Which way did she go?"
+  2. "I'd know her if I had. What's she like?"
+  3. "I'm not here about a horse."
+  0. Leave
+
+## Answer, walk off mid-conversation, come back: no greeting, talk resumes.
+> 1
+"Not yet," you say. "Which way did she go?"
+"South, down into the wash. Something spooked her and she went off like her tail was on fire."
+  1. "Will she let me near her?"
+  2. "I'll bring her back."
+  0. Leave
+
+> w
+Main Street
+Sorrow Creek's only street runs between a handful of false-fronted buildings, baking in the afternoon sun. The livery stable is east and the sheriff's office west. A trail drops south into the dry wash below town.
+
+> e
+Livery Stable
+The stable smells of hay and harness oil. Most of the stalls hold drowsing horses, but the end stall stands open and empty. A wooden peg is driven into the wall by the door. Main Street is back to the west.
+On the peg you can see a lariat.
+Ada Pruitt, who owns the livery, is pacing beside the empty stall.
+
+> talk to ada
+"Where were we?" Ada says.
+  1. "Will she let me near her?"
+  2. "I'll bring her back."
+  0. Leave

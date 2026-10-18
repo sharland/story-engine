@@ -635,13 +635,14 @@ something the character says and a list of **options** for the player.
 | `entry` | Where `talk to` starts: a list of `{"if": condition, "node": id}`, first match wins. Without `entry`, or if none applies, the node called `start`. If there is no such node either, `talk to` falls back to the character's `talk` text. |
 | `leave` | *Text* when the player leaves the conversation with `0` or a leave word. |
 | `resume` | `false` to start from `entry` every time, instead of resuming an interrupted conversation (below). Default `true`. |
-| `resumeText` | *Text* when an interrupted conversation resumes. Default: "Mrs Hale picks up where you left off." (message `resumeConversation`). |
+| `resumeText` | *Text* when an interrupted conversation resumes, unless the node it resumes at has its own. Default: "Mrs Hale picks up where you left off." (message `resumeConversation`). |
 
 | Node field | Meaning |
 |---|---|
 | `say` | *Text* the character says on arriving at this node. |
 | `do` | Effects run on arriving at this node. |
 | `options` | List of options, shown in this order. |
+| `resumeText` | *Text* when an interrupted conversation resumes at this node, instead of the dialogue's. Useful on a node that asks a question: `"\"Well? Have you seen her or not?\""` reads better than "Where were we?". |
 | `noLeave` | `true` to drop `0. Leave`: the player must choose. Commands other than meta commands (`save`, `undo`, `score`...) get "Choose one of the numbered options." Use it for a moment that demands an answer, and give such a node at least one option that is always shown. |
 
 | Option field | Meaning |
@@ -686,10 +687,21 @@ the character a property (`"props": {"trust": 0}`), change it in options'
 (`{"var": "hale.trust", "gte": 2}`). The western demo pack does this with Ada.
 
 **Opening a conversation from a rule.** The effect `{"converse": "hale"}`
-opens Mrs Hale's menu as if the player had talked to her (from `entry`, not
-resuming), and `{"converse": "hale", "node": "paid"}` opens it at a given
-node. Put it in an `arrive` rule to have a character speak first, and use
-`"once": true` so it happens only the first time.
+opens Mrs Hale's menu just as `talk to hale` would: where an interrupted
+conversation left off, or else from `entry`. `{"converse": "hale", "node":
+"paid"}` opens it at that node, whatever was interrupted. Put it in an
+`arrive` rule to have a character speak first. Think about what happens when
+the player walks out and comes back:
+
+- `"once": true` makes the character speak only the first time. Afterwards
+  they stand there until the player thinks to `talk to` them, which players
+  read as the conversation having vanished.
+- Without `once`, they speak on every arrival, which suits a question they
+  are waiting for an answer to. Stop it when the answer is given: set a
+  property in each answering option's `do`, and test it in the rule's `if`.
+  The western's Ada works this way; see its `world/talk.json`.
+- A question node with its own `resumeText` re-asks the question in the
+  character's words when the player comes back mid-question.
 
 **Walkthroughs** choose options by id, not number, so adding an option above
 one does not break them: a line `@hale.bill` chooses option `bill` of Mrs
@@ -872,7 +884,7 @@ Effects are lists of small JSON objects, run in order:
 | `{"end": "ending-id"}` | ends the game |
 | `{"if": condition, "then": [effects], "else": [effects]}` | runs one branch |
 | `{"look": true}` | describes the player's room in full |
-| `{"converse": "hale"}`, `{"converse": "hale", "node": "paid"}` | opens that character's conversation menu, from its `entry` or at a given node ([section 8](#conversation-menus)). Nothing happens if they are not in the room. |
+| `{"converse": "hale"}`, `{"converse": "hale", "node": "paid"}` | opens that character's conversation menu as `talk to` would (resuming an interrupted conversation, or from its `entry`), or at a given node ([section 8](#conversation-menus)). Nothing happens if they are not in the room. |
 | `{"script": "name", "args": ...}` | runs a script effect |
 
 ### 10.4 Rules

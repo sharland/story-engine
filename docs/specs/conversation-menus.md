@@ -21,6 +21,12 @@ Where the build differs from this spec:
   and takes no turn.
 - **An unreachable node** is a warning rather than an error when the pack has
   scripts, since a script can open it.
+- **A `converse` effect without a node resumes** an interrupted conversation,
+  as `talk to` does. At first it always started from `entry`, so a character
+  who greeted the player on arrival started the conversation over, the
+  immersion break decision 4 was meant to prevent. Found in play.
+- **A node can have its own `resumeText`**, so a question can be re-asked in
+  the character's words instead of a generic "where were we".
 - **Extra messages:** `chooseOption`, `resumeConversation`, `noAnswer`,
   `answerWho` and `nobodyToAnswer`, as well as the three named below.
 

@@ -507,7 +507,7 @@ export class Game {
     else if ('cancel' in e) this.cancel(e.cancel);
     else if ('if' in e) this.run(this.test(e.if) ? e.then : e.else);
     else if ('look' in e) this.describeRoom(true);
-    else if ('converse' in e) this.openConversation(e.converse, e.node ?? null, false);
+    else if ('converse' in e) this.openConversation(e.converse, e.node ?? null);
     else if ('script' in e) {
       const fn = this.world.scripts.effects.get(e.script);
       if (!fn) throw new Error(`No script effect "${e.script}"`);
@@ -991,12 +991,12 @@ export class Game {
   // Conversation menus
 
   /**
-   * Open a character's dialogue: at a given node, or where an interrupted
-   * conversation left off (for "talk to"), or at its entry node. Returns
+   * Open a character's dialogue: at a given node, or else where an
+   * interrupted conversation left off, or else at its entry node. Returns
    * false if the character has no dialogue, is not here, or has no entry
    * node that applies.
    */
-  openConversation(who: string, node: string | null, resumable: boolean): boolean {
+  openConversation(who: string, node: string | null): boolean {
     const d = this.world.dialogues.get(who);
     if (!d || !isPresent(this.world, this.state, who)) return false;
     if (this.state.conversation?.with === who && !node) {
@@ -1006,7 +1006,7 @@ export class Game {
     const paused = this.state.paused[who];
     let target = node;
     let resumed = false;
-    if (!target && resumable && d.resume !== false && paused && d.nodes[paused]) {
+    if (!target && d.resume !== false && paused && d.nodes[paused]) {
       target = paused;
       resumed = true;
     }
@@ -1018,7 +1018,8 @@ export class Game {
     this.state.lastSpeaker = who;
     this.setPronoun(who);
     if (resumed) {
-      if (d.resumeText) this.sayAbout(who, d.resumeText);
+      const text = d.nodes[target].resumeText ?? d.resumeText;
+      if (text) this.sayAbout(who, text);
       else this.msg('resumeConversation', { noun: who });
     } else this.enterNode(who, target);
     this.menuDue = this.state.conversation !== null;
