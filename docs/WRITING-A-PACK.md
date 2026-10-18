@@ -1678,7 +1678,7 @@ success, which is when after-rules run.
 | `read` | `read OBJ` | yes, if lit |
 | `search` | `search OBJ`, `look/l in/inside/into OBJ` | if lit, and not a closed container |
 | `lookUnder` | `look/l under/behind/beneath OBJ` | yes |
-| `go` | `DIR`, `go/walk/run/head DIR` | if the player moves |
+| `go` | `DIR`, `go/walk/run/head/climb DIR` | if the player moves |
 | `enter` | `enter`, `enter OBJ`, `go/walk in/into/through OBJ`, `get in/into OBJ`, `climb in/into/through OBJ` | if the player moves |
 | `exit` | `exit/leave`, `get out` | if the player moves |
 | `take` | `take/get/grab/carry OBJ`, `pick up OBJ`, `pick OBJ up`, `take/get/remove OBJ from/off OBJ2`, `take/get OBJ out of OBJ2` | if taken |
@@ -1720,8 +1720,9 @@ success, which is when after-rules run.
 ## Appendix B: standard messages
 
 Override any of these in a `messages` section. Templates are explained in
-[section 5](#5-text); `{list}`, `{word}`, `{verb}`, `{n}`, `{title}` and
-`{reason}` are filled in by the engine for the messages that use them.
+[section 5](#5-text); `{list}`, `{word}`, `{verb}`, `{n}`, `{title}`,
+`{reason}` and `{directions}` (every direction the pack knows, for `help`)
+are filled in by the engine for the messages that use them.
 
 | Key | Default text |
 |---|---|
@@ -1753,7 +1754,7 @@ Override any of these in a `messages` section. Templates are explained in
 | `goodbye` | Goodbye. |
 | `verboseOn` | Full room descriptions from now on. |
 | `briefOn` | Full descriptions only for rooms you have not seen before. |
-| `help` | Type short commands: LOOK, INVENTORY, a direction such as NORTH or N, TAKE something, PUT something IN something, OPEN something, ASK someone ABOUT something. Other commands: SCORE, SAVE, RESTORE, UNDO, AGAIN, RESTART, QUIT, ABOUT. |
+| `help` | Type short commands: LOOK, INVENTORY, TAKE something, PUT something IN something, OPEN something, TALK TO someone, ASK someone ABOUT something.<br><br>To move, type a direction: {directions}.<br><br>Other commands: SCORE, SAVE, RESTORE, UNDO, AGAIN, RESTART, QUIT, ABOUT. |
 | `endingTitle` | *** {title} *** |
 | `finalScore` | In {turnCount} you scored {score} out of a possible {max}. |
 | `darkTitle` | Darkness |

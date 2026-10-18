@@ -18,7 +18,9 @@ You can see a waxed coat here.
 There is nothing to undo.
 
 > help
-Type short commands: LOOK, INVENTORY, a direction such as NORTH or N, TAKE something, PUT something IN something, OPEN something, ASK someone ABOUT something. Other commands: SCORE, SAVE, RESTORE, UNDO, AGAIN, RESTART, QUIT, ABOUT.
+Type short commands: LOOK, INVENTORY, TAKE something, PUT something IN something, OPEN something, TALK TO someone, ASK someone ABOUT something.
+To move, type a direction: NORTH (N), SOUTH (S), EAST (E), WEST (W), NORTHEAST (NE), NORTHWEST (NW), SOUTHEAST (SE), SOUTHWEST (SW), UP (U), DOWN (D), IN, OUT and AROUND.
+Other commands: SCORE, SAVE, RESTORE, UNDO, AGAIN, RESTART, QUIT, ABOUT.
 
 > about
 Testbed (version 1.0.0)

@@ -33,7 +33,7 @@ export const STANDARD_VERBS: Record<string, StandardVerb> = {
   lookUnder: { patterns: ['look/l under/behind/beneath OBJ'] },
 
   // Movement.
-  go: { patterns: ['DIR', 'go/walk/run/head DIR'] },
+  go: { patterns: ['DIR', 'go/walk/run/head/climb DIR'] },
   enter: {
     patterns: ['enter', 'enter OBJ', 'go/walk in/into/through OBJ', 'get in/into OBJ', 'climb in/into/through OBJ'],
   },
@@ -171,9 +171,10 @@ export const STANDARD_MESSAGES: Record<string, string> = {
   verboseOn: 'Full room descriptions from now on.',
   briefOn: 'Full descriptions only for rooms you have not seen before.',
   help:
-    'Type short commands: LOOK, INVENTORY, a direction such as NORTH or N, TAKE something, ' +
-    'PUT something IN something, OPEN something, ASK someone ABOUT something. Other ' +
-    'commands: SCORE, SAVE, RESTORE, UNDO, AGAIN, RESTART, QUIT, ABOUT.',
+    'Type short commands: LOOK, INVENTORY, TAKE something, PUT something IN something, ' +
+    'OPEN something, TALK TO someone, ASK someone ABOUT something.\n\n' +
+    'To move, type a direction: {directions}.\n\n' +
+    'Other commands: SCORE, SAVE, RESTORE, UNDO, AGAIN, RESTART, QUIT, ABOUT.',
   endingTitle: '*** {title} ***',
   finalScore: 'In {turnCount} you scored {score} out of a possible {max}.',
 

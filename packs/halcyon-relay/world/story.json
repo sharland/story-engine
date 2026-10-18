@@ -217,6 +217,25 @@
       "id": "sleep-bunk",
       "on": "sleep", "in": "quarters",
       "say": "Not now. Not with the Wren on its way."
+    },
+
+    {
+      "_note": "The ladders are plain exits; these let CLIMB LADDER take them too.",
+      "id": "climb-ladder-down",
+      "on": "climb", "object": "ladder", "in": ["spine", "dish-mount"],
+      "say": "You climb down the ladder.",
+      "do": [{ "if": { "at": "spine" }, "then": [{ "movePlayer": "shaft" }], "else": [{ "movePlayer": "hull" }] }]
+    },
+    {
+      "id": "climb-ladder-up",
+      "on": "climb", "object": "ladder", "in": ["reactor", "hull"],
+      "say": "You climb up the ladder.",
+      "do": [{ "if": { "at": "reactor" }, "then": [{ "movePlayer": "shaft" }], "else": [{ "movePlayer": "dish-mount" }] }]
+    },
+    {
+      "id": "climb-ladder-shaft",
+      "on": "climb", "object": "ladder", "in": "shaft",
+      "say": "The rungs go both ways: UP to the spine corridor, DOWN to the reactor bay."
     }
   ]
 }

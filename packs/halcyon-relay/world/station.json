@@ -153,6 +153,15 @@
     "outer-hatch": { "name": "outer hatch", "nouns": ["hatch"], "adjectives": ["outer"], "door": true,
       "foundIn": ["airlock", "hull"], "description": "The airlock's outer hatch. Beyond it there is nothing to breathe." },
 
+    "ladder": { "name": "ladder", "nouns": ["ladder", "rungs", "well"], "adjectives": ["maintenance", "ladder"],
+      "foundIn": ["spine", "shaft", "reactor", "hull", "dish-mount"], "scenery": true,
+      "description": [
+        { "if": { "at": "spine" }, "text": "Steel rungs drop down the well into the maintenance shaft." },
+        { "if": { "at": "shaft" }, "text": "The rungs run up to the spine corridor and down to the reactor bay." },
+        { "if": { "at": "reactor" }, "text": "The rungs lead up into the shaft." },
+        { "if": { "at": ["hull", "dish-mount"] }, "text": "A maintenance ladder, its rungs worn bright by boots, links the hull and the dish mount." }
+      ] },
+
     "planet": { "name": "gas giant", "nouns": ["giant", "planet", "clouds"], "adjectives": ["gas"], "foundIn": ["hull", "dish-mount"], "scenery": true,
       "description": "It fills half the sky, banded in rust and cream." },
     "dish": {
