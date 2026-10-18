@@ -244,6 +244,7 @@ export interface DialogueNodeDef {
   do?: Effect[];
   options?: DialogueOptionDef[];
   noLeave?: boolean;
+  resumeText?: TextDef;
 }
 
 export interface DialogueDef {

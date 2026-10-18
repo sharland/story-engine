@@ -209,3 +209,37 @@ test('walkthroughs choose options by id, and report one that is not on screen', 
   const bad = playWalkthrough(world, '# expect: done\ntalk to guard\n@guard.news\n@guard.go\n', 'w.txt');
   assert.deepEqual(bad.problems, ['Command 2 ("@guard.news"): that option is not on screen']);
 });
+
+test('a conversation opened by a rule resumes where it was interrupted, with the node\'s own resume line', () => {
+  const src = pack({
+    rooms: hall,
+    characters: { guard: { name: 'guard', location: 'yard' } },
+    dialogues: {
+      guard: {
+        resumeText: '"Where were we?"',
+        nodes: {
+          start: {
+            say: '"Halt! Who goes there?"',
+            resumeText: '"I asked you a question. Who goes there?"',
+            options: [{ id: 'friend', text: '"A friend."', reply: '"Pass, friend."', then: 'chat' }],
+          },
+          chat: { options: [{ id: 'weather', text: '"Cold out."', reply: '"Bitter."' }] },
+          alarm: { say: '"Intruder!"' },
+        },
+      },
+    },
+    rules: [
+      { on: 'arrive', in: 'yard', if: { not: { said: 'guard.friend' } }, do: [{ converse: 'guard' }] },
+      { on: 'jump', in: 'yard', do: [{ converse: 'guard', node: 'alarm' }] },
+    ],
+  });
+  const out = play(src, ['n', 's', 'n', '1', 's', 'n', 'talk to guard', 'jump']);
+  assert.match(out[0], /"Halt! Who goes there\?"\n {2}1\. "A friend\."\n {2}0\. Leave$/);
+  // Walked off without answering: coming back, the guard asks again in his own words.
+  assert.equal(out[2], 'Yard\nThe guard is here.\n"I asked you a question. Who goes there?"\n  1. "A friend."\n  0. Leave');
+  // Once answered, the rule stops firing; talking resumes at the later node.
+  assert.equal(out[5], 'Yard\nThe guard is here.');
+  assert.equal(out[6], '"Where were we?"\n  1. "Cold out."\n  0. Leave');
+  // A rule that names a node starts there, whatever was interrupted.
+  assert.equal(out[7], '"Intruder!"\n  0. Leave');
+});

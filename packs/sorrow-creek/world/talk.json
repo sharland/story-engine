@@ -2,24 +2,26 @@
   "dialogues": {
     "ada": {
       "entry": [
-        { "if": { "not": { "var": "ada.asked" } }, "node": "juniper" },
+        { "if": { "not": { "var": "ada.answered" } }, "node": "juniper" },
         { "node": "hub" }
       ],
       "leave": "Ada turns back to the empty stall.",
       "resumeText": "\"Where were we?\" Ada says.",
       "nodes": {
         "juniper": {
-          "say": "\"You seen my Juniper?\" Ada asks.",
+          "say": [{ "if": { "var": "ada.asked" }, "text": "\"Any sign of Juniper?\" Ada asks.",
+            "else": "\"You seen my Juniper?\" Ada asks." }],
+          "resumeText": "Ada stops pacing. \"Well? Have you seen her or not?\"",
           "do": [{ "set": "ada.asked", "to": true }],
           "options": [
             { "id": "not-yet", "text": "\"Not yet. Which way did she go?\"", "keys": ["no", "not yet"],
               "line": "\"Not yet,\" you say. \"Which way did she go?\"",
-              "reply": "@ada-which-way", "then": "plan" },
+              "reply": "@ada-which-way", "do": [{ "set": "ada.answered", "to": true }], "then": "plan" },
             { "id": "what-like", "text": "\"I'd know her if I had. What's she like?\"",
-              "reply": "@ada-describes-juniper", "then": "plan" },
+              "reply": "@ada-describes-juniper", "do": [{ "set": "ada.answered", "to": true }], "then": "plan" },
             { "id": "not-here", "text": "\"I'm not here about a horse.\"",
               "reply": "Ada's face closes like a door. \"Then you're no use to me.\"",
-              "do": [{ "dec": "ada.trust" }], "then": "end" }
+              "do": [{ "dec": "ada.trust" }, { "set": "ada.answered", "to": true }], "then": "end" }
           ]
         },
         "plan": {
@@ -53,9 +55,10 @@
   },
   "rules": [
     {
+      "_note": "Until you answer her, Ada raises it whenever you come in.",
       "id": "ada-greets",
-      "on": "arrive", "in": "livery", "once": true,
-      "if": { "all": [{ "here": "ada" }, { "not": { "var": "mare.caught" } }] },
+      "on": "arrive", "in": "livery",
+      "if": { "all": [{ "here": "ada" }, { "not": { "var": "ada.answered" } }, { "not": { "var": "mare.caught" } }] },
       "do": [{ "converse": "ada" }]
     }
   ]

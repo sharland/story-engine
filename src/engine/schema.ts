@@ -614,7 +614,7 @@ export const DIALOGUE_OPTION_SPEC: Spec = {
 };
 
 export const DIALOGUE_NODE_SPEC: Spec = {
-  fields: { say: text, do: effects, options: list(dialogueOption), noLeave: bool },
+  fields: { say: text, do: effects, options: list(dialogueOption), noLeave: bool, resumeText: text },
 };
 
 export const DIALOGUE_SPEC: Spec = {

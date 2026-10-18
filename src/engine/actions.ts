@@ -385,7 +385,7 @@ export const ACTIONS: Record<string, Handler> = {
       return false;
     }
     const hasDialogue = g.world.dialogues.has(t.id);
-    if (hasDialogue && g.openConversation(t.id, null, true)) return true;
+    if (hasDialogue && g.openConversation(t.id, null)) return true;
     if (t.talk) {
       g.sayAbout(t.id, t.talk);
       g.state.lastSpeaker = t.id;
