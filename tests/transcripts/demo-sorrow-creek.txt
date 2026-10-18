@@ -21,7 +21,7 @@ The wash narrows to a crack in the rock a little way upstream. Nothing bigger th
 Downstream the wash runs out into open desert. You'd need a horse for that.
 
 > z
-The afternoon drags on.
+You stand still and let her look at you. One ear swivels your way.
 
 > n
 Main Street
@@ -118,7 +118,7 @@ A dun mare stands in the middle of the wash, flanks twitching.
 She'd have you in the dirt before you got a leg over.
 
 > lasso mare
-You shake out a loop and toss it. The mare sidesteps without even hurrying, then watches you coil the rope back in.
+You shake out a loop and toss it. The mare sidesteps without even hurrying, then watches you coil the rope back in. She won't be rushed.
 
 > pat mare
 She jerks her head away before you can touch her.

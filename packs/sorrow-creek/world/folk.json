@@ -27,10 +27,10 @@
     },
     "mare": {
       "name": "mare", "nouns": ["mare", "horse", "juniper"], "adjectives": ["dun"], "pronoun": "her", "location": "wash",
-      "props": { "calm": false, "caught": false },
+      "props": { "calm": false, "caught": false, "patience": 0, "settled": false },
       "description": ["A dun mare with black stockings and a white star.",
         { "if": { "var": "mare.caught" }, "text": "Your rope is round her neck.",
-          "else": "She watches you with one eye, ready to bolt." }],
+          "else": "She watches you with one eye, ready to bolt if you crowd her." }],
       "initial": [{ "if": { "var": "mare.caught" }, "text": "The mare stands at the end of your rope.",
         "else": "A dun mare stands in the middle of the wash, flanks twitching." }],
       "noTopic": "The mare flicks an ear."

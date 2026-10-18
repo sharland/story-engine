@@ -147,6 +147,21 @@ Rules for fair puzzles:
 - **Clue before lock.** The player must be able to find the information or
   object before they need it, and the text must point to it ("a keypad", "she
   keeps a jar of sugar on her desk").
+- **Three clues for anything essential.** Players miss things: they skip a
+  menu option, never examine the right object, ask the wrong person. Anything
+  the player must work out needs at least three clues in different places,
+  which game designers call the Three Clue Rule. In the western, the sugar
+  is mentioned by one of Ada's menu options, by another that is always
+  offered, by her answer when asked about the mare, and by the sheriff.
+- **Prefer soft gates for story beats.** A hard gate has one way through: no
+  sugar, no horse. A soft gate has a best way and a worse way: patience
+  catches the mare too, but slower, for fewer points, with a sore horse and
+  a cross owner, and without the whistle trick sugar would have taught. Soft
+  gates make choices matter without making them all compulsory. If every
+  important fact hides behind one menu option, players learn to click every
+  option of every menu, and the menu becomes a checklist. Keep hard gates
+  for real locks, and give story obstacles more than one route at different
+  costs ([recipe](#14-recipes)). Each route still needs its own clues.
 - **Use standard verbs where you can** (open, unlock, give, put, push, turn,
   wear, ask). When you need a special verb, add it with sensible synonyms
   ([section 11](#11-verbs-directions-and-messages)) and mention the action in
@@ -160,8 +175,8 @@ Rules for fair puzzles:
   available, but do not rely on players knowing that.
 - **Timed puzzles** (a fuse burning, air running out) must give a warning before
   the end and must be beatable with a few turns to spare.
-- **No guessing games.** Every puzzle has one sensible solution the text
-  supports. Accept reasonable phrasings by giving objects good nouns and
+- **No guessing games.** Every puzzle has at least one sensible solution
+  the text supports. Accept reasonable phrasings by giving objects good nouns and
   adjectives, and verbs good patterns.
 
 Aim for **one significant puzzle per act** and several small ones (a locked
@@ -1259,6 +1274,20 @@ gardener), says thanks, awards points and perhaps starts the next act.
 low value, and at zero sets `lamp.on` false. A before-rule on `switchOn` that
 refuses when fuel is zero.
 
+**Two ways past an obstacle (a soft gate).** The western's mare: sugar
+calms her (the best route), or standing still for three turns settles her
+(the worse one). Give the obstacle properties (`"props": {"calm": false,
+"patience": 0, "settled": false}`). A rule on `wait` in that room increments
+`patience`, with a different line for each step so the player can see it
+working, and sets `settled` at 3. A `"continue": true` rule on `go` there
+resets both, and so does the failed attempt (`lasso` while neither is
+true). The success rule accepts either property and says which way it went.
+Make the routes cost differently: the best one awards points and teaches a
+later trick the other doesn't, and the ending text notices which way the
+player took. Clue each route separately: Ada says "don't go crowding her",
+the mare is "ready to bolt if you crowd her", and the failed lasso adds "She
+won't be rushed."
+
 **Time pressure.** At the moment the pressure starts, schedule the deadline
 event, and schedule a warning event a few turns earlier. Cancel both when the
 player succeeds.
@@ -1649,7 +1678,7 @@ success, which is when after-rules run.
 | `read` | `read OBJ` | yes, if lit |
 | `search` | `search OBJ`, `look/l in/inside/into OBJ` | if lit, and not a closed container |
 | `lookUnder` | `look/l under/behind/beneath OBJ` | yes |
-| `go` | `DIR`, `go/walk/run/head DIR` | if the player moves |
+| `go` | `DIR`, `go/walk/run/head/climb DIR` | if the player moves |
 | `enter` | `enter`, `enter OBJ`, `go/walk in/into/through OBJ`, `get in/into OBJ`, `climb in/into/through OBJ` | if the player moves |
 | `exit` | `exit/leave`, `get out` | if the player moves |
 | `take` | `take/get/grab/carry OBJ`, `pick up OBJ`, `pick OBJ up`, `take/get/remove OBJ from/off OBJ2`, `take/get OBJ out of OBJ2` | if taken |
@@ -1691,8 +1720,9 @@ success, which is when after-rules run.
 ## Appendix B: standard messages
 
 Override any of these in a `messages` section. Templates are explained in
-[section 5](#5-text); `{list}`, `{word}`, `{verb}`, `{n}`, `{title}` and
-`{reason}` are filled in by the engine for the messages that use them.
+[section 5](#5-text); `{list}`, `{word}`, `{verb}`, `{n}`, `{title}`,
+`{reason}` and `{directions}` (every direction the pack knows, for `help`)
+are filled in by the engine for the messages that use them.
 
 | Key | Default text |
 |---|---|
@@ -1724,7 +1754,7 @@ Override any of these in a `messages` section. Templates are explained in
 | `goodbye` | Goodbye. |
 | `verboseOn` | Full room descriptions from now on. |
 | `briefOn` | Full descriptions only for rooms you have not seen before. |
-| `help` | Type short commands: LOOK, INVENTORY, a direction such as NORTH or N, TAKE something, PUT something IN something, OPEN something, ASK someone ABOUT something. Other commands: SCORE, SAVE, RESTORE, UNDO, AGAIN, RESTART, QUIT, ABOUT. |
+| `help` | Type short commands: LOOK, INVENTORY, TAKE something, PUT something IN something, OPEN something, TALK TO someone, ASK someone ABOUT something.<br><br>To move, type a direction: {directions}.<br><br>Other commands: SCORE, SAVE, RESTORE, UNDO, AGAIN, RESTART, QUIT, ABOUT. |
 | `endingTitle` | *** {title} *** |
 | `finalScore` | In {turnCount} you scored {score} out of a possible {max}. |
 | `darkTitle` | Darkness |

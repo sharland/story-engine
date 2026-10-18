@@ -56,7 +56,7 @@ Ada Pruitt, who owns the livery, is pacing beside the empty stall.
 ## Answer, walk off mid-conversation, come back: no greeting, talk resumes.
 > 1
 "Not yet," you say. "Which way did she go?"
-"South, down into the wash. Something spooked her and she went off like her tail was on fire."
+"South, down into the wash. Something spooked her and she went off like her tail was on fire. Don't go crowding her. She hates to be crowded."
   1. "Will she let me near her?"
   2. "I'll bring her back."
   0. Leave

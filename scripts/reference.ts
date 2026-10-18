@@ -28,7 +28,7 @@ export function verbTable(): string {
 
 export function messageTable(): string {
   const rows = ['| Key | Default text |', '|---|---|'];
-  for (const [k, v] of Object.entries(STANDARD_MESSAGES)) rows.push(`| \`${k}\` | ${v.replace(/\|/g, '\\|')} |`);
+  for (const [k, v] of Object.entries(STANDARD_MESSAGES)) rows.push(`| \`${k}\` | ${v.replace(/\|/g, '\\|').replace(/\n/g, '<br>')} |`);
   return rows.join('\n');
 }
 

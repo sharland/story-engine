@@ -949,7 +949,7 @@ export class Game {
         return;
       }
       case 'help':
-        this.msg('help');
+        this.msg('help', { directions: this.directionList() });
         return;
       case 'about':
         this.about();
@@ -985,6 +985,16 @@ export class Game {
     }
     this.print(`Licence: ${m.licence}.`);
     for (const c of m.credits ?? []) this.print(c);
+  }
+
+  /** Every direction the player can type, for help: "NORTH (N), ..., IN and OUT". */
+  private directionList(): string {
+    const names = [...this.world.directions.values()].map((d) => {
+      const short = d.words.slice(1).filter((w) => w.length <= 2);
+      const name = d.words[0].toUpperCase();
+      return short.length > 0 ? `${name} (${short.join(', ').toUpperCase()})` : name;
+    });
+    return joinList(names);
   }
 
   // -------------------------------------------------------------------------

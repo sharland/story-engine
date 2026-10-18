@@ -1,0 +1,16 @@
+# The soft path: no sugar. Waiting quietly settles the mare enough to rope
+# her, but she comes home sore, Ada notices, and the five points for
+# calming her are lost.
+# expect: home
+# score: 20
+e
+take lariat
+w
+s
+lasso mare
+z
+z
+z
+lasso mare
+n
+e
