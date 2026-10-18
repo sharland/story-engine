@@ -35,14 +35,17 @@
     {
       "id": "lasso-skittish-mare",
       "on": "lasso", "object": "mare",
-      "if": { "not": { "var": "mare.calm" } },
-      "say": "You shake out a loop and toss it. The mare sidesteps without even hurrying, then watches you coil the rope back in."
+      "if": { "not": { "any": [{ "var": "mare.calm" }, { "var": "mare.settled" }] } },
+      "say": "You shake out a loop and toss it. The mare sidesteps without even hurrying, then watches you coil the rope back in. She won't be rushed.",
+      "do": [{ "set": "mare.patience", "to": 0 }]
     },
     {
       "id": "lasso-calm-mare",
       "on": "lasso", "object": "mare",
       "if": { "not": { "var": "mare.caught" } },
-      "say": "This time she stands for it. The loop settles over her neck and she lets you draw it snug.",
+      "say": [{ "if": { "var": "mare.calm" },
+        "text": "This time she stands for it. The loop settles over her neck and she lets you draw it snug.",
+        "else": "You move slowly and let the loop drop over her neck. She flinches and throws her head, but she doesn't run." }],
       "do": [
         { "set": "mare.caught", "to": true },
         { "set": "mare.following", "to": true },
@@ -79,6 +82,32 @@
     },
 
     {
+      "_note": "The soft path: without sugar, patience settles her, at the cost of the whistle, five points and a sore horse.",
+      "id": "mare-patience",
+      "on": "wait", "in": "wash",
+      "if": { "all": [{ "here": "mare" }, { "not": { "any": [{ "var": "mare.calm" }, { "var": "mare.settled" }, { "var": "mare.caught" }] } }] },
+      "do": [
+        { "inc": "mare.patience" },
+        { "if": { "var": "mare.patience", "gte": 3 },
+          "then": [
+            { "set": "mare.settled", "to": true },
+            { "say": "She drops her head and starts nosing at a clump of dry grass, as if she has forgotten you. You could likely get a rope on her now." }
+          ],
+          "else": [
+            { "if": { "var": "mare.patience", "eq": 1 },
+              "then": [{ "say": "You stand still and let her look at you. One ear swivels your way." }],
+              "else": [{ "say": "She takes a step towards you, thinks better of it, and stops. But she doesn't back away." }] }
+          ] }
+      ]
+    },
+    {
+      "id": "mare-patience-lost",
+      "on": "go", "in": "wash", "continue": true,
+      "if": { "not": { "any": [{ "var": "mare.calm" }, { "var": "mare.caught" }] } },
+      "do": [{ "set": "mare.patience", "to": 0 }, { "set": "mare.settled", "to": false }]
+    },
+
+    {
       "id": "ride-caught-mare",
       "on": "ride", "object": "mare",
       "if": { "var": "mare.caught" },
@@ -107,7 +136,9 @@
       "id": "mare-comes-home",
       "on": "arrive", "in": "livery",
       "if": { "var": "mare.caught" },
-      "say": "Ada lets out a whoop that sets every horse in the stable stamping.",
+      "say": ["Ada lets out a whoop that sets every horse in the stable stamping.",
+        { "if": { "not": { "var": "mare.calm" } },
+          "text": "Then she sees the sweat on Juniper's neck where the rope has rubbed, and her mouth goes tight. \"Rough way to bring a horse home,\" she says." }],
       "do": [{ "award": "returned-mare" }, { "end": "home" }]
     }
   ]
