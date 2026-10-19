@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080.8" height="584" viewBox="0 0 1080.8 584" role="img" aria-label="Trouble at Sorrow Creek: map">
+<title>Trouble at Sorrow Creek: map</title>
+<style>
+text { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "DejaVu Sans Mono", "Liberation Mono", monospace; font-size: 11px; fill: #1f1d1a; }
+.title { font-size: 16px; font-weight: 700; }
+.sub, .muted { fill: #77706a; }
+.head { font-size: 12px; font-weight: 700; }
+.small { font-size: 10px; }
+.em { font-style: italic; }
+.b { font-weight: 700; }
+.item { fill: #0d7a4f; font-weight: 700; }
+.scenery { fill: #1c6a8c; font-weight: 700; }
+.person { fill: #7a3fb0; font-weight: 700; }
+.exit { fill: #b0590e; font-weight: 700; }
+.missing { fill: #c0262d; text-decoration: underline; }
+.gate { fill: #c0262d; }
+.goal { fill: #2f5e1e; font-weight: 700; }
+.end { fill: #8a1c1c; font-weight: 700; }
+.card { fill: #ffffff; stroke: #1f1d1a; stroke-width: 1.2; }
+.card-muted { fill: #ffffff; stroke: #77706a; stroke-width: 1; stroke-dasharray: 4 3; }
+.band { stroke: none; }
+.edge { fill: none; stroke: #1f1d1a; stroke-width: 1.4; }
+.edge-gate { fill: none; stroke: #c0262d; stroke-width: 1.6; stroke-dasharray: 6 4; }
+.edge-soft { fill: none; stroke: #77706a; stroke-width: 1.2; }
+.label-bg { fill: #faf8f3; }
+</style>
+<defs>
+<marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#1f1d1a"/></marker>
+<marker id="arrow-gate" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#c0262d"/></marker>
+<marker id="arrow-soft" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#77706a"/></marker>
+</defs>
+<rect width="100%" height="100%" fill="#faf8f3"/>
+<text x="24" y="38" class="title" xml:space="preserve">Trouble at Sorrow Creek: map</text>
+<text x="24" y="56" class="sub" xml:space="preserve">Rooms laid out by compass from the start. Coloured words are ones the player can use there.</text>
+<line class="edge" x1="799.2" y1="144" x2="669.2" y2="144"/>
+<line class="edge" x1="411.6" y1="144" x2="281.6" y2="144"/>
+<line class="edge" x1="540.4" y1="212" x2="540.4" y2="318"/>
+<rect class="card" x="411.6" y="76" width="257.6" height="136" rx="4"/>
+<rect class="band" x="412.2" y="76.6" width="256.4" height="24" rx="3.5" fill="#efebe3"/>
+<text x="421.6" y="92" class="head" xml:space="preserve">Main Street</text>
+<text x="659.2" y="92" class="small muted" text-anchor="end">start</text>
+<text x="421.6" y="118" xml:space="preserve">Sorrow Creek's only street runs</text>
+<text x="421.6" y="132" xml:space="preserve">between a handful of false-fronted</text>
+<text x="421.6" y="146" xml:space="preserve"><tspan class="scenery">buildings</tspan>, baking in the afternoon</text>
+<text x="421.6" y="160" xml:space="preserve"><tspan class="scenery">sun</tspan>. The livery stable is <tspan class="exit">east</tspan> and</text>
+<text x="421.6" y="174" xml:space="preserve">the sheriff's office <tspan class="exit">west</tspan>. A <tspan class="scenery">trail</tspan></text>
+<text x="421.6" y="188" xml:space="preserve">drops <tspan class="exit">south</tspan> into the dry wash below</text>
+<text x="421.6" y="202" xml:space="preserve"><tspan class="scenery">town</tspan>.</text>
+<rect class="card" x="799.2" y="76" width="257.6" height="178" rx="4"/>
+<rect class="band" x="799.8" y="76.6" width="256.4" height="24" rx="3.5" fill="#efebe3"/>
+<text x="809.2" y="92" class="head" xml:space="preserve">Livery Stable</text>
+<text x="809.2" y="118" xml:space="preserve">The stable smells of <tspan class="scenery">hay</tspan> and <tspan class="scenery">harness</tspan></text>
+<text x="809.2" y="132" xml:space="preserve"><tspan class="scenery">oil</tspan>. Most of the <tspan class="scenery">stalls</tspan> hold</text>
+<text x="809.2" y="146" xml:space="preserve">drowsing <tspan class="scenery">horses</tspan>, but the end <tspan class="scenery">stall</tspan></text>
+<text x="809.2" y="160" xml:space="preserve">stands open and empty. A wooden <tspan class="scenery">peg</tspan></text>
+<text x="809.2" y="174" xml:space="preserve">is driven into the <tspan class="scenery">wall</tspan> by the <tspan class="scenery">door</tspan>.</text>
+<text x="809.2" y="188" xml:space="preserve">Main Street is back to the <tspan class="exit">west</tspan>. <tspan class="muted em">The</tspan></text>
+<text x="809.2" y="202" xml:space="preserve"><tspan class="muted em">end</tspan> <tspan class="muted em">stall</tspan> <tspan class="muted em">waits</tspan> <tspan class="muted em">for</tspan> <tspan class="muted em">its</tspan> <tspan class="muted em">owner.</tspan></text>
+<text x="809.2" y="216" xml:space="preserve"></text>
+<text x="809.2" y="230" xml:space="preserve"><tspan class="muted">+</tspan> <tspan class="item">lariat</tspan><tspan class="muted">,</tspan> <tspan class="muted">on</tspan> <tspan class="muted">the</tspan> <tspan class="muted">peg</tspan></text>
+<text x="809.2" y="244" xml:space="preserve"><tspan class="muted">+</tspan> <tspan class="person">Ada</tspan> <tspan class="person">Pruitt</tspan></text>
+<rect class="card" x="24" y="76" width="257.6" height="150" rx="4"/>
+<rect class="band" x="24.6" y="76.6" width="256.4" height="24" rx="3.5" fill="#efebe3"/>
+<text x="34" y="92" class="head" xml:space="preserve">Sheriff's Office</text>
+<text x="34" y="118" xml:space="preserve">A cramped office with a scarred</text>
+<text x="34" y="132" xml:space="preserve"><tspan class="scenery">desk</tspan>, a cold <tspan class="scenery">stove</tspan> and an empty <tspan class="scenery">cell</tspan></text>
+<text x="34" y="146" xml:space="preserve">at the back. A <tspan class="scenery">poster</tspan> is tacked to</text>
+<text x="34" y="160" xml:space="preserve">the <tspan class="scenery">wall</tspan>. Main Street is <tspan class="exit">east</tspan>.</text>
+<text x="34" y="174" xml:space="preserve"></text>
+<text x="34" y="188" xml:space="preserve"><tspan class="muted">+</tspan> <tspan class="item">glass</tspan> <tspan class="item">jar</tspan><tspan class="muted">,</tspan> <tspan class="muted">on</tspan> <tspan class="muted">the</tspan> <tspan class="muted">desk</tspan></text>
+<text x="34" y="202" xml:space="preserve"><tspan class="muted">+</tspan> <tspan class="item">sugar</tspan> <tspan class="item">lumps</tspan><tspan class="muted">,</tspan> <tspan class="muted">in</tspan> <tspan class="muted">the</tspan> <tspan class="muted">glass</tspan> <tspan class="muted">jar</tspan></text>
+<text x="34" y="216" xml:space="preserve"><tspan class="muted">+</tspan> <tspan class="person">sheriff</tspan></text>
+<rect class="card" x="411.6" y="318" width="257.6" height="164" rx="4"/>
+<rect class="band" x="412.2" y="318.6" width="256.4" height="24" rx="3.5" fill="#efebe3"/>
+<text x="421.6" y="334" class="head" xml:space="preserve">Dry Wash</text>
+<text x="421.6" y="360" xml:space="preserve">A dry <tspan class="scenery">creek</tspan> <tspan class="scenery">bed</tspan> of cracked <tspan class="scenery">clay</tspan> and</text>
+<text x="421.6" y="374" xml:space="preserve">white <tspan class="scenery">stones</tspan>, walled by crumbling</text>
+<text x="421.6" y="388" xml:space="preserve"><tspan class="scenery">banks</tspan>. <tspan class="scenery">Mesquite</tspan> clings to the edges.</text>
+<text x="421.6" y="402" xml:space="preserve">The <tspan class="scenery">trail</tspan> climbs <tspan class="exit">north</tspan> back into</text>
+<text x="421.6" y="416" xml:space="preserve">town; the wash itself runs <tspan class="exit">upstream</tspan></text>
+<text x="421.6" y="430" xml:space="preserve">and <tspan class="exit">downstream</tspan>.</text>
+<text x="421.6" y="444" xml:space="preserve"></text>
+<text x="421.6" y="458" xml:space="preserve"><tspan class="muted">+</tspan> <tspan class="person">mare</tspan></text>
+<text x="421.6" y="472" xml:space="preserve"><tspan class="muted">upstream,</tspan> <tspan class="muted">downstream:</tspan> <tspan class="muted">no</tspan> <tspan class="muted">way</tspan> <tspan class="muted">on</tspan></text>
+<rect class="label-bg" x="742.6" y="127" width="56" height="14" rx="3"/><text x="770.6" y="138" class="small exit" text-anchor="middle">west/out</text>
+<rect class="label-bg" x="282.2" y="127" width="56" height="14" rx="3"/><text x="310.2" y="138" class="small exit" text-anchor="middle">east/out</text>
+<text x="24" y="550" xml:space="preserve"><tspan class="item">item</tspan><tspan class="muted"> to take   </tspan><tspan class="scenery">scenery</tspan><tspan class="muted"> to examine   </tspan><tspan class="person">person</tspan>   <tspan class="exit">exit</tspan>   <tspan class="missing">named but not examinable</tspan>   <tspan class="muted em">grey italic</tspan><tspan class="muted">: shown only sometimes</tspan></text>
+<text x="24" y="568" xml:space="preserve"><tspan class="gate">Red dashed line</tspan><tspan class="muted">: a way that opens only when the condition shown is met, or through a locked door. </tspan><tspan class="muted">Arrow: one way only. Grey label: a door.</tspan></text>
+</svg>

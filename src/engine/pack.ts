@@ -142,6 +142,7 @@ export function compilePack(src: PackSource): CompileResult {
   const assumeReachable: string[] = [];
   const assumeObtainable: string[] = [];
   const assumeUsed: string[] = [];
+  const ignoreWords: string[] = [];
 
   for (const { file, content } of src.data) {
     if (!isPlainObject(content)) {
@@ -175,6 +176,10 @@ export function compilePack(src: PackSource): CompileResult {
             assumeUsed: (cc, vv, w) => {
               if (!Array.isArray(vv) || vv.some((x) => typeof x !== 'string')) cc.error(w, 'type', 'Expected a list of ids');
               else assumeUsed.push(...(vv as string[]));
+            },
+            ignoreWords: (cc, vv, w) => {
+              if (!Array.isArray(vv) || vv.some((x) => typeof x !== 'string')) cc.error(w, 'type', 'Expected a list of words');
+              else ignoreWords.push(...(vv as string[]));
             },
           },
         });
@@ -426,7 +431,7 @@ export function compilePack(src: PackSource): CompileResult {
     dialogues,
     texts,
     scripts,
-    validator: { assumeReachable, assumeObtainable, assumeUsed },
+    validator: { assumeReachable, assumeObtainable, assumeUsed, ignoreWords },
     walkthroughs: src.walkthroughs,
     origin: src.origin,
   };

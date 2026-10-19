@@ -5,6 +5,8 @@ export type { ActionCtx, Block, BlockStyle, GameOptions, Host } from './game.ts'
 export { compilePack, loadWorld, PackError } from './pack.ts';
 export type { CompileResult } from './pack.ts';
 export { validate } from './validator.ts';
+export { CORRIDOR_RUN, LOOPLESS_ROOMS, packShape, SPUR_ROOMS, MUD_FIGURES } from './shape.ts';
+export type { AreaShape, Note, PackShape } from './shape.ts';
 export { isBundle, sourceFromBundle } from './bundle.ts';
 export { inlineTheme, THEME_NOTES, themeType } from './theme.ts';
 export type { PackBundle, ScriptImporter } from './bundle.ts';

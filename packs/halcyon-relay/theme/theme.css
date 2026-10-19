@@ -182,7 +182,6 @@ body::after {
   border: 1px solid var(--cyan);
   padding: 0 8px;
   text-shadow: 0 0 6px rgba(72, 216, 255, 0.7);
-  animation: flash 0.35s steps(2, start) 3;
 }
 .output .echo { color: var(--cyan); margin-top: 1em; }
 
@@ -231,7 +230,6 @@ body::after {
 :focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
 
 @keyframes scanner { to { left: 84%; } }
-@keyframes flash { to { visibility: hidden; } }
 
 @media (max-width: 600px) {
   body { font-size: 21px; background-size: 420px 420px, 170px 170px, 210px 210px, 190px 190px, 310px 310px, 260px 260px, 240px 240px, 280px 280px; }

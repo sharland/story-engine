@@ -2,7 +2,7 @@
 
 This guide is for anyone turning a novel, or any setting, into a playable
 story-engine pack. You need the book, this guide, and a terminal that can run
-the commands in [Tools](#13-tools-validate-play-walkthrough). You do not need
+the commands in [Tools](#13-tools-validate-shape-play-walkthrough). You do not need
 to read or change the engine, and you must not change it.
 
 Contents:
@@ -19,7 +19,7 @@ Contents:
 10. [Logic: variables, conditions, effects, rules](#10-logic-variables-conditions-effects-rules)
 11. [Verbs, directions and messages](#11-verbs-directions-and-messages)
 12. [Script modules](#12-script-modules)
-13. [Tools: validate, play, walkthrough](#13-tools-validate-play-walkthrough)
+13. [Tools: validate, shape, play, walkthrough](#13-tools-validate-shape-play-walkthrough)
 14. [Recipes](#14-recipes)
 15. [Definition of done](#15-definition-of-done)
 16. [Licences and credits](#16-licences-and-credits)
@@ -135,6 +135,25 @@ character changes sides, night falls, the protagonist travels in time.
 - **Every room description names its exits** ("The stable is east and the
   street is west."). The engine does not list exits for the player.
 - Keep a map in `NOTES.md` as a list of rooms with their exits.
+
+Lessons from the [study of the first MUDs](research/mud-structure.md), which
+`validate` checks for as notes:
+
+- **Give each region more than one way in, and join regions to each other,
+  not only to a hub.** The old worlds were a hub with themed spurs: you went in
+  and came back out the same way.
+- **Put at least one loop in any region of eight rooms or more**, so players
+  can choose a route instead of walking there and back.
+- **Never repeat a description.** Copied rooms (forests, deserts, mazes) were
+  the real filler. Make a long journey one room, or a short chain with a timed
+  event.
+- **Make every dead end a payoff**: a person, a find, a view, a clue.
+- **Every noun a description names should be examinable.** The commonest
+  slip, and the cheapest to fix.
+- **Gate with people, knowledge and acts more than with keys**, and give each
+  gate a second, costlier way through.
+- Regions of roughly 8 to 20 rooms, each crossable in about 6 steps, matched
+  the old worlds; one region per major setting or act is a good start.
 
 ### 3.5 Design puzzles from the plot
 
@@ -314,7 +333,10 @@ parts, which your CSS can restyle:
 
 Test the skin at phone width (the page must not scroll sideways), keep body
 text large and high in contrast, and wrap animation in
-`@media (prefers-reduced-motion: reduce)`. A font in a theme must have a
+`@media (prefers-reduced-motion: reduce)`. Don't make anything blink: it
+tires readers, pulls the eye from the text, and fails the accessibility rule
+that anything flashing or blinking must be able to be stopped
+([WCAG 2.2.2](https://www.w3.org/WAI/WCAG22/Understanding/pause-stop-hide.html)). A font in a theme must have a
 licence that allows embedding; the SIL Open Font Licence does, as long as its
 text travels with the font. Don't copy another game's or show's logo,
 lettering or artwork: make the mood yours.
@@ -359,7 +381,7 @@ Each data file is one JSON object with any of these sections:
 | `verbs` | object of id → verb | [11](#11-verbs-directions-and-messages) |
 | `directions` | object of id → direction | [11](#11-verbs-directions-and-messages) |
 | `messages` | object of key → text | [11](#11-verbs-directions-and-messages) |
-| `validator` | `{"assumeReachable": [ids], "assumeObtainable": [ids], "assumeUsed": [ids]}` | [13](#13-tools-validate-play-walkthrough) |
+| `validator` | `{"assumeReachable": [ids], "assumeObtainable": [ids], "assumeUsed": [ids], "ignoreWords": [words]}` | [13](#13-tools-validate-shape-play-walkthrough) |
 
 Any other section name is an error.
 
@@ -1197,13 +1219,15 @@ runs differ, which catches most breaches of rules 1 and 2. Scripts are
 trusted code: they run with full access to the page or the process, so only
 load packs from people you trust.
 
-## 13. Tools: validate, play, walkthrough
+## 13. Tools: validate, shape, play, walkthrough
 
 Run these from the story-engine repository (Node.js 22.18 or later). `<pack>`
 is the path to your pack directory, wherever it is.
 
 ```sh
 node src/cli/main.ts validate <pack>         # check everything, play the walkthroughs
+node src/cli/main.ts shape <pack>            # measure the map, list notes on its shape
+node src/cli/main.ts diagram <pack> map -o map.svg   # draw it: map, puzzles or talk
 node src/cli/main.ts play <pack> --seed 1    # play it yourself
 node src/cli/main.ts walkthrough <pack>      # print full walkthrough transcripts
 node src/cli/main.ts walkthrough <pack> win  # just walkthroughs/win.txt
@@ -1255,6 +1279,97 @@ and warnings take it into account:
 ```
 
 Templates in passages are checked like any other text.
+
+### Notes: the map's shape
+
+`validate` also prints notes. A note is advice, not a mistake: it never makes
+validation fail, and you may keep one if you have a reason. They come from a
+[study of how the first MUDs were built](research/mud-structure.md), which
+found the patterns that make a map feel like filler:
+
+| Note | When |
+|---|---|
+| `shared-description` | Two or more rooms have the same description. |
+| `corridor-run` | Three or more empty rooms in a row, each with two ways out and nothing in it: no object, scenery, character or rule of its own. |
+| `empty-dead-end` | A room with one way in and out and nothing in it. |
+| `one-way-in` | A region of five rooms or more (not the start's) that only one room can be entered by. |
+| `no-loop` | A region of eight rooms or more, or the rooms in no region, with no way round: every trip is there and back. |
+| `unexamined-noun` | A room's text names something ("a cold stove", "the bulkhead") that nothing in the room answers to. |
+
+The last one is a heuristic. It reads up to three words after "a", "the",
+"your", "of", "with" and the like, and at the start of each sentence, and is
+satisfied if any of them is a word of something that can be in the room
+(placed there, found there, moved there or passing through), of the room's
+name or a neighbouring room's name, or a direction. It misses nouns with no
+word like that in front ("drowsing horses"), and it will sometimes name
+something nobody would examine. For words like that, list them in the
+`validator` section, and they count as known everywhere:
+
+```json
+"validator": { "ignoreWords": ["cabin", "lane"] }
+```
+
+Before reaching for `ignoreWords`, ask whether a player would type
+`examine` with that word. If they might, add scenery: "I don't know the word"
+is exactly the reply this check exists to prevent.
+
+`shape <pack>` prints the measures behind the notes beside the figures for the
+two DikuMUD worlds the study measured, then one row per region, then the
+notes:
+
+```
+                                This pack  DikuMUD 1991  DikuMUD III
+Exits per room                        2.2           2.3          2.2
+Dead ends                             45%           14%          26%
+...
+Region       Rooms  Ways in  Dead ends  Corridors  Loops  Across  Gates  Joins
+(no region)      9        2          4          0      0       4      3  outside
+outside          2        2          1          0      0       1      0  (no region)
+```
+
+"Ways in" counts the rooms of a region that an exit or `movePlayer` from
+outside leads to. "Across" is the longest walk, in steps, between two of its
+rooms by the shortest route. "Gates" counts exits with a condition or through
+a door that starts locked. The study's figures are a yardstick from two worlds,
+not targets.
+
+### Diagrams
+
+`diagram <pack> map|puzzles|talk` draws the pack as an SVG picture, worked
+out from the data, so it is never out of date. Open it in a browser. Each
+shows the game's own words, not just its shape:
+
+- **map**: rooms laid out by compass from the start, each with its
+  description. Words the player can use there are coloured: things to take,
+  scenery, people and the ways out. A noun nothing answers to is underlined
+  in red (the `unexamined-noun` note, where you can see it). Ways that open
+  only under a condition, or through a locked door, are red dashed lines
+  labelled with the condition.
+- **puzzles**: what must happen before what, as a chart from the first steps
+  down to the endings. Each step is a command as a player would type it, with
+  the game's reply. Each line says what the step makes true for the next
+  ("carrying lariat", "reach Control Room"). It follows rule order: a rule
+  that refuses until you have a rope makes the rope a need of every later
+  rule it stands in front of. Steps that lead to no score or ending are left
+  out. It is a full spoiler.
+- **talk**: each conversation menu as cards: what the character says, every
+  line the player can choose, the reply, any condition and effect, and where
+  the choice leads. Topics for ASK and TELL follow.
+
+The chart can't see inside scripts, and it only knows a clue is needed when a
+rule asks for an exact word or code that some text contains. Use it to check
+your design, not to prove the game can be won: that is what walkthroughs
+are for.
+
+The demo packs' diagrams are in [`docs/diagrams`](diagrams/):
+
+| | Sorrow Creek | Halcyon Relay |
+|---|---|---|
+| Map | [map](diagrams/sorrow-creek-map.svg) | [map](diagrams/halcyon-relay-map.svg) |
+| Puzzles | [puzzles](diagrams/sorrow-creek-puzzles.svg) | [puzzles](diagrams/halcyon-relay-puzzles.svg) |
+| Talk | [talk](diagrams/sorrow-creek-talk.svg) | [talk](diagrams/halcyon-relay-talk.svg) |
+
+![The Halcyon Relay's puzzle chart](diagrams/halcyon-relay-puzzles.svg)
 
 ### Walkthroughs
 
@@ -1379,7 +1494,10 @@ A pack is done when all of these are true:
 - [ ] There is a walkthrough for **every ending**, and each passes.
 - [ ] The winning walkthrough has `# score:` equal to the maximum score.
 - [ ] Every room description names its exits, and directions are consistent.
-- [ ] Every object a player is told about can be examined.
+- [ ] Every object a player is told about can be examined, and every
+      `unexamined-noun` note is dealt with: scenery added, or the word listed
+      in `validator.ignoreWords` because nobody would examine it.
+- [ ] Every other note is fixed, or you know why you're keeping it.
 - [ ] Every puzzle's obvious wrong attempts get a helpful response.
 - [ ] No state makes the game unwinnable without ending it.
 - [ ] `pack.json` has title, version, author, source, licence and credits, and

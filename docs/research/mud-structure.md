@@ -40,8 +40,8 @@ The Alfa repository's licence note is explicit that the 2020 re-release does
 not cover derivatives: "derivative work isn't automatically under LGPL. It
 would need to be re-released by its respective authors." Aggregate numbers
 are facts, not copied expression, but CircleMUD's licence claims any use "in
-any way". Because a pack made from your novels may be sold, I left the
-derivatives out. See [the decision at the end](#a-decision-for-you).
+any way". Because a pack made from your novels may be sold, the derivatives are left
+out. See [the decision at the end](#decision-the-derivatives-stay-out).
 
 Both worlds come from the same authors, so this is one design tradition at two
 points in time (1991, and its descendant maintained up to 2020), not a survey
@@ -245,15 +245,20 @@ per major setting or act.
 ### Our demos on the same yardstick
 
 Sorrow Creek (4 rooms) and the Halcyon Relay (11) are too small to compare
-structurally. On detail they are already richer: no corridors, no copied
-text, 75 to 100% of rooms with something to examine and 1.5 to 2.4 details
-per room. But the Halcyon Relay's main region is spoke-shaped, a hub with
-dead ends around it. That is the theme-park pattern in miniature: fine for an
+structurally. On detail they are richer: no corridors and no copied text.
+When this study was first written, 75 to 100% of their rooms had something to
+examine, at 1.5 to 2.4 details per room. The noun check proposed below then
+found about 30 things their room text named that the player couldn't examine.
+With those added, every room has something to examine, at 3.8 to 4.5 details
+per room. The Halcyon Relay's main region is spoke-shaped, a hub with dead
+ends around it. That is the theme-park pattern in miniature: fine for an
 11-room demo, and a warning for a novel-sized pack.
 
 ## What to carry into the engine
 
-These are proposals; none of them is built.
+All three are now built: the notes and the `shape` command in
+[`src/engine/shape.ts`](../../src/engine/shape.ts), and the checklist in
+[the pack guide](../WRITING-A-PACK.md#34-build-the-map).
 
 1. **Shape advisories in `validate`**, as notes rather than warnings, since
    they are matters of judgement:
@@ -282,20 +287,17 @@ These are proposals; none of them is built.
 - **"Content" counts things placed, not whether they matter.** No number here
   measures whether a place is any fun.
 
-## A decision for you
+## Decision: the derivatives stay out
 
-**Should the study include the non-commercial derivatives?** That means
-CircleMUD/tbaMUD, Merc and SillyMUD.
+**Question:** should the study include the non-commercial derivatives
+(CircleMUD/tbaMUD, Merc and SillyMUD)?
 
 - **The upside:** they would broaden the sample beyond one design tradition.
 - **The cost:** their licences forbid using them to make money "in any way",
-  and your packs may be commercial.
-- **My recommendation:** leave them out. The two LGPL worlds already answer
-  the questions you asked, and the derivatives descend from the same 1991
-  world, so they would add less independent evidence than their size
-  suggests. If you want them anyway, I'll add them as a separate,
-  clearly-labelled cross-check once you've decided you're comfortable with
-  their terms.
+  and the packs may be commercial.
+- **Decided:** leave them out. The two LGPL worlds already answer the
+  questions asked, and the derivatives descend from the same 1991 world, so
+  they would add less independent evidence than their size suggests.
 
 ## Re-running it
 

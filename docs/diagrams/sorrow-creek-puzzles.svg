@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="808.1" height="840" viewBox="0 0 808.1 840" role="img" aria-label="Trouble at Sorrow Creek: puzzles">
+<title>Trouble at Sorrow Creek: puzzles</title>
+<style>
+text { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "DejaVu Sans Mono", "Liberation Mono", monospace; font-size: 11px; fill: #1f1d1a; }
+.title { font-size: 16px; font-weight: 700; }
+.sub, .muted { fill: #77706a; }
+.head { font-size: 12px; font-weight: 700; }
+.small { font-size: 10px; }
+.em { font-style: italic; }
+.b { font-weight: 700; }
+.item { fill: #0d7a4f; font-weight: 700; }
+.scenery { fill: #1c6a8c; font-weight: 700; }
+.person { fill: #7a3fb0; font-weight: 700; }
+.exit { fill: #b0590e; font-weight: 700; }
+.missing { fill: #c0262d; text-decoration: underline; }
+.gate { fill: #c0262d; }
+.goal { fill: #2f5e1e; font-weight: 700; }
+.end { fill: #8a1c1c; font-weight: 700; }
+.card { fill: #ffffff; stroke: #1f1d1a; stroke-width: 1.2; }
+.card-muted { fill: #ffffff; stroke: #77706a; stroke-width: 1; stroke-dasharray: 4 3; }
+.band { stroke: none; }
+.edge { fill: none; stroke: #1f1d1a; stroke-width: 1.4; }
+.edge-gate { fill: none; stroke: #c0262d; stroke-width: 1.6; stroke-dasharray: 6 4; }
+.edge-soft { fill: none; stroke: #77706a; stroke-width: 1.2; }
+.label-bg { fill: #faf8f3; }
+</style>
+<defs>
+<marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#1f1d1a"/></marker>
+<marker id="arrow-gate" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#c0262d"/></marker>
+<marker id="arrow-soft" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#77706a"/></marker>
+</defs>
+<rect width="100%" height="100%" fill="#faf8f3"/>
+<text x="24" y="38" class="title" xml:space="preserve">Trouble at Sorrow Creek: puzzles</text>
+<text x="24" y="56" class="sub" xml:space="preserve">What must happen before what, worked out from the rules. Each line is labelled with what it makes true.</text>
+<path class="edge" d="M146.2,138 C146.2,170.5 146.2,170.5 146.2,201" marker-end="url(#arrow)"/>
+<path class="edge" d="M476.6,384 C476.6,413 381.5,413 381.5,440" marker-end="url(#arrow)"/>
+<path class="edge" d="M286.4,373 C286.4,407.5 381.5,407.5 381.5,440" marker-end="url(#arrow)"/>
+<path class="edge" d="M146.2,275 C146.2,313 286.4,313 286.4,349" marker-end="url(#arrow)"/>
+<path class="edge" d="M426.6,282 C426.6,316.5 286.4,316.5 286.4,349" marker-end="url(#arrow)"/>
+<path class="edge" d="M381.5,637 C381.5,669.5 381.5,669.5 381.5,700" marker-end="url(#arrow)"/>
+<path class="edge" d="M381.5,500 C381.5,532.5 381.5,532.5 381.5,563" marker-end="url(#arrow)"/>
+<path class="edge" d="M661.9,644 C661.9,673 661.9,673 661.9,700" marker-end="url(#arrow)"/>
+<path class="edge" d="M381.5,500 C381.5,529 661.9,529 661.9,556" marker-end="url(#arrow)"/>
+<rect class="card" x="24" y="203" width="244.4" height="72" rx="4"/>
+<rect class="band" x="24.6" y="203.6" width="5" height="70.8" fill="#1f1d1a"/>
+<text x="34" y="221" class="b" xml:space="preserve">&gt; give sugar lumps to mare</text>
+<text x="34" y="235" class="em" xml:space="preserve">“You hold out a lump on your flat</text>
+<text x="34" y="249" class="em" xml:space="preserve">palm.”</text>
+<text x="34" y="263" class="goal" xml:space="preserve">+5 points</text>
+<rect class="card" x="259.3" y="442" width="244.4" height="58" rx="4"/>
+<rect class="band" x="259.9" y="442.6" width="5" height="56.8" fill="#1f1d1a"/>
+<text x="269.3" y="460" class="b" xml:space="preserve">&gt; lasso mare</text>
+<text x="269.3" y="474" class="em" xml:space="preserve">“This time she stands for it.”</text>
+<text x="269.3" y="488" class="goal" xml:space="preserve">+10 points</text>
+<rect class="card" x="259.3" y="565" width="244.4" height="72" rx="4"/>
+<rect class="band" x="259.9" y="565.6" width="5" height="70.8" fill="#1f1d1a"/>
+<text x="269.3" y="583" class="b" xml:space="preserve">&gt; ride mare</text>
+<text x="269.3" y="597" class="em" xml:space="preserve">“You swing up bareback, turn her</text>
+<text x="269.3" y="611" class="em" xml:space="preserve">head south and give her her</text>
+<text x="269.3" y="625" class="em" xml:space="preserve">heels.”</text>
+<rect class="card" x="304.4" y="196" width="244.4" height="86" rx="4"/>
+<rect class="band" x="305" y="196.6" width="5" height="84.8" fill="#1f1d1a"/>
+<text x="314.4" y="214" class="b" xml:space="preserve">&gt; wait</text>
+<text x="314.4" y="228" class="small muted" xml:space="preserve">in Dry Wash · mare here</text>
+<text x="314.4" y="242" class="em" xml:space="preserve">“She drops her head and starts</text>
+<text x="314.4" y="256" class="em" xml:space="preserve">nosing at a clump of dry grass, as</text>
+<text x="314.4" y="270" class="em" xml:space="preserve">if she has forgotten you.”</text>
+<rect class="card" x="539.7" y="558" width="244.4" height="86" rx="4"/>
+<rect class="band" x="540.3" y="558.6" width="5" height="84.8" fill="#1f1d1a"/>
+<text x="549.7" y="576" class="b" xml:space="preserve">arrive in Livery Stable</text>
+<text x="549.7" y="590" class="em" xml:space="preserve">“Ada lets out a whoop that sets</text>
+<text x="549.7" y="604" class="em" xml:space="preserve">every horse in the stable</text>
+<text x="549.7" y="618" class="em" xml:space="preserve">stamping.”</text>
+<text x="549.7" y="632" class="goal" xml:space="preserve">+10 points</text>
+<rect class="card" x="24" y="80" width="244.4" height="58" rx="4"/>
+<rect class="band" x="24.6" y="80.6" width="5" height="56.8" fill="#0d7a4f"/>
+<text x="34" y="98" class="b" xml:space="preserve">&gt; take sugar lumps</text>
+<text x="34" y="112" class="small muted" xml:space="preserve">in the glass jar, on the desk, in</text>
+<text x="34" y="126" class="small muted" xml:space="preserve">Sheriff's Office</text>
+<rect class="card" x="354.4" y="340" width="244.4" height="44" rx="4"/>
+<rect class="band" x="355" y="340.6" width="5" height="42.8" fill="#0d7a4f"/>
+<text x="364.4" y="358" class="b" xml:space="preserve">&gt; take lariat</text>
+<text x="364.4" y="372" class="small muted" xml:space="preserve">on the peg, in Livery Stable</text>
+<rect class="card" x="581.9" y="702" width="160" height="30" rx="15" stroke-width="2"/>
+<text text-anchor="middle" x="661.9" y="721" class="goal" xml:space="preserve">END: Juniper is home</text>
+<rect class="card" x="281.7" y="702" width="199.6" height="30" rx="15" stroke-width="2"/>
+<text text-anchor="middle" x="381.5" y="721" class="end" xml:space="preserve">END: You are a horse thief</text>
+<rect class="card-muted" x="254.4" y="351" width="64" height="22" rx="11"/>
+<text x="286.4" y="366" class="small muted" text-anchor="middle">either</text>
+<rect class="label-bg" x="82.2" y="146" width="128" height="14" rx="3"/><text x="146.2" y="157" class="small muted" text-anchor="middle">carrying sugar lumps</text>
+<rect class="label-bg" x="413.3" y="392" width="98" height="14" rx="3"/><text x="462.3" y="403" class="small muted" text-anchor="middle">carrying lariat</text>
+<rect class="label-bg" x="136.2" y="283" width="62" height="14" rx="3"/><text x="167.2" y="294" class="small muted" text-anchor="middle">mare calm</text>
+<rect class="label-bg" x="365.6" y="290" width="80" height="14" rx="3"/><text x="405.6" y="301" class="small muted" text-anchor="middle">mare settled</text>
+<rect class="label-bg" x="344.5" y="508" width="74" height="14" rx="3"/><text x="381.5" y="519" class="small muted" text-anchor="middle">mare caught</text>
+<text x="24" y="794" xml:space="preserve">▌<tspan class="muted"> a command a rule answers   </tspan><tspan class="item">▌</tspan><tspan class="muted"> taking, wearing, putting   </tspan><tspan class="gate">▌</tspan><tspan class="muted"> a way that opens</tspan></text>
+<text x="24" y="810" xml:space="preserve"><tspan class="person">▌</tspan><tspan class="muted"> something said   </tspan><tspan class="scenery">▌</tspan><tspan class="muted"> something read   </tspan><tspan class="muted">Steps that lead to no score or ending are left out,</tspan></text>
+<text x="24" y="826" xml:space="preserve"><tspan class="muted">and so is anything only a script does. A full spoiler.</tspan></text>
+</svg>

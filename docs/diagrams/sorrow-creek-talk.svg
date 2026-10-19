@@ -1,0 +1,120 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="1048" viewBox="0 0 720 1048" role="img" aria-label="Trouble at Sorrow Creek: conversations">
+<title>Trouble at Sorrow Creek: conversations</title>
+<style>
+text { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "DejaVu Sans Mono", "Liberation Mono", monospace; font-size: 11px; fill: #1f1d1a; }
+.title { font-size: 16px; font-weight: 700; }
+.sub, .muted { fill: #77706a; }
+.head { font-size: 12px; font-weight: 700; }
+.small { font-size: 10px; }
+.em { font-style: italic; }
+.b { font-weight: 700; }
+.item { fill: #0d7a4f; font-weight: 700; }
+.scenery { fill: #1c6a8c; font-weight: 700; }
+.person { fill: #7a3fb0; font-weight: 700; }
+.exit { fill: #b0590e; font-weight: 700; }
+.missing { fill: #c0262d; text-decoration: underline; }
+.gate { fill: #c0262d; }
+.goal { fill: #2f5e1e; font-weight: 700; }
+.end { fill: #8a1c1c; font-weight: 700; }
+.card { fill: #ffffff; stroke: #1f1d1a; stroke-width: 1.2; }
+.card-muted { fill: #ffffff; stroke: #77706a; stroke-width: 1; stroke-dasharray: 4 3; }
+.band { stroke: none; }
+.edge { fill: none; stroke: #1f1d1a; stroke-width: 1.4; }
+.edge-gate { fill: none; stroke: #c0262d; stroke-width: 1.6; stroke-dasharray: 6 4; }
+.edge-soft { fill: none; stroke: #77706a; stroke-width: 1.2; }
+.label-bg { fill: #faf8f3; }
+</style>
+<defs>
+<marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#1f1d1a"/></marker>
+<marker id="arrow-gate" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#c0262d"/></marker>
+<marker id="arrow-soft" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#77706a"/></marker>
+</defs>
+<rect width="100%" height="100%" fill="#faf8f3"/>
+<text x="24" y="38" class="title" xml:space="preserve">Trouble at Sorrow Creek: conversations</text>
+<text x="24" y="56" class="sub" xml:space="preserve">Each line the player can choose, the reply, and where it leads. Numbers on lines are menu choices.</text>
+<text x="24" y="96" class="head" xml:space="preserve"><tspan class="person">Ada Pruitt</tspan></text>
+<path class="edge" d="M354.4,136 C354.4,162 179.2,162 179.2,186" marker-end="url(#arrow)"/>
+<path class="edge" d="M354.4,136 C354.4,162 529.6,162 529.6,186" marker-end="url(#arrow)"/>
+<path class="edge" d="M179.2,500 C179.2,536 354.4,536 354.4,570" marker-end="url(#arrow)"/>
+<rect class="card" x="276.4" y="110" width="156" height="26" rx="13" stroke-width="2"/>
+<text x="354.4" y="127" class="b" text-anchor="middle">TALK TO ADA PRUITT</text>
+<rect class="card" x="24" y="188" width="310.4" height="312" rx="4"/>
+<rect class="band" x="24.6" y="188.6" width="309.2" height="24" rx="3.5" fill="#f3e7f1"/>
+<text x="34" y="204" class="head" xml:space="preserve">juniper</text>
+<text x="324.4" y="204" class="small muted" text-anchor="end">own resume line</text>
+<text x="34" y="230" class="small muted" xml:space="preserve">if Ada Pruitt asked:</text>
+<text x="34" y="244" class="person em" xml:space="preserve">&quot;Any sign of Juniper?&quot; Ada asks.</text>
+<text x="34" y="258" class="small muted" xml:space="preserve">otherwise:</text>
+<text x="34" y="272" class="person em" xml:space="preserve">&quot;You seen my Juniper?&quot; Ada asks.</text>
+<text x="34" y="286" class="small muted" xml:space="preserve">sets Ada Pruitt asked</text>
+<line x1="34" y1="292" x2="324.4" y2="292" stroke="#d9d3c7"/>
+<text x="34" y="304" class="b" xml:space="preserve">1. &quot;Not yet. Which way did she go?&quot;</text>
+<text x="34" y="318" class="small em" xml:space="preserve">   &quot;South, down into the wash.</text>
+<text x="34" y="332" class="small muted" xml:space="preserve">   sets Ada Pruitt answered · → plan</text>
+<text x="34" y="352" class="b" xml:space="preserve">2. &quot;I'd know her if I had. What's she like?&quot;</text>
+<text x="34" y="366" class="small em" xml:space="preserve">   &quot;Dun mare, black stockings, white star on</text>
+<text x="34" y="380" class="small em" xml:space="preserve">   her face.</text>
+<text x="34" y="394" class="small muted" xml:space="preserve">   sets Ada Pruitt answered · → plan</text>
+<text x="34" y="414" class="b" xml:space="preserve">3. &quot;I'm not here about a horse.&quot;</text>
+<text x="34" y="428" class="small em" xml:space="preserve">   “Ada's face closes like a door.”</text>
+<text x="34" y="442" class="small muted" xml:space="preserve">   Ada Pruitt trust −1 · sets Ada Pruitt answered</text>
+<text x="34" y="456" class="small muted" xml:space="preserve">   · ends the talk</text>
+<text x="34" y="476" class="muted" xml:space="preserve">0. Leave</text>
+<text x="34" y="490" class="small muted em" xml:space="preserve">“Ada turns back to the empty stall.”</text>
+<rect class="card" x="199.2" y="572" width="310.4" height="194" rx="4"/>
+<rect class="band" x="199.8" y="572.6" width="309.2" height="24" rx="3.5" fill="#f3e7f1"/>
+<text x="209.2" y="588" class="head" xml:space="preserve">plan</text>
+<text x="209.2" y="614" class="small muted" xml:space="preserve">(no opening line)</text>
+<line x1="209.2" y1="620" x2="499.6" y2="620" stroke="#d9d3c7"/>
+<text x="209.2" y="632" class="b" xml:space="preserve">1. &quot;Will she let me near her?&quot;</text>
+<text x="209.2" y="646" class="small em" xml:space="preserve">   &quot;She'll come to sugar, if you can get</text>
+<text x="209.2" y="660" class="small em" xml:space="preserve">   close.</text>
+<text x="209.2" y="674" class="small muted" xml:space="preserve">   once · back to this menu</text>
+<text x="209.2" y="694" class="b" xml:space="preserve">2. &quot;I'll bring her back.&quot;</text>
+<text x="209.2" y="708" class="small em" xml:space="preserve">   “Ada looks at you for a long moment.”</text>
+<text x="209.2" y="722" class="small muted" xml:space="preserve">   Ada Pruitt trust +1 · ends the talk</text>
+<text x="209.2" y="742" class="muted" xml:space="preserve">0. Leave</text>
+<text x="209.2" y="756" class="small muted em" xml:space="preserve">“Ada turns back to the empty stall.”</text>
+<rect class="card" x="374.4" y="188" width="310.4" height="332" rx="4"/>
+<rect class="band" x="375" y="188.6" width="309.2" height="24" rx="3.5" fill="#f3e7f1"/>
+<text x="384.4" y="204" class="head" xml:space="preserve">hub</text>
+<text x="384.4" y="230" class="person em" xml:space="preserve">Ada wipes her hands on her shirt. &quot;Well?&quot;</text>
+<line x1="384.4" y1="236" x2="674.8" y2="236" stroke="#d9d3c7"/>
+<text x="384.4" y="248" class="b" xml:space="preserve">1. &quot;I spoke out of turn before. I'll look</text>
+<text x="384.4" y="262" class="b" xml:space="preserve">for her.&quot;</text>
+<text x="384.4" y="276" class="small em" xml:space="preserve">   “Ada studies you, then nods once.”</text>
+<text x="384.4" y="290" class="small muted" xml:space="preserve">   only if Ada Pruitt trust &lt; 0 · Ada Pruitt</text>
+<text x="384.4" y="304" class="small muted" xml:space="preserve">   trust +1 · back to this menu</text>
+<text x="384.4" y="324" class="b" xml:space="preserve">2. &quot;Which way did she go again?&quot;</text>
+<text x="384.4" y="338" class="small em" xml:space="preserve">   &quot;South, down into the wash.</text>
+<text x="384.4" y="352" class="small muted" xml:space="preserve">   back to this menu</text>
+<text x="384.4" y="372" class="b" xml:space="preserve">3. &quot;Any idea how to get close to her?&quot;</text>
+<text x="384.4" y="386" class="small em" xml:space="preserve">   &quot;She'll come to sugar, if you can get</text>
+<text x="384.4" y="400" class="small em" xml:space="preserve">   close.</text>
+<text x="384.4" y="414" class="small muted" xml:space="preserve">   back to this menu</text>
+<text x="384.4" y="434" class="b" xml:space="preserve">4. &quot;Is there a trick to calling her?&quot;</text>
+<text x="384.4" y="448" class="small em" xml:space="preserve">   &quot;Get some sugar into her first.</text>
+<text x="384.4" y="462" class="small muted" xml:space="preserve">   only if Ada Pruitt trust ≥ 1 (shown locked) ·</text>
+<text x="384.4" y="476" class="small muted" xml:space="preserve">   back to this menu</text>
+<text x="384.4" y="496" class="muted" xml:space="preserve">0. Leave</text>
+<text x="384.4" y="510" class="small muted em" xml:space="preserve">“Ada turns back to the empty stall.”</text>
+<rect class="label-bg" x="184.8" y="154" width="164" height="14" rx="3"/><text x="266.8" y="165" class="small muted" text-anchor="middle">if Ada Pruitt not answered</text>
+<rect class="label-bg" x="411" y="154" width="62" height="14" rx="3"/><text x="442" y="165" class="small muted" text-anchor="middle">otherwise</text>
+<rect class="label-bg" x="250.8" y="528" width="32" height="14" rx="3"/><text x="266.8" y="539" class="small muted" text-anchor="middle">1, 2</text>
+<rect class="card" x="24" y="784" width="310.4" height="220" rx="4"/>
+<rect class="band" x="24.6" y="784.6" width="309.2" height="24" rx="3.5" fill="#f3e7f1"/>
+<text x="34" y="800" class="head" xml:space="preserve">ASK / TELL ABOUT</text>
+<text x="324.4" y="800" class="small muted" text-anchor="end">4 topics</text>
+<line x1="34" y1="818" x2="324.4" y2="818" stroke="#d9d3c7"/>
+<text x="34" y="830" class="b" xml:space="preserve">juniper / mare / horse</text>
+<text x="34" y="844" class="small em" xml:space="preserve">   &quot;Dun mare, black stockings.</text>
+<text x="34" y="864" class="b" xml:space="preserve">sugar</text>
+<text x="34" y="878" class="small em" xml:space="preserve">   &quot;The sheriff keeps a jar of it on his</text>
+<text x="34" y="892" class="small em" xml:space="preserve">   desk.</text>
+<text x="34" y="912" class="b" xml:space="preserve">lariat / rope / lasso</text>
+<text x="34" y="926" class="small em" xml:space="preserve">   &quot;Take the rope off the peg.</text>
+<text x="34" y="946" class="b" xml:space="preserve">sheriff</text>
+<text x="34" y="960" class="small em" xml:space="preserve">   &quot;Asleep, most likely.</text>
+<text x="34" y="980" class="small muted" xml:space="preserve">anything else: “Ada waves the question</text>
+<text x="34" y="994" class="small muted" xml:space="preserve">away.”</text>
+</svg>

@@ -11,11 +11,11 @@
 | Loops per 10 rooms, median zone | 1.3 | 0.1 | 0 | 0 |
 | Zone diameter in steps, median | 10 | 7 | 2 | 2.5 |
 | Longest run of corridor rooms | 5 | 4 | 0 | 0 |
-| Rooms with content | 67% | 79% | 75% | 100% |
+| Rooms with content | 67% | 79% | 100% | 100% |
 | Rooms sharing their description with another room | 13% | 13% | 0% | 0% |
-| Steps from a room to content, median zone | 0.4 | 0.1 | 0.3 | 0 |
-| Rooms with extra descriptions | 45% | 63% | 75% | 100% |
-| Extra descriptions per room | 0.8 | 1.7 | 1.5 | 2.4 |
+| Steps from a room to content, median zone | 0.4 | 0.1 | 0 | 0 |
+| Rooms with extra descriptions | 45% | 63% | 100% | 100% |
+| Extra descriptions per room | 0.8 | 1.7 | 4.5 | 3.8 |
 | Words in a room description, median zone | 33 | 52.5 | 34.5 | 36.5 |
 | Creatures placed per 10 rooms | 4.1 | 5.4 | 7.5 | 0.9 |
 | Objects placed per 10 rooms | 5.0 | 12.9 | 7.5 | 6.4 |
@@ -108,7 +108,7 @@ Zones of Sorrow Creek:
 
 | Zone | Rooms | Exits/room | Dead ends | Corridors | Junctions | Loops | Diameter | Content | Extras | Same text | Creatures | Level | Objects | Gates | Entrances | Hops | Shape |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| C01 | 4 | 2 | 3 | 0 | 1 | 0 | 2 | 3 | 3 | 0 | 3 | n/a | 3 | 0 | 0 | n/a | chain |
+| C01 | 4 | 2 | 3 | 0 | 1 | 0 | 2 | 4 | 4 | 0 | 3 | n/a | 3 | 0 | 0 | n/a | chain |
 
 Zones of Halcyon Relay:
 
