@@ -3,6 +3,7 @@
 //
 //   story-engine play <pack> [--seed N] [--saves DIR] [--width N]
 //   story-engine validate <pack> [--no-play] [--json]
+//   story-engine shape <pack>
 //   story-engine walkthrough <pack> [file...]
 //   story-engine bundle <pack> [-o FILE]
 //
@@ -13,7 +14,7 @@ import { join, resolve } from 'node:path';
 import { createInterface } from 'node:readline';
 import type { Readable, Writable } from 'node:stream';
 import { pathToFileURL } from 'node:url';
-import { Game, loadWorld, PackError, validate, type Block, type Host } from '../engine/index.ts';
+import { compilePack, Game, loadWorld, PackError, packShape, MUD_FIGURES, validate, type Block, type Host, type PackShape } from '../engine/index.ts';
 import { playWalkthrough } from '../engine/walkthrough.ts';
 import { bundleForDisk, bundlePack, loadPack } from '../node/loader.ts';
 
@@ -29,7 +30,11 @@ const USAGE = `Usage:
   story-engine play <pack> [--seed N] [--saves DIR] [--width N]
       Play a pack. Reads commands from the keyboard, or from a pipe.
   story-engine validate <pack> [--no-play] [--json]
-      Check a pack for errors and play its walkthroughs.
+      Check a pack for errors and play its walkthroughs. Also lists notes:
+      advice on the map and descriptions that never fails a pack.
+  story-engine shape <pack>
+      Measure the pack's map the way the MUD structure research measured the
+      first DikuMUD worlds, side by side with their figures, and list notes.
   story-engine walkthrough <pack> [file...]
       Play walkthroughs and print the full transcript.
   story-engine bundle <pack> [-o FILE]
@@ -120,15 +125,28 @@ export async function runCli(argv: string[], io: Io): Promise<number> {
     case 'validate': {
       const report = validate(source, { play: !args.flags.has('--no-play') });
       if (args.flags.has('--json')) {
-        out(`${JSON.stringify({ errors: report.errors, warnings: report.warnings, issues: report.issues }, null, 2)}\n`);
+        const { errors, warnings, issues, notes } = report;
+        out(`${JSON.stringify({ errors, warnings, issues, notes }, null, 2)}\n`);
       } else {
         for (const i of report.issues) out(`${i.level.toUpperCase()} ${i.code}${i.where ? ` (${i.where})` : ''}: ${i.message}\n`);
+        for (const n of report.notes) out(`NOTE ${n.code}${n.where ? ` (${n.where})` : ''}: ${n.message}\n`);
         for (const w of report.walkthroughs) {
           out(`walkthrough ${w.file}: ${w.ok ? 'ok' : 'FAILED'} (ending ${w.ending ?? 'none'}, score ${w.score}, ${w.turns} turns)\n`);
         }
-        out(`${report.errors} error(s), ${report.warnings} warning(s)\n`);
+        out(`${report.errors} error(s), ${report.warnings} warning(s), ${report.notes.length} note(s)\n`);
       }
       return report.errors > 0 ? 1 : 0;
+    }
+
+    case 'shape': {
+      const compiled = compilePack(source);
+      if (!compiled.world || compiled.issues.some((i) => i.level === 'error')) {
+        err(`The pack has errors. Run "story-engine validate ${packPath}" first.\n`);
+        return 1;
+      }
+      const width = io.isTTY ? Math.min(io.columns, 100) : 0;
+      out(shapeReport(compiled.world.manifest.title, packShape(compiled.world, compiled), width));
+      return 0;
     }
 
     case 'walkthrough': {
@@ -224,6 +242,54 @@ export async function runCli(argv: string[], io: Io): Promise<number> {
       err(`Unknown command "${args.command}".\n${USAGE}\n`);
       return 2;
   }
+}
+
+/** The shape command's report: the pack beside the MUD figures, then each region, then notes. */
+export function shapeReport(title: string, shape: PackShape, width: number): string {
+  const { whole, areas, notes } = shape;
+  const pct = (n: number) => `${whole.rooms ? Math.round((100 * n) / whole.rooms) : 0}%`;
+  const one = (n: number) => (Math.round(n * 10) / 10).toFixed(1);
+  const grid = (rows: string[][]) => {
+    const widths = rows[0].map((_, c) => Math.max(...rows.map((r) => r[c].length)));
+    const left = (c: number) => c === 0 || rows.some((r) => /[a-z]/i.test(r[c]) && r !== rows[0]);
+    return rows.map((r) => r.map((text, c) => (left(c) ? text.padEnd(widths[c]) : text.padStart(widths[c]))).join('  ').trimEnd()).join('\n');
+  };
+  const regions = areas.filter((a) => a.label !== '(no region)').length;
+  const lines = [`${title}: ${whole.rooms} room(s), ${regions} region(s)`, ''];
+  lines.push(
+    grid([
+      ['', 'This pack', ...MUD_FIGURES.map((s) => s.label)],
+      ['Exits per room', one(whole.exits / Math.max(1, whole.rooms)), ...MUD_FIGURES.map((s) => one(s.exitsPerRoom))],
+      ['Dead ends', pct(whole.deadEnds), ...MUD_FIGURES.map((s) => `${s.deadEnds}%`)],
+      ['Corridors (empty, two ways)', pct(whole.corridors), ...MUD_FIGURES.map((s) => `${s.corridors}%`)],
+      ['Loops per 10 rooms', one((10 * whole.loops) / Math.max(1, whole.rooms)), ...MUD_FIGURES.map((s) => one(s.loopsPer10))],
+      ['Rooms with something in them', pct(whole.contentRooms), ...MUD_FIGURES.map((s) => `${s.content}%`)],
+      ['Rooms with details to examine', pct(whole.roomsWithDetails), ...MUD_FIGURES.map((s) => `${s.details}%`)],
+      ['Rooms sharing a description', pct(whole.sharedDescriptions), ...MUD_FIGURES.map((s) => `${s.shared}%`)],
+      ['Words per description (median)', String(whole.descWordsMedian), ...MUD_FIGURES.map((s) => String(s.words))],
+    ]),
+  );
+  lines.push('', 'The MUD figure for loops is for their median zone; the pack figure is for the whole map.', '');
+  lines.push(
+    grid([
+      ['Region', 'Rooms', 'Ways in', 'Dead ends', 'Corridors', 'Loops', 'Across', 'Gates', 'Joins'],
+      ...areas.map((a) => [
+        a.label,
+        String(a.rooms),
+        String(a.entrances),
+        String(a.deadEnds),
+        String(a.corridors),
+        String(a.loops),
+        String(a.across),
+        String(a.gates),
+        a.joins.join(', ') || '-',
+      ]),
+    ]),
+  );
+  lines.push('', notes.length === 0 ? 'No notes.' : `${notes.length} note(s):`);
+  for (const n of notes) lines.push(wrap(`- ${n.code}${n.where ? ` (${n.where})` : ''}: ${n.message}`, width));
+  lines.push('', 'What these measure, and why: docs/research/mud-structure.md. Notes are advice, not errors.');
+  return `${lines.join('\n')}\n`;
 }
 
 if (import.meta.url === pathToFileURL(process.argv[1] ?? '').href) {

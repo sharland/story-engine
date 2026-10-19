@@ -1,9 +1,11 @@
 // The pack validator: everything compilePack checks (shape, references),
 // plus whole-pack analyses: unreachable rooms, objects that can never be
 // obtained, vocabulary clashes, unused content, and playing the walkthroughs.
+// It also returns notes on the map's shape (shape.ts): advice, never errors.
 
 import { compilePack, type CompileResult } from './pack.ts';
 import { compilePattern, matchPattern, type Pattern } from './parser.ts';
+import { packShape, type Note } from './shape.ts';
 import type { Issue, PackSource, World } from './types.ts';
 import { playWalkthrough, type WalkthroughResult } from './walkthrough.ts';
 
@@ -13,6 +15,8 @@ export interface ValidationReport {
   warnings: number;
   walkthroughs: WalkthroughResult[];
   world: World | null;
+  /** Advice on the map's shape and descriptions; never counted as problems. */
+  notes: Note[];
 }
 
 export interface ValidateOptions {
@@ -24,6 +28,7 @@ export function validate(src: PackSource, options: ValidateOptions = {}): Valida
   const compiled = compilePack(src);
   const issues = [...compiled.issues];
   const walkthroughs: WalkthroughResult[] = [];
+  const notes: Note[] = [];
   const world = compiled.world;
   const hasErrors = () => issues.some((i) => i.level === 'error');
 
@@ -36,6 +41,7 @@ export function validate(src: PackSource, options: ValidateOptions = {}): Valida
       vocabularyClashes(world, issues);
       unused(world, compiled, issues);
       dialogueGraphs(world, compiled, issues);
+      notes.push(...packShape(world, compiled).notes);
     } catch (e) {
       if (!hasErrors()) throw e;
     }
@@ -71,6 +77,7 @@ export function validate(src: PackSource, options: ValidateOptions = {}): Valida
     warnings: issues.filter((i) => i.level === 'warning').length,
     walkthroughs,
     world,
+    notes,
   };
 }
 

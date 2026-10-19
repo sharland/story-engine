@@ -50,7 +50,7 @@ test('validate exits 0 for a good pack and 1 for a broken one, naming the proble
   const good = await cli(['validate', join(root, 'packs', 'halcyon-relay')]);
   assert.equal(good.code, 0);
   assert.match(good.out, /walkthrough walkthroughs\/win\.txt: ok \(ending docked, score 50/);
-  assert.match(good.out, /0 error\(s\), 0 warning\(s\)/);
+  assert.match(good.out, /0 error\(s\), 0 warning\(s\), \d+ note\(s\)/);
 
   const broken = join(temp, 'broken');
   mkdirSync(join(broken, 'world'), { recursive: true });
@@ -84,6 +84,16 @@ test('bundle writes one JSON file that plays like the directory', async () => {
   const fromDir = await cli(['play', join(root, 'packs', 'halcyon-relay'), '--seed', '3'], 'open locker\n');
   assert.equal(fromBundle.out, fromDir.out);
   assert.match(fromBundle.out, /Opening the storage locker reveals a hand torch and a photograph\./);
+});
+
+test('shape compares the map with the MUD figures, region by region, and lists notes', async () => {
+  const r = await cli(['shape', join(root, 'packs', 'halcyon-relay')]);
+  assert.equal(r.code, 0);
+  assert.match(r.out, /^The Halcyon Relay: 11 room\(s\), 1 region\(s\)\n/);
+  assert.match(r.out, /\nDead ends +\d+% +14% +26%\n/);
+  assert.match(r.out, /\nRegion +Rooms +Ways in +Dead ends +Corridors +Loops +Across +Gates +Joins\n/);
+  assert.match(r.out, /\noutside +2 +2 /);
+  assert.match(r.out, /- no-loop: /);
 });
 
 test('walkthrough prints transcripts and fails on a bad one', async () => {
