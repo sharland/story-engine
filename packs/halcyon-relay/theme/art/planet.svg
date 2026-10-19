@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400">
+<defs>
+<clipPath id="disc"><circle cx="200" cy="200" r="190"/></clipPath>
+<radialGradient id="shade" cx="35%" cy="35%" r="75%">
+<stop offset="55%" stop-color="#000" stop-opacity="0"/><stop offset="100%" stop-color="#000" stop-opacity="0.75"/>
+</radialGradient>
+</defs>
+<g clip-path="url(#disc)">
+<rect x="0" y="10" width="400" height="18" fill="#7a3220"/>
+<rect x="0" y="28" width="400" height="22" fill="#e9d3a6"/>
+<rect x="0" y="50" width="400" height="14" fill="#c98a4b"/>
+<rect x="0" y="64" width="400" height="30" fill="#b5502e"/>
+<rect x="0" y="94" width="400" height="16" fill="#e9d3a6"/>
+<rect x="0" y="110" width="400" height="20" fill="#9b4426"/>
+<rect x="0" y="130" width="400" height="26" fill="#d9b27a"/>
+<rect x="0" y="156" width="400" height="18" fill="#b5502e"/>
+<rect x="0" y="174" width="400" height="24" fill="#efdcb4"/>
+<rect x="0" y="198" width="400" height="22" fill="#c06a3a"/>
+<rect x="0" y="220" width="400" height="28" fill="#7a3220"/>
+<rect x="0" y="248" width="400" height="18" fill="#d9b27a"/>
+<rect x="0" y="266" width="400" height="40" fill="#9b4426"/>
+<rect x="0" y="306" width="400" height="34" fill="#c98a4b"/>
+<rect x="0" y="340" width="400" height="60" fill="#7a3220"/>
+<ellipse cx="250" cy="262" rx="34" ry="13" fill="#7a3220"/>
+<ellipse cx="250" cy="262" rx="20" ry="7" fill="#c06a3a"/>
+<rect x="0" y="0" width="400" height="400" fill="url(#shade)"/>
+</g>
+<g fill="none" stroke="#48d8ff" stroke-width="1.2" stroke-opacity="0.55" clip-path="url(#disc)">
+<ellipse cx="200" cy="35.5" rx="95.0" ry="11.4"/>
+<ellipse cx="200" cy="105.0" rx="164.5" ry="19.7"/>
+<ellipse cx="200" cy="200.0" rx="190.0" ry="22.8"/>
+<ellipse cx="200" cy="295.0" rx="164.5" ry="19.7"/>
+<ellipse cx="200" cy="364.5" rx="95.0" ry="11.4"/>
+<ellipse cx="200" cy="200" rx="164.5" ry="190"/>
+<ellipse cx="200" cy="200" rx="95.0" ry="190"/>
+<line x1="200" y1="10" x2="200" y2="390"/>
+<ellipse cx="200" cy="200" rx="95.0" ry="190"/>
+<ellipse cx="200" cy="200" rx="164.5" ry="190"/>
+</g>
+<circle cx="200" cy="200" r="190" fill="none" stroke="#48d8ff" stroke-width="2"/>
+</svg>

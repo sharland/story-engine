@@ -7,7 +7,7 @@
 // REQUIRE_BROWSER=1 (as in CI), when that is a failure.
 
 import assert from 'node:assert/strict';
-import { readFileSync, createReadStream, existsSync, mkdtempSync, rmSync } from 'node:fs';
+import { readFileSync, createReadStream, existsSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { createServer, type Server } from 'node:http';
 import { tmpdir } from 'node:os';
 import { extname, join } from 'node:path';
@@ -16,7 +16,7 @@ import { pathToFileURL } from 'node:url';
 import { chromium, type Browser, type Page } from 'playwright-core';
 import { loadWorld } from '../src/engine/index.ts';
 import { parseWalkthrough, playWalkthrough } from '../src/engine/walkthrough.ts';
-import { loadPack } from '../src/node/loader.ts';
+import { bundleForDisk, bundlePack, loadPack } from '../src/node/loader.ts';
 import { buildSite } from '../scripts/build.ts';
 
 const root = join(import.meta.dirname, '..');
@@ -145,6 +145,49 @@ test('served over HTTP: the pack picker switches packs, and save and restore use
   await page.selectOption('#pack-select', 'halcyon-relay');
   await page.waitForFunction(() => document.querySelector('#output p')?.textContent?.startsWith('The alarm wakes you'));
   assert.match(page.url(), /pack=halcyon-relay/);
+  await page.close();
+});
+
+test('each demo pack skins the page with its own theme and fonts; a pack without one gets the plain page', async (t) => {
+  if (skip) return t.skip(skip);
+  const skin = (page: Page) =>
+    page.evaluate(async () => {
+      await document.fonts.ready;
+      const root = document.documentElement;
+      return {
+        skin: root.dataset.skin ?? null,
+        pack: root.dataset.pack ?? null,
+        body: getComputedStyle(document.body).fontFamily,
+        loaded: [...document.fonts].filter((f) => f.status === 'loaded').map((f) => f.family.replace(/"/g, '')).sort(),
+        css: document.getElementById('pack-theme')?.textContent?.length ?? -1,
+      };
+    });
+  const page = await open(fileUrl('pack=sorrow-creek&seed=1'));
+  let s = await skin(page);
+  assert.equal(s.skin, 'pack');
+  assert.equal(s.pack, 'sorrow-creek');
+  assert.match(s.body, /^"?Pixelify Sans/);
+  assert.deepEqual(s.loaded, ['Pixelify Sans', 'Press Start 2P']);
+  assert.equal(await page.locator('.stat-score .value').getAttribute('data-padded'), '000000');
+  for (const c of ['w', 'open jar', 'take sugar', 'e', 's', 'give sugar to mare']) await type(page, c);
+  assert.equal(await page.locator('#output .b-score').textContent(), '[Your score has gone up by 5.]');
+  assert.equal(await page.locator('.stat-score .value').getAttribute('data-padded'), '000005');
+
+  await page.selectOption('#pack-select', 'halcyon-relay');
+  await page.waitForFunction(() => document.documentElement.dataset.pack === 'halcyon-relay');
+  s = await skin(page);
+  assert.match(s.body, /^"?VT323/);
+  assert.ok(s.loaded.includes('Audiowide') && s.loaded.includes('VT323'), s.loaded.join());
+
+  const plain = join(site, '..', `plain-${process.pid}.json`);
+  writeFileSync(plain, JSON.stringify(bundleForDisk(await bundlePack(join(root, 'tests', 'fixtures', 'testbed')))));
+  await page.setInputFiles('#pack-file', plain);
+  await page.waitForFunction(() => document.querySelector('#output p')?.textContent?.startsWith('This is the testbed'));
+  s = await skin(page);
+  assert.equal(s.skin, null);
+  assert.equal(s.css, 0);
+  assert.doesNotMatch(s.body, /Pixelify|VT323/);
+  rmSync(plain);
   await page.close();
 });
 

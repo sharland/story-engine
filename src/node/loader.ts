@@ -4,6 +4,7 @@
 import { readdir, readFile, stat } from 'node:fs/promises';
 import { basename, join, relative, resolve, sep } from 'node:path';
 import { isBundle, sourceFromBundle, type PackBundle } from '../engine/bundle.ts';
+import { inlineTheme, THEME_NOTES, themeType } from '../engine/theme.ts';
 import type { Issue, PackSource, ScriptModule } from '../engine/types.ts';
 
 /** Import a script module from its source text, the same way the browser does. */
@@ -68,15 +69,34 @@ export async function bundlePack(dir: string): Promise<PackBundle> {
     texts,
     scripts,
     walkthroughs,
+    theme: await readTheme(join(root, 'theme'), loadIssues),
     loadIssues,
   };
   return bundle;
 }
 
+/** theme/theme.css with its fonts and images inlined, or null if there is none. */
+async function readTheme(dir: string, issues: Issue[]): Promise<{ css: string } | null> {
+  let css: string;
+  try {
+    css = await readFile(join(dir, 'theme.css'), 'utf8');
+  } catch {
+    return null;
+  }
+  const assets = new Map<string, string>();
+  for (const f of await listFiles(dir, [''])) {
+    const path = relative(dir, f).split(sep).join('/');
+    if (path === 'theme.css' || THEME_NOTES.some((x) => path.toLowerCase().endsWith(x))) continue;
+    if (themeType(path)) assets.set(path, (await readFile(f)).toString('base64'));
+    else issues.push({ level: 'warning', code: 'theme-file', message: 'Not a font or image a theme can use', where: `theme/${path}` });
+  }
+  return { css: inlineTheme(css, assets, issues) };
+}
+
 /** Strip loader-only fields before writing a bundle to disk. */
 export function bundleForDisk(b: PackBundle): PackBundle {
-  const { bundleFormat, origin, manifest, data, texts, scripts, walkthroughs } = b;
-  return { bundleFormat, origin, manifest, data, texts, scripts, walkthroughs };
+  const { bundleFormat, origin, manifest, data, texts, scripts, walkthroughs, theme } = b;
+  return { bundleFormat, origin, manifest, data, texts, scripts, walkthroughs, ...(theme ? { theme } : {}) };
 }
 
 /** Files under a directory with the given extensions, sorted by path. Missing directory: none. */

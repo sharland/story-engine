@@ -60,6 +60,11 @@ the browser builds it from a *bundle* (one JSON file holding everything,
 produced by `story-engine bundle`). `compilePack()` merges and normalises it
 into an immutable `World`. A `Game` is a `World` plus a `GameState`.
 
+A pack may also carry `theme/`: a stylesheet with its fonts and images, which
+the loader inlines as data: URLs (`src/engine/theme.ts`) so that a bundle
+carries its skin. The engine never reads it. The web page applies it while the
+pack is loaded and removes it when another pack starts.
+
 ## World model
 
 Every entity has a pack-unique id (`^[a-z][a-z0-9_-]*$`). Kinds:

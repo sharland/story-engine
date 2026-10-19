@@ -6,7 +6,10 @@
   "author": "story-engine demo",
   "licence": "CC0-1.0",
   "description": "A tiny western placeholder: a runaway mare, a coil of rope, an afternoon to set things right.",
-  "credits": ["A demonstration pack for story-engine. Dedicated to the public domain under CC0 1.0."],
+  "credits": [
+    "A demonstration pack for story-engine. Dedicated to the public domain under CC0 1.0.",
+    "Web page fonts: Press Start 2P (The Press Start 2P Project Authors) and Pixelify Sans (The Pixelify Sans Project Authors), SIL Open Font Licence 1.1."
+  ],
   "start": "main-street",
   "intro": "@intro"
 }

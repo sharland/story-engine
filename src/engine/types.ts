@@ -287,6 +287,8 @@ export interface PackSource {
   texts: Array<{ file: string; content: string }>;
   scripts: Array<{ file: string; module: ScriptModule }>;
   walkthroughs: Array<{ file: string; content: string }>;
+  /** The web page's skin: theme/theme.css with its fonts and images inlined. */
+  theme?: { css: string } | null;
   /** Problems met while reading files (bad JSON, scripts that fail to load). */
   issues?: Issue[];
 }

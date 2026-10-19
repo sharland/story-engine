@@ -81,7 +81,9 @@ Source: GitHub Actions**. Until that is set, the deploy job fails.
 ## Licences
 
 - Engine code (everything outside `packs/`): MIT, see [LICENSE](LICENSE).
-- Demo packs in `packs/`: CC0 1.0, see the `LICENSE` file in each pack.
+- Demo packs in `packs/`: CC0 1.0, see the `LICENSE` file in each pack, except
+  the fonts in `packs/*/theme/fonts/`, which are under the SIL Open Font
+  Licence 1.1 (each licence text is next to its font).
 - **Third-party packs carry their own licences.** Loading a pack into this
   engine does not change its licence, and the engine's licence says nothing
   about the content of packs you load.
