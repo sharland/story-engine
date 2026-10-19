@@ -253,6 +253,7 @@ my-pack/
   text/                passage files (*.txt), any names, any subfolders
   scripts/             script modules (*.js), only if you need them
   walkthroughs/        one *.txt per ending
+  theme/               a skin for the web page: theme.css, fonts, images (optional)
   LICENSE              the pack's licence text
   NOTES.md             your adaptation notes (ignored by the engine)
   ENGINE-REQUESTS.md   only if you need something the engine lacks
@@ -262,6 +263,61 @@ All files in `world/` are merged. Split them however helps you: by region, by
 act, or by kind (rooms, objects, rules). Files are read in path order, which
 matters in two places: rules that tie ([section 10.4](#104-rules)), and
 `acts`, whose order is the story's order. **Keep all your acts in one file.**
+
+### theme/: a skin for the web page
+
+A pack can change the whole look of the web page while it is being played,
+with `theme/theme.css` and the fonts and images that file uses. The command
+line ignores it. Both demo packs have one: an arcade western cabinet and a
+1970s space-opera console.
+
+```
+theme/
+  theme.css            the stylesheet
+  fonts/*.woff2        fonts it uses, with their licence texts (*.txt)
+  art/*.svg, *.png     images it uses
+```
+
+- **Files.** Refer to fonts and images with paths relative to `theme/`:
+  `url("fonts/pixel.woff2")`, `url("art/horizon.svg")`. Fonts may be `.woff2`,
+  `.woff`, `.ttf` or `.otf`; images `.png`, `.jpg`, `.gif`, `.webp` or `.svg`.
+  When the pack is read they are built into the stylesheet, so a one-file
+  bundle carries its skin and works from disk with no internet. Licence texts
+  and notes (`.txt`, `.md`) can sit alongside; other file types are reported.
+- **Not allowed.** `@import` is an error. A `url()` that points at the
+  internet works, but is a warning: the skin breaks offline, and every player
+  is tracked by whoever serves the file. Put the file in `theme/`.
+- **Size.** Above 1 MB with its fonts and images, a theme is a warning: the
+  page gets slow to load. The demo themes are about 40 and 55 KB.
+- **Cosmetic only.** Never put a clue in a theme. Screen readers, the command
+  line and transcripts don't see it.
+
+While a theme is on, `<html>` has `data-skin="pack"` and `data-pack="<your
+pack id>"`, and the page's own light colour scheme stands aside, so your
+colours apply in both light and dark mode. The page is built from these
+parts, which your CSS can restyle:
+
+| Part | What it is |
+|---|---|
+| `:root` variables | `--bg`, `--panel`, `--text`, `--dim`, `--title`, `--heading`, `--prompt`, `--error`, `--border`, `--focus`: the colours the page uses. Setting these alone gives a quick recolour. |
+| `.bar` | The top strip: the story picker and the buttons. |
+| `.status` | The status line: `#status-room` (where the player is) and `#status-score`. That holds `.stat-score` and `.stat-turns`, each with a `.label`, a `.value` and, for the score, a `.max` (`/25`), with a `.sep` between them. Each `.value` has `data-padded`, its number as six digits, for an arcade-style `000025`: `content: attr(data-padded)`. |
+| `.terminal`, `#output` | The game screen and the scrolling text inside it. |
+| `.b-title` | A room name, when the room is described. |
+| `.b-heading` | An act title, and an ending's title. |
+| `.b-text`, `.b-parser` | Ordinary text, and the parser's replies ("I don't know the word..."). |
+| `.b-score` | "[Your score has gone up by 5.]" |
+| `.b-option`, `button.option` | A line of a conversation menu, and its button (`data-option` holds the number; `:disabled` once the menu is out of date). A locked option is a `.b-option.locked`, with no button. |
+| `.echo` | The player's command, echoed. |
+| `.command`, `.prompt`, `.command input` | The command line. |
+| `.foot` | The footer: story and seed, and a link. |
+
+Test the skin at phone width (the page must not scroll sideways), keep body
+text large and high in contrast, and wrap animation in
+`@media (prefers-reduced-motion: reduce)`. A font in a theme must have a
+licence that allows embedding; the SIL Open Font Licence does, as long as its
+text travels with the font. Don't copy another game's or show's logo,
+lettering or artwork: make the mood yours.
 
 ### pack.json
 
@@ -1354,6 +1410,10 @@ A pack is done when all of these are true:
   edition you used, with its URL, is fine.
 - **Never include text from other games**, or from copyrighted works that are
   not yours to use.
+- **Fonts and images in a theme keep their own licences.** A font under the
+  SIL Open Font Licence can ship inside a pack under any licence, with its
+  licence text next to it in `theme/` and a line in `credits`. The demo packs
+  are CC0 apart from their fonts, which are OFL.
 
 ## 17. A complete example pack
 

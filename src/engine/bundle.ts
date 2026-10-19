@@ -12,6 +12,8 @@ export interface PackBundle {
   texts: Array<{ file: string; content: string }>;
   scripts: Array<{ file: string; source: string }>;
   walkthroughs: Array<{ file: string; content: string }>;
+  /** theme/theme.css with its assets already inlined (see theme.ts). */
+  theme?: { css: string } | null;
 }
 
 export type ScriptImporter = (source: string, file: string) => Promise<ScriptModule>;
@@ -37,6 +39,7 @@ export async function sourceFromBundle(bundle: PackBundle, importScript: ScriptI
     texts: bundle.texts,
     scripts,
     walkthroughs: bundle.walkthroughs,
+    theme: bundle.theme ?? null,
     issues,
   };
 }

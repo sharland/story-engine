@@ -6,6 +6,7 @@ export { compilePack, loadWorld, PackError } from './pack.ts';
 export type { CompileResult } from './pack.ts';
 export { validate } from './validator.ts';
 export { isBundle, sourceFromBundle } from './bundle.ts';
+export { inlineTheme, THEME_NOTES, themeType } from './theme.ts';
 export type { PackBundle, ScriptImporter } from './bundle.ts';
 export type { ValidationReport } from './validator.ts';
 export { playWalkthrough, parseWalkthrough } from './walkthrough.ts';

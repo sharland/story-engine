@@ -34,7 +34,7 @@ export interface Host {
   load?(slot: string): string | null;
 }
 
-export type BlockStyle = 'title' | 'heading' | 'text' | 'parser' | 'option';
+export type BlockStyle = 'title' | 'heading' | 'text' | 'parser' | 'option' | 'score';
 
 export interface Block {
   style: BlockStyle;
@@ -521,8 +521,8 @@ export class Game {
     if (!s) throw new Error(`No score item "${id}"`);
     this.state.awarded.push(id);
     this.state.score += s.points;
-    if (s.points > 0) this.msg('scoreUp', { n: s.points });
-    else if (s.points < 0) this.msg('scoreDown', { n: -s.points });
+    if (s.points > 0) this.msg('scoreUp', { n: s.points }, 'score');
+    else if (s.points < 0) this.msg('scoreDown', { n: -s.points }, 'score');
   }
 
   end(id: string): void {

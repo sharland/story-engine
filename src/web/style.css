@@ -12,7 +12,7 @@
   color-scheme: dark;
 }
 @media (prefers-color-scheme: light) {
-  :root:not([data-theme="dark"]) {
+  :root:not([data-theme="dark"]):not([data-skin]) {
     --bg: #f6f3ea;
     --panel: #ebe6d8;
     --text: #23261f;
@@ -103,7 +103,9 @@ button:hover, .file-button:hover { border-color: var(--dim); }
 .output .b-parser { color: var(--dim); }
 .output .b-error { color: var(--error); }
 .output .echo { color: var(--prompt); margin-top: 0.9em; }
-.output .b-option { margin: 0 0 0.15em; }
+.output .b-option { margin: 0 0 0.15em; padding-left: 2ch; }
+.output .b-option.locked { padding-left: 5ch; }
+.output .b-option .indent { display: none; }
 .output button.option {
   font: inherit;
   color: var(--heading);

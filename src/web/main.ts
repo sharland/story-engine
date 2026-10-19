@@ -4,12 +4,15 @@
 
 import {
   Game,
+  inlineTheme,
   isBundle,
   loadWorld,
   PackError,
   sourceFromBundle,
+  themeType,
   type Block,
   type Host,
+  type Issue,
   type PackBundle,
   type ScriptModule,
 } from '../engine/index.ts';
@@ -38,6 +41,9 @@ const select = $<HTMLSelectElement>('pack-select');
 const statusRoom = $<HTMLSpanElement>('status-room');
 const statusScore = $<HTMLSpanElement>('status-score');
 const seedInfo = $<HTMLSpanElement>('seed-info');
+const themeStyle = document.createElement('style');
+themeStyle.id = 'pack-theme';
+document.head.append(themeStyle);
 
 let game: Game | null = null;
 let transcript: string[] = [];
@@ -91,13 +97,29 @@ function storageHost(packId: string): Host {
   };
 }
 
+/**
+ * A pack's theme replaces the look of the whole page. While one is on,
+ * <html> carries data-skin="pack" (so the default light scheme stands aside)
+ * and data-pack="<pack id>".
+ */
+function applyTheme(css: string | null, packId: string | null): void {
+  themeStyle.textContent = css ?? '';
+  const root = document.documentElement;
+  if (css) root.dataset.skin = 'pack';
+  else delete root.dataset.skin;
+  if (packId) root.dataset.pack = packId;
+  else delete root.dataset.pack;
+}
+
 async function startBundle(bundle: PackBundle, seed: number): Promise<void> {
   output.replaceChildren();
   transcript = [];
   game = null;
   window.storyEngine = { game: null };
+  applyTheme(null, null);
   try {
     const world = loadWorld(await sourceFromBundle(bundle, importScript));
+    applyTheme(bundle.theme?.css ?? null, world.manifest.id);
     game = new Game(world, { seed, host: storageHost(world.manifest.id) });
     window.storyEngine = { game };
     document.title = world.manifest.title;
@@ -152,16 +174,25 @@ function show(blocks: Block[], extraClass = ''): void {
   for (const b of blocks) {
     const p = document.createElement('p');
     p.className = `b-${b.style} ${extraClass}`.trim();
-    const label = b.style === 'option' && typeof b.option === 'number' ? /^(\s*)(\S.*)$/s.exec(b.text) : null;
-    if (label) {
-      // A numbered conversation option: a button that sends its number.
-      const button = document.createElement('button');
-      button.type = 'button';
-      button.className = 'option';
-      button.dataset.option = String(b.option);
-      button.textContent = label[2];
-      button.addEventListener('click', () => submit(String(b.option)));
-      p.append(label[1], button);
+    const option = b.style === 'option' ? /^(\s*)(\S.*)$/s.exec(b.text) : null;
+    if (option) {
+      // A menu line. Its leading spaces stay in the text (for copying) but are
+      // hidden; CSS indents the line instead, so a long option wraps in place.
+      const indent = document.createElement('span');
+      indent.className = 'indent';
+      indent.textContent = option[1];
+      if (typeof b.option === 'number') {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'option';
+        button.dataset.option = String(b.option);
+        button.textContent = option[2];
+        button.addEventListener('click', () => submit(String(b.option)));
+        p.append(indent, button);
+      } else {
+        p.classList.add('locked');
+        p.append(indent, option[2]);
+      }
     } else p.textContent = b.text;
     output.append(p);
     transcript.push(b.text);
@@ -185,8 +216,32 @@ function updateStatus(): void {
   }
   const room = game.world.rooms.get(game.state.location);
   statusRoom.textContent = game.isLit() ? (room?.name ?? '') : game.messageText('darkTitle');
+  // Reads "Score 5/25 · Turns 12". Each part has its own class so a theme can
+  // relabel or hide it; data-padded holds the number as six digits.
   const s = game.state;
-  statusScore.textContent = game.world.maxScore > 0 ? `Score ${s.score}/${game.world.maxScore} · Turns ${s.turns}` : `Turns ${s.turns}`;
+  const parts: Node[] = [];
+  if (game.world.maxScore > 0) {
+    parts.push(stat('score', 'Score', s.score, `/${game.world.maxScore}`), span('sep', ' · '));
+  }
+  parts.push(stat('turns', 'Turns', s.turns, ''));
+  statusScore.replaceChildren(...parts);
+}
+
+function span(cls: string, text: string): HTMLSpanElement {
+  const e = document.createElement('span');
+  e.className = cls;
+  e.textContent = text;
+  return e;
+}
+
+function stat(kind: string, label: string, n: number, max: string): HTMLSpanElement {
+  const value = span('value', String(n));
+  value.dataset.padded = String(Math.max(0, n)).padStart(6, '0');
+  const e = document.createElement('span');
+  e.className = `stat stat-${kind}`;
+  e.append(span('label', label), ' ', value);
+  if (max) e.append(span('max', max));
+  return e;
 }
 
 // ---------------------------------------------------------------------------
@@ -197,7 +252,15 @@ async function bundleFromFolder(files: FileList): Promise<PackBundle> {
   const entries = [...files]
     .map((f) => ({ f, path: (f.webkitRelativePath || f.name).split('/').slice(1).join('/') }))
     .sort((a, b) => (a.path < b.path ? -1 : 1));
+  let themeCss: string | null = null;
+  const themeAssets = new Map<string, string>();
   for (const { f, path } of entries) {
+    if (path.startsWith('theme/')) {
+      const name = path.slice('theme/'.length);
+      if (name === 'theme.css') themeCss = await f.text();
+      else if (themeType(name)) themeAssets.set(name, toBase64(new Uint8Array(await f.arrayBuffer())));
+      continue;
+    }
     const text = await f.text();
     if (path === 'pack.json') bundle.manifest = JSON.parse(text);
     else if (path.startsWith('world/') && path.endsWith('.json')) bundle.data.push({ file: path, content: JSON.parse(text) });
@@ -206,7 +269,18 @@ async function bundleFromFolder(files: FileList): Promise<PackBundle> {
     else if (path.startsWith('walkthroughs/') && path.endsWith('.txt')) bundle.walkthroughs.push({ file: path, content: text });
   }
   if (bundle.manifest === null) throw new Error('The folder has no pack.json');
+  if (themeCss !== null) {
+    const issues: Issue[] = [];
+    bundle.theme = { css: inlineTheme(themeCss, themeAssets, issues) };
+    for (const i of issues) console.warn(`theme: ${i.message}`);
+  }
   return bundle;
+}
+
+function toBase64(bytes: Uint8Array): string {
+  let s = '';
+  for (let i = 0; i < bytes.length; i += 0x8000) s += String.fromCharCode(...bytes.subarray(i, i + 0x8000));
+  return btoa(s);
 }
 
 // ---------------------------------------------------------------------------
