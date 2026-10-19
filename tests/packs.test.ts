@@ -19,12 +19,20 @@ test('there are two demo packs', () => {
   assert.deepEqual(packs, ['halcyon-relay', 'sorrow-creek']);
 });
 
+// Notes are advice, so a pack may keep one on purpose. Halcyon's station is
+// a hub with spurs; at 9 rooms that is fine, and the note says so plainly.
+const expectedNotes: Record<string, string[]> = {
+  'halcyon-relay': ['no-loop'],
+  'sorrow-creek': [],
+};
+
 for (const name of packs) {
   const dir = join(packsDir, name);
 
-  test(`${name}: validates with no errors and no warnings`, async () => {
+  test(`${name}: validates with no errors and no warnings, and only the expected notes`, async () => {
     const r = validate(await loadPack(dir));
     assert.deepEqual(r.issues, []);
+    assert.deepEqual(r.notes.map((n) => n.code), expectedNotes[name]);
   });
 
   test(`${name}: every walkthrough reaches its ending, and one wins with the full score`, async () => {

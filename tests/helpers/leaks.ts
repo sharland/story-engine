@@ -79,7 +79,8 @@ export function packContent(src: PackSource): PackContent {
   for (const { content } of src.data) {
     const d = content as Record<string, Record<string, unknown> | unknown[]>;
     for (const [section, body] of Object.entries(d)) {
-      if (section === 'messages') continue; // keys are the engine's own message names
+      // Keys are the engine's own message names and validator settings.
+      if (section === 'messages' || section === 'validator') continue;
       if (body && !Array.isArray(body) && typeof body === 'object') Object.keys(body).forEach(addId);
       walk(body, null);
     }

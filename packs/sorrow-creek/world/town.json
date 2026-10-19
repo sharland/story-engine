@@ -56,6 +56,27 @@
     "cell": { "name": "cell", "location": "office", "scenery": true,
       "description": "Empty, for once." },
     "stones": { "name": "white stones", "nouns": ["stones", "stone"], "adjectives": ["white"], "plural": true, "location": "wash", "scenery": true,
-      "description": "Smooth white stones, scattered where the water used to run." }
-  }
+      "description": "Smooth white stones, scattered where the water used to run." },
+    "buildings": { "name": "false-fronted buildings", "nouns": ["buildings", "building", "fronts", "town"], "adjectives": ["false-fronted"],
+      "plural": true, "location": "main-street", "scenery": true,
+      "description": "Plank buildings with tall square fronts nailed on to make them look grander than they are. Most are shut against the heat." },
+    "sun": { "name": "sun", "nouns": ["sun", "sky"], "foundIn": ["main-street", "wash"], "scenery": true,
+      "description": "Too bright to look at, and a long way yet from going down." },
+    "trail": { "name": "trail", "nouns": ["trail", "path"], "foundIn": ["main-street", "wash"], "scenery": true,
+      "description": "A path beaten into the bank by hooves and boots, steep enough that you lean back going down." },
+    "hay": { "name": "hay", "nouns": ["hay", "straw", "harness", "oil"], "location": "livery", "scenery": true,
+      "description": "Loose hay underfoot, and the warm, sour smell of it everywhere." },
+    "stable-door": { "name": "stable door", "nouns": ["door", "doors", "doorway"], "adjectives": ["stable"], "location": "livery", "scenery": true,
+      "description": "Wide double doors, propped open to let some air through." },
+    "stove": { "name": "stove", "adjectives": ["cold", "iron"], "location": "office", "scenery": true,
+      "description": "A squat iron stove, cold since spring." },
+    "creek-bed": { "name": "creek bed", "nouns": ["bed", "creek", "clay", "banks", "bank"], "adjectives": ["dry", "cracked", "creek"],
+      "location": "wash", "scenery": true,
+      "description": "Clay baked into plates that curl at the edges. The banks crumble when you touch them." },
+    "mesquite": { "name": "mesquite", "nouns": ["mesquite", "scrub", "bushes", "bush"], "location": "wash", "scenery": true,
+      "description": "Thorny scrub, its roots reaching down further than the creek ever did." },
+    "walls": { "name": "walls", "nouns": ["walls", "wall", "planks"], "plural": true, "foundIn": ["livery", "office"], "scenery": true,
+      "description": "Rough planks, shrunk by the heat until daylight shows through the gaps." }
+  },
+  "validator": { "ignoreWords": ["sorrow"] }
 }
