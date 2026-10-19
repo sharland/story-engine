@@ -4,6 +4,7 @@
 //   story-engine play <pack> [--seed N] [--saves DIR] [--width N]
 //   story-engine validate <pack> [--no-play] [--json]
 //   story-engine shape <pack>
+//   story-engine diagram <pack> map|puzzles|talk [-o FILE]
 //   story-engine walkthrough <pack> [file...]
 //   story-engine bundle <pack> [-o FILE]
 //
@@ -16,6 +17,7 @@ import type { Readable, Writable } from 'node:stream';
 import { pathToFileURL } from 'node:url';
 import { compilePack, Game, loadWorld, PackError, packShape, MUD_FIGURES, validate, type Block, type Host, type PackShape } from '../engine/index.ts';
 import { playWalkthrough } from '../engine/walkthrough.ts';
+import { DIAGRAMS, diagram, type DiagramKind } from '../diagram/index.ts';
 import { bundleForDisk, bundlePack, loadPack } from '../node/loader.ts';
 
 export interface Io {
@@ -35,6 +37,9 @@ const USAGE = `Usage:
   story-engine shape <pack>
       Measure the pack's map the way the MUD structure research measured the
       first DikuMUD worlds, side by side with their figures, and list notes.
+  story-engine diagram <pack> map|puzzles|talk [-o FILE]
+      Draw the pack as SVG: the map with each room's text, the chart of what
+      must happen before what, or the conversations.
   story-engine walkthrough <pack> [file...]
       Play walkthroughs and print the full transcript.
   story-engine bundle <pack> [-o FILE]
@@ -146,6 +151,26 @@ export async function runCli(argv: string[], io: Io): Promise<number> {
       }
       const width = io.isTTY ? Math.min(io.columns, 100) : 0;
       out(shapeReport(compiled.world.manifest.title, packShape(compiled.world, compiled), width));
+      return 0;
+    }
+
+    case 'diagram': {
+      const kind = args.positional[1];
+      if (!(DIAGRAMS as readonly string[]).includes(kind ?? '')) {
+        err(`Which diagram? One of: ${DIAGRAMS.join(', ')}.\n${USAGE}\n`);
+        return 2;
+      }
+      const compiled = compilePack(source);
+      if (!compiled.world || compiled.issues.some((i) => i.level === 'error')) {
+        err(`The pack has errors. Run "story-engine validate ${packPath}" first.\n`);
+        return 1;
+      }
+      const svg = diagram(kind as DiagramKind, compiled.world, compiled);
+      const target = (args.flags.get('-o') ?? args.flags.get('--out')) as string | undefined;
+      if (target) {
+        writeFileSync(target, svg);
+        out(`Wrote ${target}\n`);
+      } else out(svg);
       return 0;
     }
 

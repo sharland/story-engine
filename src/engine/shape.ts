@@ -90,23 +90,10 @@ export function packShape(w: World, c: Compiled): PackShape {
   // What each room holds, at the start or at some point.
   const content = new Set<string>();
   const details = new Map<string, number>(ids.map((id) => [id, 0]));
-  const scope = new Map<string, Set<string>>(ids.map((id) => [id, new Set()]));
-  const roomOf = (place: string | null, depth = 0): string | null => {
-    if (place === null || depth > 20) return null;
-    if (w.rooms.has(place)) return place;
-    return roomOf(w.things.get(place)?.location ?? null, depth + 1);
-  };
-  for (const t of w.things.values()) {
-    const rooms = new Set(t.foundIn.filter((r) => w.rooms.has(r)));
-    const start = roomOf(t.location);
-    if (start) rooms.add(start);
-    for (const r of t.wander?.rooms ?? []) if (w.rooms.has(r)) rooms.add(r);
-    for (const m of c.moves) {
-      const to = m.thing === t.id ? roomOf(m.to) : null;
-      if (to) rooms.add(to);
-    }
-    for (const r of rooms) {
-      scope.get(r)!.add(t.id);
+  const scope = roomScopes(w, c);
+  for (const [r, things] of scope) {
+    for (const id of things) {
+      const t = w.things.get(id)!;
       if (t.door) continue;
       content.add(r);
       if (t.kind === 'object' && (t.scenery || t.fixed) && (t.foundIn.includes(r) || t.location === r)) {
@@ -252,17 +239,9 @@ export function packShape(w: World, c: Compiled): PackShape {
     });
   }
 
-  const ignore = new Set(w.validator.ignoreWords.map(stem));
   for (const id of ids) {
     const room = w.rooms.get(id)!;
-    const known = new Set(ignore);
-    const add = (text: string) => {
-      for (const x of text.toLowerCase().match(/[a-z]+/g) ?? []) known.add(stem(x));
-    };
-    add(room.name);
-    for (const e of room.exits.values()) if (e.to) add(w.rooms.get(e.to)?.name ?? '');
-    for (const word of w.directionWords.keys()) known.add(stem(word));
-    for (const t of scope.get(id)!) for (const word of w.things.get(t)!.words) known.add(stem(word));
+    const known = knownWords(w, id, scope.get(id)!);
     const missing = unexaminedNouns(`${plainText(w, room.description)}\n${plainText(w, room.firstVisit)}`, known);
     if (missing.length === 0) continue;
     notes.push({
@@ -275,6 +254,45 @@ export function packShape(w: World, c: Compiled): PackShape {
   }
 
   return { whole, areas, notes };
+}
+
+/**
+ * The things that can be in each room: placed there (in or on something
+ * there, too), found there, moved there by an effect, or wandering through.
+ */
+export function roomScopes(w: World, c: Pick<CompileResult, 'moves'>): Map<string, Set<string>> {
+  const scope = new Map<string, Set<string>>([...w.rooms.keys()].map((id) => [id, new Set()]));
+  const roomOf = (place: string | null, depth = 0): string | null => {
+    if (place === null || depth > 20) return null;
+    if (w.rooms.has(place)) return place;
+    return roomOf(w.things.get(place)?.location ?? null, depth + 1);
+  };
+  for (const t of w.things.values()) {
+    const rooms = new Set(t.foundIn.filter((r) => w.rooms.has(r)));
+    const start = roomOf(t.location);
+    if (start) rooms.add(start);
+    for (const r of t.wander?.rooms ?? []) if (w.rooms.has(r)) rooms.add(r);
+    for (const m of c.moves) {
+      const to = m.thing === t.id ? roomOf(m.to) : null;
+      if (to) rooms.add(to);
+    }
+    for (const r of rooms) scope.get(r)!.add(t.id);
+  }
+  return scope;
+}
+
+/** Words a room's text may use that the player can act on there (as stems; see stem()). */
+export function knownWords(w: World, roomId: string, scope: Set<string>): Set<string> {
+  const room = w.rooms.get(roomId)!;
+  const known = new Set(w.validator.ignoreWords.map(stem));
+  const add = (text: string) => {
+    for (const x of text.toLowerCase().match(/[a-z]+/g) ?? []) known.add(stem(x));
+  };
+  add(room.name);
+  for (const e of room.exits.values()) if (e.to) add(w.rooms.get(e.to)?.name ?? '');
+  for (const word of w.directionWords.keys()) known.add(stem(word));
+  for (const t of scope) for (const word of w.things.get(t)!.words) known.add(stem(word));
+  return known;
 }
 
 // ---------------------------------------------------------------------------
@@ -383,7 +401,7 @@ const NOT_THINGS = new Set(
 );
 
 /** Crude singular, so "pans" matches "pan" and "boxes" matches "box". */
-function stem(word: string): string {
+export function stem(word: string): string {
   const w = word.toLowerCase();
   if (w.length > 4 && w.endsWith('ies')) return `${w.slice(0, -3)}y`;
   if (w.length > 4 && /(?:ss|x|ch|sh|z)es$/.test(w)) return w.slice(0, -2);

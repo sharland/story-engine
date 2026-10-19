@@ -1,0 +1,123 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="853.2" height="1202" viewBox="0 0 853.2 1202" role="img" aria-label="The Halcyon Relay: puzzles">
+<title>The Halcyon Relay: puzzles</title>
+<style>
+text { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "DejaVu Sans Mono", "Liberation Mono", monospace; font-size: 11px; fill: #1f1d1a; }
+.title { font-size: 16px; font-weight: 700; }
+.sub, .muted { fill: #77706a; }
+.head { font-size: 12px; font-weight: 700; }
+.small { font-size: 10px; }
+.em { font-style: italic; }
+.b { font-weight: 700; }
+.item { fill: #0d7a4f; font-weight: 700; }
+.scenery { fill: #1c6a8c; font-weight: 700; }
+.person { fill: #7a3fb0; font-weight: 700; }
+.exit { fill: #b0590e; font-weight: 700; }
+.missing { fill: #c0262d; text-decoration: underline; }
+.gate { fill: #c0262d; }
+.goal { fill: #2f5e1e; font-weight: 700; }
+.end { fill: #8a1c1c; font-weight: 700; }
+.card { fill: #ffffff; stroke: #1f1d1a; stroke-width: 1.2; }
+.card-muted { fill: #ffffff; stroke: #77706a; stroke-width: 1; stroke-dasharray: 4 3; }
+.band { stroke: none; }
+.edge { fill: none; stroke: #1f1d1a; stroke-width: 1.4; }
+.edge-gate { fill: none; stroke: #c0262d; stroke-width: 1.6; stroke-dasharray: 6 4; }
+.edge-soft { fill: none; stroke: #77706a; stroke-width: 1.2; }
+.label-bg { fill: #faf8f3; }
+</style>
+<defs>
+<marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#1f1d1a"/></marker>
+<marker id="arrow-gate" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#c0262d"/></marker>
+<marker id="arrow-soft" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#77706a"/></marker>
+</defs>
+<rect width="100%" height="100%" fill="#faf8f3"/>
+<text x="24" y="38" class="title" xml:space="preserve">The Halcyon Relay: puzzles</text>
+<text x="24" y="56" class="sub" xml:space="preserve">What must happen before what, worked out from the rules. Each line is labelled with what it makes true.</text>
+<path class="edge" d="M426.6,616 C426.6,645 426.6,645 426.6,672" marker-end="url(#arrow)"/>
+<path class="edge" d="M146.2,166 C146.2,209 146.2,209 146.2,250" marker-end="url(#arrow)"/>
+<path class="edge" d="M426.6,159 C426.6,191.5 426.6,191.5 426.6,222" marker-end="url(#arrow)"/>
+<path class="edge" d="M566.8,1006 C566.8,1035 566.8,1035 566.8,1062" marker-end="url(#arrow)"/>
+<path class="edge" d="M707,862 C707,891 566.8,891 566.8,918" marker-end="url(#arrow)"/>
+<path class="edge" d="M426.6,855 C426.6,887.5 566.8,887.5 566.8,918" marker-end="url(#arrow)"/>
+<path class="edge" d="M707,152 C707,202 707,202 707,250" marker-end="url(#arrow)"/>
+<path class="edge" d="M426.6,732 C426.6,764.5 426.6,764.5 426.6,795" marker-end="url(#arrow)"/>
+<path class="edge" d="M426.6,310 C426.6,339 426.6,339 426.6,366" marker-end="url(#arrow)"/>
+<path class="edge" d="M426.6,514 C426.6,543 426.6,543 426.6,570" marker-end="url(#arrow)"/>
+<path class="edge" d="M426.6,412 C426.6,441 426.6,441 426.6,468" marker-end="url(#arrow)"/>
+<rect class="card" x="304.4" y="674" width="244.4" height="58" rx="4"/>
+<rect class="band" x="305" y="674.6" width="5" height="56.8" fill="#1f1d1a"/>
+<text x="314.4" y="692" class="b" xml:space="preserve">&gt; pull breaker lever</text>
+<text x="314.4" y="706" class="em" xml:space="preserve">“You haul the breaker lever up.”</text>
+<text x="314.4" y="720" class="goal" xml:space="preserve">+15 points</text>
+<rect class="card" x="24" y="80" width="244.4" height="86" rx="4"/>
+<rect class="band" x="24.6" y="80.6" width="5" height="84.8" fill="#1f1d1a"/>
+<text x="34" y="98" class="b" xml:space="preserve">&gt; open outer hatch</text>
+<text x="34" y="112" class="small muted" xml:space="preserve">unless wearing pressure suit</text>
+<text x="34" y="126" class="em" xml:space="preserve">“The outer hatch slides back and</text>
+<text x="34" y="140" class="em" xml:space="preserve">the air leaves the airlock in one</text>
+<text x="34" y="154" class="em" xml:space="preserve">long roar, taking you…”</text>
+<rect class="card" x="584.8" y="790" width="244.4" height="72" rx="4"/>
+<rect class="band" x="585.4" y="790.6" width="5" height="70.8" fill="#1f1d1a"/>
+<text x="594.8" y="808" class="b" xml:space="preserve">&gt; align relay dish</text>
+<text x="594.8" y="822" class="em" xml:space="preserve">“You brace your boots and work the</text>
+<text x="594.8" y="836" class="em" xml:space="preserve">handwheel.”</text>
+<text x="594.8" y="850" class="goal" xml:space="preserve">+15 points</text>
+<rect class="card" x="304.4" y="87" width="244.4" height="72" rx="4"/>
+<rect class="band" x="305" y="87.6" width="5" height="70.8" fill="#1c6a8c"/>
+<text x="314.4" y="105" class="b" xml:space="preserve">&gt; read data slate</text>
+<text x="314.4" y="119" class="small muted" xml:space="preserve">on the table, in Galley</text>
+<text x="314.4" y="133" class="em" xml:space="preserve">“Stores code changed after audit:</text>
+<text x="314.4" y="147" class="em" xml:space="preserve">4471.”</text>
+<rect class="card" x="304.4" y="224" width="244.4" height="86" rx="4"/>
+<rect class="band" x="305" y="224.6" width="5" height="84.8" fill="#1f1d1a"/>
+<text x="314.4" y="242" class="b" xml:space="preserve">&gt; type 4471</text>
+<text x="314.4" y="256" class="small muted" xml:space="preserve">in Galley</text>
+<text x="314.4" y="270" class="em" xml:space="preserve">“The keypad beeps twice and the</text>
+<text x="314.4" y="284" class="em" xml:space="preserve">stores door slides open.”</text>
+<text x="314.4" y="298" class="goal" xml:space="preserve">+10 points</text>
+<rect class="card" x="444.6" y="920" width="244.4" height="86" rx="4"/>
+<rect class="band" x="445.2" y="920.6" width="5" height="84.8" fill="#1f1d1a"/>
+<text x="454.6" y="938" class="b" xml:space="preserve">&gt; transmit</text>
+<text x="454.6" y="952" class="small muted" xml:space="preserve">in Control Room</text>
+<text x="454.6" y="966" class="em" xml:space="preserve">“You lift the guard and press</text>
+<text x="454.6" y="980" class="em" xml:space="preserve">TRANSMIT.”</text>
+<text x="454.6" y="994" class="goal" xml:space="preserve">+10 points</text>
+<rect class="card" x="584.8" y="94" width="244.4" height="58" rx="4"/>
+<rect class="band" x="585.4" y="94.6" width="5" height="56.8" fill="#1f1d1a"/>
+<text x="594.8" y="112" class="b" xml:space="preserve">every turn</text>
+<text x="594.8" y="126" class="small muted" xml:space="preserve">in outside</text>
+<text x="594.8" y="140" class="em" xml:space="preserve">“A tone sounds in your helmet.”</text>
+<rect class="card" x="304.4" y="797" width="244.4" height="58" rx="4"/>
+<rect class="band" x="305" y="797.6" width="5" height="56.8" fill="#c0262d"/>
+<text x="314.4" y="815" class="b" xml:space="preserve">&gt; north to Control Room</text>
+<text x="314.4" y="829" class="small muted" xml:space="preserve">from Spine Corridor</text>
+<text x="314.4" y="843" class="em" xml:space="preserve">“The control room door is sealed.”</text>
+<rect class="card" x="304.4" y="368" width="244.4" height="44" rx="4"/>
+<rect class="band" x="305" y="368.6" width="5" height="42.8" fill="#c0262d"/>
+<text x="314.4" y="386" class="b" xml:space="preserve">&gt; east through stores door</text>
+<text x="314.4" y="400" class="small muted" xml:space="preserve">from Galley</text>
+<rect class="card" x="304.4" y="572" width="244.4" height="44" rx="4"/>
+<rect class="band" x="305" y="572.6" width="5" height="42.8" fill="#0d7a4f"/>
+<text x="314.4" y="590" class="b" xml:space="preserve">&gt; put power coupling in socket</text>
+<text x="314.4" y="604" class="small muted" xml:space="preserve">in Reactor Bay</text>
+<rect class="card" x="304.4" y="470" width="244.4" height="44" rx="4"/>
+<rect class="band" x="305" y="470.6" width="5" height="42.8" fill="#0d7a4f"/>
+<text x="314.4" y="488" class="b" xml:space="preserve">&gt; take power coupling</text>
+<text x="314.4" y="502" class="small muted" xml:space="preserve">in Stores</text>
+<rect class="card" x="483.5" y="1064" width="166.6" height="30" rx="15" stroke-width="2"/>
+<text text-anchor="middle" x="566.8" y="1083" class="goal" xml:space="preserve">END: The Wren is home</text>
+<rect class="card" x="72.8" y="252" width="146.8" height="30" rx="15" stroke-width="2"/>
+<text text-anchor="middle" x="146.2" y="271" class="end" xml:space="preserve">END: You have died</text>
+<rect class="card" x="633.6" y="252" width="146.8" height="30" rx="15" stroke-width="2"/>
+<text text-anchor="middle" x="707" y="271" class="end" xml:space="preserve">END: You have died</text>
+<rect class="label-bg" x="350.6" y="624" width="152" height="14" rx="3"/><text x="426.6" y="635" class="small muted" text-anchor="middle">power coupling in socket</text>
+<rect class="label-bg" x="386.6" y="167" width="80" height="14" rx="3"/><text x="426.6" y="178" class="small muted" text-anchor="middle">knows &quot;4471&quot;</text>
+<rect class="label-bg" x="628" y="870" width="116" height="14" rx="3"/><text x="686" y="881" class="small muted" text-anchor="middle">relay dish aligned</text>
+<rect class="label-bg" x="389.6" y="863" width="116" height="14" rx="3"/><text x="447.6" y="874" class="small muted" text-anchor="middle">reach Control Room</text>
+<rect class="label-bg" x="368.6" y="740" width="116" height="14" rx="3"/><text x="426.6" y="751" class="small muted" text-anchor="middle">act Power or later</text>
+<rect class="label-bg" x="356.6" y="318" width="140" height="14" rx="3"/><text x="426.6" y="329" class="small muted" text-anchor="middle">stores door not locked</text>
+<rect class="label-bg" x="353.6" y="522" width="146" height="14" rx="3"/><text x="426.6" y="533" class="small muted" text-anchor="middle">carrying power coupling</text>
+<rect class="label-bg" x="386.6" y="420" width="80" height="14" rx="3"/><text x="426.6" y="431" class="small muted" text-anchor="middle">reach Stores</text>
+<text x="24" y="1156" xml:space="preserve">▌<tspan class="muted"> a command a rule answers   </tspan><tspan class="item">▌</tspan><tspan class="muted"> taking, wearing, putting   </tspan><tspan class="gate">▌</tspan><tspan class="muted"> a way that opens</tspan></text>
+<text x="24" y="1172" xml:space="preserve"><tspan class="person">▌</tspan><tspan class="muted"> something said   </tspan><tspan class="scenery">▌</tspan><tspan class="muted"> something read   </tspan><tspan class="muted">Steps that lead to no score or ending are left out,</tspan></text>
+<text x="24" y="1188" xml:space="preserve"><tspan class="muted">and so is anything only a script does. A full spoiler.</tspan></text>
+</svg>

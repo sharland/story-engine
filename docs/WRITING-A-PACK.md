@@ -1227,6 +1227,7 @@ is the path to your pack directory, wherever it is.
 ```sh
 node src/cli/main.ts validate <pack>         # check everything, play the walkthroughs
 node src/cli/main.ts shape <pack>            # measure the map, list notes on its shape
+node src/cli/main.ts diagram <pack> map -o map.svg   # draw it: map, puzzles or talk
 node src/cli/main.ts play <pack> --seed 1    # play it yourself
 node src/cli/main.ts walkthrough <pack>      # print full walkthrough transcripts
 node src/cli/main.ts walkthrough <pack> win  # just walkthroughs/win.txt
@@ -1331,6 +1332,44 @@ outside leads to. "Across" is the longest walk, in steps, between two of its
 rooms by the shortest route. "Gates" counts exits with a condition or through
 a door that starts locked. The study's figures are a yardstick from two worlds,
 not targets.
+
+### Diagrams
+
+`diagram <pack> map|puzzles|talk` draws the pack as an SVG picture, worked
+out from the data, so it is never out of date. Open it in a browser. Each
+shows the game's own words, not just its shape:
+
+- **map**: rooms laid out by compass from the start, each with its
+  description. Words the player can use there are coloured: things to take,
+  scenery, people and the ways out. A noun nothing answers to is underlined
+  in red (the `unexamined-noun` note, where you can see it). Ways that open
+  only under a condition, or through a locked door, are red dashed lines
+  labelled with the condition.
+- **puzzles**: what must happen before what, as a chart from the first steps
+  down to the endings. Each step is a command as a player would type it, with
+  the game's reply. Each line says what the step makes true for the next
+  ("carrying lariat", "reach Control Room"). It follows rule order: a rule
+  that refuses until you have a rope makes the rope a need of every later
+  rule it stands in front of. Steps that lead to no score or ending are left
+  out. It is a full spoiler.
+- **talk**: each conversation menu as cards: what the character says, every
+  line the player can choose, the reply, any condition and effect, and where
+  the choice leads. Topics for ASK and TELL follow.
+
+The chart can't see inside scripts, and it only knows a clue is needed when a
+rule asks for an exact word or code that some text contains. Use it to check
+your design, not to prove the game can be won: that is what walkthroughs
+are for.
+
+The demo packs' diagrams are in [`docs/diagrams`](diagrams/):
+
+| | Sorrow Creek | Halcyon Relay |
+|---|---|---|
+| Map | [map](diagrams/sorrow-creek-map.svg) | [map](diagrams/halcyon-relay-map.svg) |
+| Puzzles | [puzzles](diagrams/sorrow-creek-puzzles.svg) | [puzzles](diagrams/halcyon-relay-puzzles.svg) |
+| Talk | [talk](diagrams/sorrow-creek-talk.svg) | [talk](diagrams/halcyon-relay-talk.svg) |
+
+![The Halcyon Relay's puzzle chart](diagrams/halcyon-relay-puzzles.svg)
 
 ### Walkthroughs
 

@@ -1,7 +1,7 @@
 // The command-line runner, driven through runCli with in-memory streams.
 
 import assert from 'node:assert/strict';
-import { cpSync, existsSync, mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
+import { cpSync, existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { PassThrough } from 'node:stream';
@@ -94,6 +94,18 @@ test('shape compares the map with the MUD figures, region by region, and lists n
   assert.match(r.out, /\nRegion +Rooms +Ways in +Dead ends +Corridors +Loops +Across +Gates +Joins\n/);
   assert.match(r.out, /\noutside +2 +2 /);
   assert.match(r.out, /- no-loop: /);
+});
+
+test('diagram draws SVG to a file or to the screen, and asks which diagram if not told', async () => {
+  const file = join(temp, 'map.svg');
+  const r = await cli(['diagram', join(root, 'packs', 'sorrow-creek'), 'map', '-o', file]);
+  assert.equal(r.code, 0);
+  assert.match(readFileSync(file, 'utf8'), /^<svg [^>]*aria-label="Trouble at Sorrow Creek: map"/);
+  const puzzles = await cli(['diagram', join(root, 'packs', 'halcyon-relay'), 'puzzles']);
+  assert.match(puzzles.out, /END: The Wren is home/);
+  const which = await cli(['diagram', join(root, 'packs', 'halcyon-relay')]);
+  assert.equal(which.code, 2);
+  assert.match(which.err, /Which diagram\? One of: map, puzzles, talk/);
 });
 
 test('walkthrough prints transcripts and fails on a bad one', async () => {
