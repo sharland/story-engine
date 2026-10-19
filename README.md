@@ -38,6 +38,7 @@ Pages deployment.
 ```
 node src/cli/main.ts play <pack> [--seed N] [--saves DIR] [--width N]
 node src/cli/main.ts validate <pack> [--no-play] [--json]
+node src/cli/main.ts shape <pack>
 node src/cli/main.ts walkthrough <pack> [file...]
 node src/cli/main.ts bundle <pack> [-o FILE]
 ```

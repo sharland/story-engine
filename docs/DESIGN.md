@@ -48,7 +48,7 @@ else has contributed; nothing in the code depends on the choice.
 src/engine/   platform-free core: types, loader/compiler, parser, world
               model, rules, actions, turn loop, validator. No Node or DOM APIs.
 src/node/     reads a pack directory from disk; builds single-file bundles
-src/cli/      command-line runner (play, validate, walkthrough, bundle)
+src/cli/      command-line runner (play, validate, shape, walkthrough, bundle)
 src/web/      static terminal-style page; loads pack bundles
 packs/        demo packs (CC0)
 tests/        node:test suites, transcript files, fixture packs
@@ -318,6 +318,15 @@ The validator is static. It can't see what scripts do. A pack can name rooms
 and objects that scripts make reachable in `validator.assumeReachable`. It
 also plays every file in `walkthroughs/` and checks each reaches its declared
 ending.
+
+It also returns notes (`src/engine/shape.ts`): advice on the map's shape and
+descriptions, drawn from [a study of the first MUDs](research/mud-structure.md).
+Notes are kept apart from errors and warnings and never fail a pack. They flag
+rooms with the same description, runs of empty pass-through rooms, empty dead
+ends, regions with one way in or no loop, and nouns a room's text names that
+nothing in the room answers to. The last is a heuristic, so
+`validator.ignoreWords` lists words that don't matter. The `shape` command
+prints the measures behind the notes beside the study's figures.
 
 ## The novel-adaptation requirements
 
