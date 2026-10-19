@@ -163,7 +163,6 @@ body::after {
   background: var(--gold);
   padding: 4px 8px;
   box-shadow: 3px 3px 0 #000;
-  animation: arcade-blink 0.5s steps(2, start) 4;
 }
 .output .echo {
   font-family: var(--pixel);
@@ -209,7 +208,7 @@ body::after {
   caret-color: var(--gold);
 }
 
-/* Footer: credit line and a blinking coin prompt. */
+/* Footer: credit line and a coin prompt. */
 .foot {
   background: #000;
   border-top: 4px solid var(--gold);
@@ -223,14 +222,11 @@ body::after {
   content: "Insert coin";
   order: 1;
   color: var(--gold);
-  animation: coin-blink 1.4s steps(1, end) infinite;
 }
 .foot a { order: 2; color: var(--dim); }
 
 :focus-visible { outline: 3px solid var(--cyan); outline-offset: 2px; }
 
-@keyframes arcade-blink { to { visibility: hidden; } }
-@keyframes coin-blink { 70% { visibility: hidden; } }
 
 @media (max-width: 600px) {
   body { font-size: 18px; background-size: auto 112px, 144px 144px, 100% 100%; }

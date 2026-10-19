@@ -314,7 +314,10 @@ parts, which your CSS can restyle:
 
 Test the skin at phone width (the page must not scroll sideways), keep body
 text large and high in contrast, and wrap animation in
-`@media (prefers-reduced-motion: reduce)`. A font in a theme must have a
+`@media (prefers-reduced-motion: reduce)`. Don't make anything blink: it
+tires readers, pulls the eye from the text, and fails the accessibility rule
+that anything flashing or blinking must be able to be stopped
+([WCAG 2.2.2](https://www.w3.org/WAI/WCAG22/Understanding/pause-stop-hide.html)). A font in a theme must have a
 licence that allows embedding; the SIL Open Font Licence does, as long as its
 text travels with the font. Don't copy another game's or show's logo,
 lettering or artwork: make the mood yours.
