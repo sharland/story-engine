@@ -270,7 +270,13 @@ export interface DataFile {
   directions?: Record<string, DirectionDef>;
   messages?: Record<string, string>;
   dialogues?: Record<string, DialogueDef>;
-  validator?: { assumeReachable?: string[]; assumeObtainable?: string[]; assumeUsed?: string[]; ignoreWords?: string[] };
+  validator?: {
+    assumeReachable?: string[];
+    assumeObtainable?: string[];
+    assumeUsed?: string[];
+    assumeAchievable?: string[];
+    ignoreWords?: string[];
+  };
 }
 
 /** A script module after import: its default export registers handlers. */
@@ -413,7 +419,7 @@ export interface World {
   dialogues: Map<string, DialogueDef>;
   texts: Map<string, string>;
   scripts: import('./script-api.ts').ScriptTable;
-  validator: { assumeReachable: string[]; assumeObtainable: string[]; assumeUsed: string[]; ignoreWords: string[] };
+  validator: { assumeReachable: string[]; assumeObtainable: string[]; assumeUsed: string[]; assumeAchievable: string[]; ignoreWords: string[] };
   walkthroughs: Array<{ file: string; content: string }>;
   origin: string;
 }

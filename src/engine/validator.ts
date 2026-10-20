@@ -1,11 +1,14 @@
 // The pack validator: everything compilePack checks (shape, references),
 // plus whole-pack analyses: unreachable rooms, objects that can never be
 // obtained, vocabulary clashes, unused content, and playing the walkthroughs.
-// It also returns notes on the map's shape (shape.ts): advice, never errors.
+// It also runs the puzzle steps forward from the start (steps.ts) to find
+// endings and scores nothing can reach, and returns notes on the map's shape
+// (shape.ts): advice, never errors.
 
 import { compilePack, type CompileResult } from './pack.ts';
 import { compilePattern, matchPattern, type Pattern } from './parser.ts';
 import { packShape, type Note } from './shape.ts';
+import { buildSteps, runForward } from './steps.ts';
 import type { Issue, PackSource, World } from './types.ts';
 import { playWalkthrough, type WalkthroughResult } from './walkthrough.ts';
 
@@ -44,6 +47,13 @@ export function validate(src: PackSource, options: ValidateOptions = {}): Valida
       notes.push(...packShape(world, compiled).notes);
     } catch (e) {
       if (!hasErrors()) throw e;
+    }
+    if (!hasErrors()) {
+      try {
+        winnability(world, compiled, issues);
+      } catch (e) {
+        if (!hasErrors()) throw e;
+      }
     }
     if (src.walkthroughs.length === 0) {
       issues.push({
@@ -250,6 +260,38 @@ function dialogueGraphs(w: World, c: CompileResult, issues: Issue[]): void {
         });
       }
     }
+  }
+}
+
+/**
+ * Endings and score items that no sequence of steps can reach from the start:
+ * a key behind its own door, a condition nothing sets, a step that needs
+ * something only a later step makes.
+ */
+function winnability(w: World, c: CompileResult, issues: Issue[]): void {
+  const steps = [...buildSteps(w, c).values()];
+  const progress = runForward(w, new Map(steps.map((s) => [s.id, s])));
+  const assumed = new Set(w.validator.assumeAchievable);
+  const hint = 'If a script makes it possible, list it in validator.assumeAchievable';
+  for (const [id, ending] of w.endings) {
+    const enders = steps.filter((s) => s.ends.includes(id));
+    if (enders.length === 0 || assumed.has(id) || enders.some((s) => progress.done.has(s.id))) continue;
+    issues.push({
+      level: 'warning',
+      code: ending.win ? 'unwinnable' : 'unreachable-ending',
+      message: `${ending.win ? 'Winning ending' : 'Ending'} "${id}" can never be reached: ${progress.why(enders[0].id)}. ${hint}`,
+      where: c.definedIn.get(id),
+    });
+  }
+  for (const id of w.scores.keys()) {
+    const awarders = steps.filter((s) => s.awards.includes(id));
+    if (awarders.length === 0 || assumed.has(id) || awarders.some((s) => progress.done.has(s.id))) continue;
+    issues.push({
+      level: 'warning',
+      code: 'unreachable-score',
+      message: `Score item "${id}" can never be awarded, so the maximum score can't be reached: ${progress.why(awarders[0].id)}. ${hint}`,
+      where: c.definedIn.get(id),
+    });
   }
 }
 

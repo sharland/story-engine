@@ -4,7 +4,7 @@
 
 import type { Condition, DialogueDef, DialogueOptionDef, Effect, TextDef, Thing, World } from '../engine/types.ts';
 import { CHAR, esc, firstSentence, label, LINE, n, svgDocument, textLine, wrap, wrapRuns, type Box, type Run } from './svg.ts';
-import { conditionWords, prose, thingName } from './words.ts';
+import { conditionWords, prose, thingName } from '../engine/words.ts';
 
 const CARD_CHARS = 44;
 const PAD = 10;

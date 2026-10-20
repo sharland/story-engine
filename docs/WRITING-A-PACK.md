@@ -381,7 +381,7 @@ Each data file is one JSON object with any of these sections:
 | `verbs` | object of id → verb | [11](#11-verbs-directions-and-messages) |
 | `directions` | object of id → direction | [11](#11-verbs-directions-and-messages) |
 | `messages` | object of key → text | [11](#11-verbs-directions-and-messages) |
-| `validator` | `{"assumeReachable": [ids], "assumeObtainable": [ids], "assumeUsed": [ids], "ignoreWords": [words]}` | [13](#13-tools-validate-shape-play-walkthrough) |
+| `validator` | `{"assumeReachable": [ids], "assumeObtainable": [ids], "assumeUsed": [ids], "assumeAchievable": [ids], "ignoreWords": [words]}` | [13](#13-tools-validate-shape-play-walkthrough) |
 
 Any other section name is an error.
 
@@ -1260,21 +1260,35 @@ use **Open folder…** to play your pack directory in a browser.
   not an error, if the pack has scripts, since a script can open it.)
 - **Unused content** (warnings): passages, endings, score items, events and
   acts that nothing uses.
+- **Can it be won?** (warnings): the validator reads the rules as steps, the
+  same steps the [puzzle chart](#diagrams) draws, and runs them forward from
+  the start: take what is there, open what opens, go where the way is open,
+  make what each step makes, and repeat until nothing more can happen. Any
+  ending or score item it never reaches is a warning, with the chain that
+  blocks it: a key locked behind its own door reads `"take gold" needs reach
+  Vault, "north through door" needs door not locked, "unlock door with key"
+  needs carrying key, "take key" needs reach Vault, which only "north through
+  door" can make: a loop`. It is a model, not the game: once a state is made
+  it counts as made for good, and it can't see what scripts do. It catches
+  what can never happen; it doesn't prove the game can be won. That is the
+  walkthroughs' job.
 - **Walkthroughs**: each one is played; it must reach its declared ending with
   no command misunderstood ("I don't know the word...", "You can't see any such
   thing.", "Which do you mean...?"). Each is played twice to check the game is
   deterministic.
 
 The validator cannot see inside scripts. If a script makes a room reachable or
-an object obtainable, or is the only thing that uses a passage, ending, score
-item, event or act, list those ids in the `validator` section so the checks
-and warnings take it into account:
+an object obtainable, is the only thing that uses a passage, ending, score
+item, event or act, or is what makes an ending or score item possible, list
+those ids in the `validator` section so the checks and warnings take it into
+account:
 
 ```json
 "validator": {
   "assumeReachable": ["secret-garden"],
   "assumeObtainable": ["silver-key"],
-  "assumeUsed": ["ending-by-script", "passage-by-script"]
+  "assumeUsed": ["ending-by-script", "passage-by-script"],
+  "assumeAchievable": ["ending-a-script-unlocks"]
 }
 ```
 

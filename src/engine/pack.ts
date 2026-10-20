@@ -143,6 +143,7 @@ export function compilePack(src: PackSource): CompileResult {
   const assumeObtainable: string[] = [];
   const assumeUsed: string[] = [];
   const ignoreWords: string[] = [];
+  const assumeAchievable: string[] = [];
 
   for (const { file, content } of src.data) {
     if (!isPlainObject(content)) {
@@ -176,6 +177,10 @@ export function compilePack(src: PackSource): CompileResult {
             assumeUsed: (cc, vv, w) => {
               if (!Array.isArray(vv) || vv.some((x) => typeof x !== 'string')) cc.error(w, 'type', 'Expected a list of ids');
               else assumeUsed.push(...(vv as string[]));
+            },
+            assumeAchievable: (cc, vv, w) => {
+              if (!Array.isArray(vv) || vv.some((x) => typeof x !== 'string')) cc.error(w, 'type', 'Expected a list of ids');
+              else assumeAchievable.push(...(vv as string[]));
             },
             ignoreWords: (cc, vv, w) => {
               if (!Array.isArray(vv) || vv.some((x) => typeof x !== 'string')) cc.error(w, 'type', 'Expected a list of words');
@@ -431,7 +436,7 @@ export function compilePack(src: PackSource): CompileResult {
     dialogues,
     texts,
     scripts,
-    validator: { assumeReachable, assumeObtainable, assumeUsed, ignoreWords },
+    validator: { assumeReachable, assumeObtainable, assumeUsed, assumeAchievable, ignoreWords },
     walkthroughs: src.walkthroughs,
     origin: src.origin,
   };

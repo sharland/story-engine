@@ -7,7 +7,7 @@ import type { CompileResult } from '../engine/pack.ts';
 import { knownWords, roomScopes, stem, unexaminedNouns } from '../engine/shape.ts';
 import type { Exit, Room, TextPart, World } from '../engine/types.ts';
 import { CHAR, esc, exitPoint, label, LINE, n, svgDocument, textLine, wrapRuns, type Box, type Run } from './svg.ts';
-import { conditionWords, prose, thingName } from './words.ts';
+import { conditionWords, prose, thingName } from '../engine/words.ts';
 
 type Compiled = Pick<CompileResult, 'moves' | 'playerMoves'>;
 

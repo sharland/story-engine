@@ -2,6 +2,8 @@
 // characters, word wrapping with coloured runs, boxes and arrows.
 // Monospace keeps the layout exact without measuring fonts.
 
+export { clip, firstSentence } from '../engine/words.ts';
+
 export const FONT = 11;
 /** Width of one character at FONT size; about right for common monospace fonts. */
 export const CHAR = FONT * 0.6;
@@ -55,21 +57,6 @@ export function wrapRuns(runs: Run[], width: number): Run[][] {
 
 export function wrap(text: string, width: number, cls = ''): Run[][] {
   return wrapRuns([{ text, cls }], width);
-}
-
-/** Shorten text to a number of characters, ending at a word with an ellipsis. */
-export function clip(text: string, max: number): string {
-  const t = text.replace(/\s+/g, ' ').trim();
-  if (t.length <= max) return t;
-  const cut = t.slice(0, max - 1);
-  return `${cut.slice(0, Math.max(cut.lastIndexOf(' '), max / 2)).replace(/[\s,;:.]+$/, '')}…`;
-}
-
-/** The first sentence of a text, clipped. */
-export function firstSentence(text: string, max: number): string {
-  const t = text.replace(/\s+/g, ' ').trim();
-  const m = /^(.+?[.!?]["”’)]?)(\s|$)/.exec(t);
-  return clip(m ? m[1] : t, max);
 }
 
 /** One line of runs as an SVG <text> with <tspan>s. */
