@@ -69,59 +69,119 @@ declarative rules or, as a last resort, as a small script.
 ## 3. Adapting a novel: the method
 
 A novel is told; a game is played. Most of the work is deciding what the
-player *does*. Follow these steps in order, and write your decisions into
-`NOTES.md` in your pack directory as you go. The notes are for you and for
-whoever reviews the pack, and the engine ignores them.
+player *does*, and the decisions narrow each other: once you know whose game it
+is, you only need the parts of the book that person meets. So work in stages,
+and finish each one before starting the next:
 
-### 3.1 Read for the playable spine
+1. [The experience](#31-stage-1-the-experience): what playing it should feel like.
+2. [The vantage](#32-stage-2-whose-game-is-it): whose game it is.
+3. [The spine](#33-stage-3-the-playable-spine): what that person does, in acts, and how it ends.
+4. [The inventory](#34-stage-4-the-inventory-for-the-spine-only): the places, people and objects the spine needs, and nothing else.
+5. Then build: [map](#35-build-the-map), [puzzles](#36-design-puzzles-from-the-plot),
+   [characters](#37-characters-and-dialogue), [text](#38-voice-and-text) and
+   [endings](#39-endings-and-score), in the order of the
+   [work plan](#310-work-plan-with-checkpoints).
 
-Read the whole book first. Then list, in `NOTES.md`:
+Each of the first four stages ends with a short decision written into
+`NOTES.md` in your pack directory, agreed before the next stage starts: with
+the book's author or rights holder if that isn't you, or with whoever reviews
+the pack. The engine ignores the notes.
 
-- **The protagonist and their goal.** The player will be this person (see 3.2).
-- **The places** where things happen, and how they connect. These become rooms.
-- **The objects that matter to the plot.** A key, a weapon, a letter, a horse,
-  a machine. These become objects, and the important ones become puzzles.
-- **The obstacles.** Each thing that stands between the protagonist and the
-  goal is a candidate puzzle: a locked place, a person who must be persuaded,
-  a thing that must be found, made or repaired.
-- **The turning points.** Moments after which the world is different. These
-  become act boundaries (3.3).
-- **The ending, and the plausible other endings.** The book's ending is usually
-  the winning one. Deaths, captures, failures and wrong choices that the book
-  threatens are candidates for losing endings.
+Don't catalogue the whole book first. A full inventory before the vantage is
+chosen is mostly wasted, and it quietly makes the choice for you: the person
+with the most entries is the protagonist. If someone else, or an AI assistant,
+does the reading for you, ask for one stage at a time and decide before asking
+for the next.
 
-### 3.2 Choose the player character and the voice
+### 3.1 Stage 1: the experience
 
-- The player is usually the protagonist. If the book is narrated by an
-  observer (a frame narrator, a friend), make the player the person who acts,
-  and give the observer's knowledge to a character or to act intros.
-- Write room descriptions, object descriptions and responses in **second
-  person, present tense**: "You are standing in a dusty street." Convert
-  first-person and third-person narration as you adapt it.
-- Dialogue from the book can be quoted directly. Other characters keep their
-  own voices.
-- Keep the book's period and tone in your own text. A western reads like a
-  western; a Victorian scientific romance reads like one.
+Write one paragraph:
 
-### 3.3 Turn the book's structure into acts
+- **What should playing it feel like?** Being hunted, solving a mystery,
+  holding a family together, being trapped in a system that makes no sense.
+- **Which tension in the book produces that feeling?** Not the plot summary:
+  what the book is about when it is under pressure.
+- **What must survive, and what may go?** The scenes, characters and lines a
+  reader would miss, and the subplots a player wouldn't.
 
-An **act** is a stretch of the story in which the world is in one state. A new
-act begins at a turning point: a door to a new part of the world opens, a
-character changes sides, night falls, the protagonist travels in time.
+A synopsis, the opening, the ending and your memory of the book are usually
+enough for this. The close reading comes at stage 4, for the chosen thread only.
 
-- Aim for **3 to 7 acts** for a novel. An act usually covers several chapters.
-  Do not make one act per chapter unless chapters really are turning points.
-- Each act gets a `title` (shown when it starts), an optional `intro` passage
-  (the bridging narration that the player does not play) and optional effects
-  (move characters, unlock regions, start timers).
-- Acts advance only when the player achieves something: a rule's effect runs
-  `{"act": "<id of the next act>"}`. Do not advance acts on a timer unless the book really
-  forces the pace.
-- Parts of the book the player cannot influence (a long journey, a battle seen
-  from afar, years passing) become act intros or event text. Keep them short
-  (under about 300 words) and let the player act again quickly.
+### 3.2 Stage 2: whose game is it?
 
-### 3.4 Build the map
+The protagonist is the usual answer, not the only one. Write down at least
+three candidates: the protagonist, someone with power over them, and someone
+beside them (a friend, a witness, an outsider). An antagonist can be a fourth.
+Compare them on:
+
+- **Agency.** Can they act on the book's central tension, again and again, in
+  ways that change things? A game needs someone who does, not someone things
+  happen to.
+- **Access.** Do they go to the places and meet the people where the book
+  happens?
+- **What they don't know.** Gaps in knowledge become puzzles. A character who
+  already knows everything has nothing to find out.
+- **Stakes.** What do they lose by failing? Losing endings come from here.
+- **Distance from the book.** What would have to be invented? Telling a story
+  from another person's side makes a new work, as retellings from a minor
+  character's point of view do. That is the author's or rights holder's
+  choice, not a technicality.
+
+A book that looks hard to play may be playable from where it already stands,
+if its *structure* becomes the game rather than its plot. In *Catch-22* (an
+example only; it is in copyright), every attempt Yossarian makes to stop flying
+missions fails, so the plot looks unplayable. But the attempts are schemes,
+each blocked by a catch, and he keeps coming back to the same base: a hub with
+a spur for each attempt, where the failures are the content and the ending is
+a choice. Playing a
+commanding officer instead would make a different game, about being complicit
+rather than trapped.
+
+If the book is narrated by an observer (a frame narrator, a friend), the player
+is usually the person who acts; the observer's knowledge goes to a character or
+to act intros.
+
+**Decision:** the vantage in one sentence, and why the others were turned down.
+
+### 3.3 Stage 3: the playable spine
+
+From the chosen vantage only:
+
+- **5 to 10 beats**, each something the player does that changes the world: a
+  person won over, a place opened, a thing found, made or mended.
+- **Acts.** An act is a stretch of the story in which the world is in one
+  state. A new act begins at a turning point: a door to a new part of the world
+  opens, a character changes sides, night falls, the protagonist travels in
+  time. Aim for **3 to 7 acts** for a novel; an act usually covers several
+  chapters. Acts advance only when the player achieves something: a rule's
+  effect runs `{"act": "<id of the next act>"}`. Do not advance acts on a
+  timer unless the book really forces the pace.
+- **Endings.** The winning ending: the book's, or what winning means for this
+  person if the vantage changes it. Losing endings where the book threatens a
+  failure the player could actually cause.
+- **What is told, not played.** Parts of the book the player cannot influence
+  (a long journey, a battle seen from afar, years passing) become act intros or
+  event text. Keep them short (under about 300 words) and let the player act
+  again quickly.
+
+**Decision:** the beats, the acts with their turning points, and the endings.
+
+### 3.4 Stage 4: the inventory, for the spine only
+
+Now read closely, but only for what the beats need. List in `NOTES.md`:
+
+- **The places** where the beats happen, and how they connect. These become
+  rooms.
+- **The people** the player meets, and what each wants from the player.
+- **The objects that matter.** A key, a weapon, a letter, a horse, a machine.
+  The important ones become puzzles.
+- **The obstacles.** Each thing that stands between the player and a beat is a
+  candidate puzzle: a locked place, a person who must be persuaded, a thing
+  that must be found, made or repaired, something the player doesn't yet know.
+
+Anything the spine never touches stays out, however good it is in the book.
+
+### 3.5 Build the map
 
 - Make one room per place where the player can do something distinct. Merge
   places that would be empty; split a place that has two different puzzles.
@@ -134,16 +194,13 @@ character changes sides, night falls, the protagonist travels in time.
   should lead back to A unless the story explains why not.
 - **Every room description names its exits** ("The stable is east and the
   street is west."). The engine does not list exits for the player.
-- Keep a map in `NOTES.md` as a list of rooms with their exits.
+- Keep a map in `NOTES.md` as a list of rooms with their exits, and draw it
+  with `diagram <pack> map` (see [Diagrams](#diagrams)) as soon as the rooms
+  exist.
 
 Lessons from the [study of the first MUDs](research/mud-structure.md), which
 `validate` checks for as notes:
 
-- **Give each region more than one way in, and join regions to each other,
-  not only to a hub.** The old worlds were a hub with themed spurs: you went in
-  and came back out the same way.
-- **Put at least one loop in any region of eight rooms or more**, so players
-  can choose a route instead of walking there and back.
 - **Never repeat a description.** Copied rooms (forests, deserts, mazes) were
   the real filler. Make a long journey one room, or a short chain with a timed
   event.
@@ -151,11 +208,26 @@ Lessons from the [study of the first MUDs](research/mud-structure.md), which
 - **Every noun a description names should be examinable.** The commonest
   slip, and the cheapest to fix.
 - **Gate with people, knowledge and acts more than with keys**, and give each
-  gate a second, costlier way through.
+  important gate a second, costlier way through.
+- **Decide whether your story wants loops.** A loop gives players a route to
+  choose: it suits stories about moving freely and exploring. A hub with spurs,
+  where every trip is there and back, suits stories about being shut in and
+  returning to the same place. The old worlds were mostly hubs with themed
+  spurs, entered and left the same way, and that is where the `one-way-in` and
+  `no-loop` notes come from.
+- **A loop can skip a gate.** A second way into a locked area makes its lock
+  optional. Sometimes that is the point (a soft gate); often it is an accident.
+  The puzzle chart shows it: the lock's steps fall away from the main chain.
 - Regions of roughly 8 to 20 rooms, each crossable in about 6 steps, matched
   the old worlds; one region per major setting or act is a good start.
 
-### 3.5 Design puzzles from the plot
+**When to ignore a note.** Notes measure your map against two worlds from
+1991 and after, not against your book. Keep a note when the shape serves the
+story (the hub of a story about being trapped, a maze the plot calls for), and
+write in `NOTES.md` why you kept it. The demo Halcyon Relay keeps its `no-loop`
+note: it is a small station where everything runs off one corridor.
+
+### 3.6 Design puzzles from the plot
 
 Good puzzles come from the book's own obstacles. For each obstacle, decide:
 what does the player have to *know*, *have* or *do* to get past it, and where
@@ -201,7 +273,12 @@ Rules for fair puzzles:
 Aim for **one significant puzzle per act** and several small ones (a locked
 container, a dark room, a reluctant character).
 
-### 3.6 Characters and dialogue
+Check the design before writing prose: `diagram <pack> puzzles` draws what
+must happen before what, and `validate` warns about any ending or score item
+that nothing can reach, such as a key locked behind its own door
+([What validate checks](#what-validate-checks)).
+
+### 3.7 Characters and dialogue
 
 - Each important character gets a description, a line for `talk to`, and
   **topics** for `ask X about Y` and `tell X about Y`. Topics carry conditions,
@@ -221,8 +298,17 @@ container, a dark room, a reluctant character).
 - Characters cannot be taken. Things they carry are visible but cannot be
   taken until a rule gives them to the player.
 
-### 3.7 Text: how much, and how to quote
+### 3.8 Voice and text
 
+- Write room descriptions, object descriptions and responses in **second
+  person, present tense**: "You are standing in a dusty street." Convert
+  first-person and third-person narration as you adapt it.
+- Dialogue from the book can be quoted directly. Other characters keep their
+  own voices.
+- Keep the book's period and tone in your own text. A western reads like a
+  western; a Victorian scientific romance reads like one. That includes the
+  engine's standard replies: read them for anything out of period and replace
+  those in `messages` ([Messages](#messages)).
 - Room descriptions: **40 to 120 words**. Name what matters, name the exits,
   leave out what the player cannot interact with or will never need.
 - First visits can add atmosphere with `firstVisit` (shown once).
@@ -233,30 +319,33 @@ container, a dark room, a reluctant character).
 - Put any text containing double quotes (dialogue) or longer than a sentence or
   two in a text file as a passage. It saves escaping quotes in JSON.
 
-### 3.8 Endings and score
+### 3.9 Endings and score
 
-- The book's ending is the winning ending (`"win": true`). Write it as a short
-  epilogue in second person.
-- Add losing endings where the book threatens a failure the player could
-  actually cause: death, capture, missing the boat, betraying a friend. Each
-  ending needs a walkthrough that reaches it.
+- The winning ending (`"win": true`) is the one chosen at stage 3. Write it as
+  a short epilogue in second person.
+- Each losing ending needs a walkthrough that reaches it, like the winning one.
 - Award points for **milestones**: solving each puzzle, reaching each new act,
   finding each important object. A total of **50 to 150 points** is typical.
   The winning walkthrough must reach the maximum.
 
-### 3.9 Work plan with checkpoints
+### 3.10 Work plan with checkpoints
 
 Work in this order and run `validate` after each step.
 
-1. `NOTES.md`: spine, player character, acts, map, puzzle list, endings.
+1. `NOTES.md`: the four stage decisions (experience, vantage, spine,
+   inventory), each agreed before the next.
 2. Skeleton: `pack.json`, every room with a one-line description and its exits,
-   the acts, the endings. Validate: no unreachable rooms.
+   the acts, the endings. Validate: no unreachable rooms. Draw the map
+   (`diagram <pack> map`) and look at `shape`.
 3. Objects and characters, with placeholder descriptions. Validate: no
    unobtainable objects, no vocabulary clashes.
-4. Puzzle logic: rules, events, scores, act changes. Write the winning
-   walkthrough now and make it pass.
+4. Puzzle logic: rules, events, scores, act changes. Draw the puzzle chart
+   (`diagram <pack> puzzles`) and clear validate's warnings about endings and
+   scores nothing can reach. Write the winning walkthrough now and make it
+   pass.
 5. Losing endings and their walkthroughs.
-6. Full prose: passages for rooms, intros, dialogue, endings.
+6. Full prose: passages for rooms, intros, dialogue, endings. Deal with the
+   `unexamined-noun` notes as you go.
 7. Play it yourself with `play`. Try wrong things. Add responses for what a
    player would reasonably try.
 8. [Definition of done](#15-definition-of-done).
@@ -1524,13 +1613,15 @@ A pack is done when all of these are true:
 - [ ] Every object a player is told about can be examined, and every
       `unexamined-noun` note is dealt with: scenery added, or the word listed
       in `validator.ignoreWords` because nobody would examine it.
-- [ ] Every other note is fixed, or you know why you're keeping it.
+- [ ] Every other note is fixed, or `NOTES.md` says why it stays.
 - [ ] Every puzzle's obvious wrong attempts get a helpful response.
 - [ ] No state makes the game unwinnable without ending it.
 - [ ] `pack.json` has title, version, author, source, licence and credits, and
       `about` reads correctly.
 - [ ] `LICENSE` holds the pack's licence text.
-- [ ] `NOTES.md` records the adaptation decisions (spine, acts, map, puzzles).
+- [ ] `NOTES.md` records the adaptation decisions: the experience, the vantage
+      (and the ones turned down), the spine, acts, map and puzzles, and why any
+      note is kept.
 - [ ] Anything the engine could not do is written up in `ENGINE-REQUESTS.md`,
       with the workaround used.
 - [ ] You have played it yourself from start to finish with `play`, trying
