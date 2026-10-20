@@ -6,6 +6,7 @@
   "messages": {
     "cantGo": "There's no trail that way.",
     "dark": "It's black as the inside of a boot.",
+    "notSwitchable": "You can't light {the:noun}.",
     "taken": "You take {it:noun}.",
     "waited": "The afternoon drags on."
   },

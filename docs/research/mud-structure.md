@@ -258,7 +258,7 @@ ends around it. That is the theme-park pattern in miniature: fine for an
 
 All three are now built: the notes and the `shape` command in
 [`src/engine/shape.ts`](../../src/engine/shape.ts), and the checklist in
-[the pack guide](../WRITING-A-PACK.md#34-build-the-map).
+[the pack guide](../WRITING-A-PACK.md#35-build-the-map).
 
 1. **Shape advisories in `validate`**, as notes rather than warnings, since
    they are matters of judgement:

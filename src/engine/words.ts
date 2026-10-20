@@ -1,8 +1,9 @@
-// The game's own words for things the diagrams show: commands as a player
+// The game's own words for things the tools show: commands as a player
 // would type them, conditions as short phrases, and text with its templates
-// filled in as far as they can be without a game running.
+// filled in as far as they can be without a game running. Used by the
+// diagrams and by the validator's messages.
 
-import type { Comparison, Condition, TextDef, World } from '../engine/types.ts';
+import type { Comparison, Condition, TextDef, World } from './types.ts';
 
 /** A text field as prose: passages resolved, variants joined, simple templates filled. */
 export function prose(w: World, def: TextDef | null | undefined, self?: string, onlyFirst = false): string {
@@ -165,4 +166,19 @@ export function optionWords(w: World, ref: string): string {
     if (o) return prose(w, o.text);
   }
   return ref;
+}
+
+/** Shorten text to a number of characters, ending at a word with an ellipsis. */
+export function clip(text: string, max: number): string {
+  const t = text.replace(/\s+/g, ' ').trim();
+  if (t.length <= max) return t;
+  const cut = t.slice(0, max - 1);
+  return `${cut.slice(0, Math.max(cut.lastIndexOf(' '), max / 2)).replace(/[\s,;:.]+$/, '')}…`;
+}
+
+/** The first sentence of a text, clipped. */
+export function firstSentence(text: string, max: number): string {
+  const t = text.replace(/\s+/g, ' ').trim();
+  const m = /^(.+?[.!?]["”’)]?)(\s|$)/.exec(t);
+  return clip(m ? m[1] : t, max);
 }

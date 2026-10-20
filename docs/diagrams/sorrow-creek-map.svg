@@ -55,10 +55,10 @@ text { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "DejaVu Sans 
 <text x="809.2" y="160" xml:space="preserve">stands open and empty. A wooden <tspan class="scenery">peg</tspan></text>
 <text x="809.2" y="174" xml:space="preserve">is driven into the <tspan class="scenery">wall</tspan> by the <tspan class="scenery">door</tspan>.</text>
 <text x="809.2" y="188" xml:space="preserve">Main Street is back to the <tspan class="exit">west</tspan>. <tspan class="muted em">The</tspan></text>
-<text x="809.2" y="202" xml:space="preserve"><tspan class="muted em">end</tspan> <tspan class="muted em">stall</tspan> <tspan class="muted em">waits</tspan> <tspan class="muted em">for</tspan> <tspan class="muted em">its</tspan> <tspan class="muted em">owner.</tspan></text>
+<text x="809.2" y="202" xml:space="preserve"><tspan class="muted em">end stall waits for its owner.</tspan></text>
 <text x="809.2" y="216" xml:space="preserve"></text>
-<text x="809.2" y="230" xml:space="preserve"><tspan class="muted">+</tspan> <tspan class="item">lariat</tspan><tspan class="muted">,</tspan> <tspan class="muted">on</tspan> <tspan class="muted">the</tspan> <tspan class="muted">peg</tspan></text>
-<text x="809.2" y="244" xml:space="preserve"><tspan class="muted">+</tspan> <tspan class="person">Ada</tspan> <tspan class="person">Pruitt</tspan></text>
+<text x="809.2" y="230" xml:space="preserve"><tspan class="muted">+</tspan> <tspan class="item">lariat</tspan><tspan class="muted">, on the peg</tspan></text>
+<text x="809.2" y="244" xml:space="preserve"><tspan class="muted">+</tspan> <tspan class="person">Ada Pruitt</tspan></text>
 <rect class="card" x="24" y="76" width="257.6" height="150" rx="4"/>
 <rect class="band" x="24.6" y="76.6" width="256.4" height="24" rx="3.5" fill="#efebe3"/>
 <text x="34" y="92" class="head" xml:space="preserve">Sheriff's Office</text>
@@ -67,13 +67,13 @@ text { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "DejaVu Sans 
 <text x="34" y="146" xml:space="preserve">at the back. A <tspan class="scenery">poster</tspan> is tacked to</text>
 <text x="34" y="160" xml:space="preserve">the <tspan class="scenery">wall</tspan>. Main Street is <tspan class="exit">east</tspan>.</text>
 <text x="34" y="174" xml:space="preserve"></text>
-<text x="34" y="188" xml:space="preserve"><tspan class="muted">+</tspan> <tspan class="item">glass</tspan> <tspan class="item">jar</tspan><tspan class="muted">,</tspan> <tspan class="muted">on</tspan> <tspan class="muted">the</tspan> <tspan class="muted">desk</tspan></text>
-<text x="34" y="202" xml:space="preserve"><tspan class="muted">+</tspan> <tspan class="item">sugar</tspan> <tspan class="item">lumps</tspan><tspan class="muted">,</tspan> <tspan class="muted">in</tspan> <tspan class="muted">the</tspan> <tspan class="muted">glass</tspan> <tspan class="muted">jar</tspan></text>
+<text x="34" y="188" xml:space="preserve"><tspan class="muted">+</tspan> <tspan class="item">glass jar</tspan><tspan class="muted">, on the desk</tspan></text>
+<text x="34" y="202" xml:space="preserve"><tspan class="muted">+</tspan> <tspan class="item">sugar lumps</tspan><tspan class="muted">, in the glass jar</tspan></text>
 <text x="34" y="216" xml:space="preserve"><tspan class="muted">+</tspan> <tspan class="person">sheriff</tspan></text>
 <rect class="card" x="411.6" y="318" width="257.6" height="164" rx="4"/>
 <rect class="band" x="412.2" y="318.6" width="256.4" height="24" rx="3.5" fill="#efebe3"/>
 <text x="421.6" y="334" class="head" xml:space="preserve">Dry Wash</text>
-<text x="421.6" y="360" xml:space="preserve">A dry <tspan class="scenery">creek</tspan> <tspan class="scenery">bed</tspan> of cracked <tspan class="scenery">clay</tspan> and</text>
+<text x="421.6" y="360" xml:space="preserve">A dry <tspan class="scenery">creek bed</tspan> of cracked <tspan class="scenery">clay</tspan> and</text>
 <text x="421.6" y="374" xml:space="preserve">white <tspan class="scenery">stones</tspan>, walled by crumbling</text>
 <text x="421.6" y="388" xml:space="preserve"><tspan class="scenery">banks</tspan>. <tspan class="scenery">Mesquite</tspan> clings to the edges.</text>
 <text x="421.6" y="402" xml:space="preserve">The <tspan class="scenery">trail</tspan> climbs <tspan class="exit">north</tspan> back into</text>
@@ -81,7 +81,7 @@ text { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "DejaVu Sans 
 <text x="421.6" y="430" xml:space="preserve">and <tspan class="exit">downstream</tspan>.</text>
 <text x="421.6" y="444" xml:space="preserve"></text>
 <text x="421.6" y="458" xml:space="preserve"><tspan class="muted">+</tspan> <tspan class="person">mare</tspan></text>
-<text x="421.6" y="472" xml:space="preserve"><tspan class="muted">upstream,</tspan> <tspan class="muted">downstream:</tspan> <tspan class="muted">no</tspan> <tspan class="muted">way</tspan> <tspan class="muted">on</tspan></text>
+<text x="421.6" y="472" xml:space="preserve"><tspan class="muted">upstream, downstream: no way on</tspan></text>
 <rect class="label-bg" x="742.6" y="127" width="56" height="14" rx="3"/><text x="770.6" y="138" class="small exit" text-anchor="middle">west/out</text>
 <rect class="label-bg" x="282.2" y="127" width="56" height="14" rx="3"/><text x="310.2" y="138" class="small exit" text-anchor="middle">east/out</text>
 <text x="24" y="550" xml:space="preserve"><tspan class="item">item</tspan><tspan class="muted"> to take   </tspan><tspan class="scenery">scenery</tspan><tspan class="muted"> to examine   </tspan><tspan class="person">person</tspan>   <tspan class="exit">exit</tspan>   <tspan class="missing">named but not examinable</tspan>   <tspan class="muted em">grey italic</tspan><tspan class="muted">: shown only sometimes</tspan></text>

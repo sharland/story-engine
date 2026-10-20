@@ -313,7 +313,12 @@ A cold hall that smells of old paper.
   vocabulary, object words that are parser keywords or directions, pack
   patterns that shadow other patterns;
 - conversation menus: unknown nodes and options, nodes that no entry,
-  `then` or `converse` effect reaches, and `noLeave` nodes with no options.
+  `then` or `converse` effect reaches, and `noLeave` nodes with no options;
+- endings and score items that can never be reached: `src/engine/steps.ts`
+  reads rules, gated exits, locked doors and the standard take, wear, put,
+  drop, open, unlock and switch actions as steps with needs and makes, then
+  runs them forward from the start until nothing changes (made states stay
+  made). Warnings name the chain or loop that blocks each one.
 
 The validator is static. It can't see what scripts do. A pack can name rooms
 and objects that scripts make reachable in `validator.assumeReachable`. It

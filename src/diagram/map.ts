@@ -1,13 +1,15 @@
 // The map: rooms laid out by compass from the start, each with its
 // description as the player reads it. Words the player can use are coloured:
 // things to take, scenery to examine, people, and the ways out. Words the
-// text names that nothing answers to are underlined in red.
+// text names that nothing answers to are underlined in red. A room behind a
+// way that opens later says what opens it, in the puzzle chart's words.
 
 import type { CompileResult } from '../engine/pack.ts';
 import { knownWords, roomScopes, stem, unexaminedNouns } from '../engine/shape.ts';
+import { reachability, type Gate } from '../engine/steps.ts';
 import type { Exit, Room, TextPart, World } from '../engine/types.ts';
 import { CHAR, esc, exitPoint, label, LINE, n, svgDocument, textLine, wrapRuns, type Box, type Run } from './svg.ts';
-import { conditionWords, prose, thingName } from './words.ts';
+import { conditionWords, prose, thingName } from '../engine/words.ts';
 
 type Compiled = Pick<CompileResult, 'moves' | 'playerMoves'>;
 
@@ -39,11 +41,13 @@ const MARGIN = 24;
 export function mapDiagram(w: World, c: Compiled): string {
   const cells = layout(w);
   const scope = roomScopes(w, c);
+  const reach = reachability(w, c);
 
   // Each room's card, measured.
   const cards = new Map<string, { lines: Run[][]; h: number }>();
   for (const room of w.rooms.values()) {
-    const lines = cardLines(w, room, scope.get(room.id)!);
+    const gates = (reach.opens.get(room.id) ?? []).map((id) => reach.gates.get(id)!);
+    const lines = [...opensLines(w, gates), ...cardLines(w, room, scope.get(room.id)!)];
     cards.set(room.id, { lines, h: HEAD + 8 + lines.length * LINE + 6 });
   }
 
@@ -248,6 +252,18 @@ function regionTint(w: World, region: string | null): string {
   if (region === null) return '#efebe3';
   const ids = [...new Set([...w.rooms.values()].map((r) => r.region).filter((r): r is string => r !== null))].sort();
   return TINTS[ids.indexOf(region) % TINTS.length];
+}
+
+/** For a room behind a way that opens later: what opens it. */
+function opensLines(w: World, gates: Gate[]): Run[][] {
+  if (gates.length === 0) return [];
+  // Which way each gate is only matters when there is more than one.
+  const what = gates.map((g) => {
+    const words = g.door ? `${thingName(w, g.door)} unlocked` : conditionWords(w, g.condition);
+    return gates.length > 1 ? `${words} (${g.title.replace(/^> /, '')})` : words;
+  });
+  const unique = what.filter((x, i) => what.indexOf(x) === i);
+  return [...wrapRuns([{ text: `Opens when: ${unique.join(', or ')}`, cls: 'gate' }], TEXT_CHARS), []];
 }
 
 /** The card's lines: the description with coloured words, then who and what is here. */

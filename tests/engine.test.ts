@@ -244,14 +244,15 @@ test('a conversation opened by a rule resumes where it was interrupted, with the
   assert.equal(out[7], '"Intruder!"\n  0. Leave');
 });
 
-test('help lists every direction, the pack\'s own included, and "climb up" moves the player', () => {
+test('help lists the directions the pack uses, its own included, and "climb up" moves the player', () => {
   const rooms = {
     hall: { name: 'Hall', exits: { up: 'loft', widdershins: { say: 'You go round in a circle.' } } },
     loft: { name: 'Loft', exits: { down: 'hall' } },
   };
   const src = pack({ rooms, directions: { widdershins: { words: ['widdershins', 'ws'] } } });
   const out = play(src, ['help', 'climb up', 'climb down']);
-  assert.match(out[0], /^To move, type a direction: NORTH \(N\), .*, UP \(U\), DOWN \(D\), IN, OUT and WIDDERSHINS \(WS\)\.$/m);
+  // No exit goes north or east, so help doesn't offer them.
+  assert.match(out[0], /^To move, type a direction: UP \(U\), DOWN \(D\) and WIDDERSHINS \(WS\)\.$/m);
   assert.match(out[1], /^Loft/);
   assert.match(out[2], /^Hall/);
   const own = validate(pack({ rooms, messages: { help: 'Try {directions}.' } }));
