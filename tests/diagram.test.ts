@@ -77,6 +77,7 @@ test('map: rooms by compass, words coloured by what they name, gated and one-way
   assert.match(svg, /<tspan class="missing">hatch<\/tspan>/, 'a noun nothing answers to is marked');
   assert.match(svg, /class="edge-gate"/);
   assert.match(svg, />chest open</, 'the gate shows its condition');
+  assert.match(svg, /<tspan class="gate">Opens when: chest open<\/tspan>/, 'the room behind it says what opens it');
   assert.match(svg, /marker-end="url\(#arrow\)"/, 'the way down to the cellar is one way');
 });
 
@@ -145,4 +146,28 @@ test('talk: menus with every option, reply and destination; topics', () => {
     assert.ok(svg.includes(text), `missing ${text}`);
   }
   assert.match(svg, /class="edge-soft"/, 'the way back to the first menu curves round');
+});
+
+test('map and chart: a room two ways open into says so, and the chart offers either', () => {
+  const data = {
+    rooms: {
+      hall: { name: 'Hall', exits: { north: { to: 'yard', if: { var: 'bell' } }, east: { to: 'yard', if: { var: 'horn' } } } },
+      yard: { name: 'Yard', exits: { south: 'hall' } },
+    },
+    objects: { coin: { name: 'coin', location: 'yard' } },
+    vars: { bell: false, horn: false },
+    verbs: { ring: { patterns: ['ring'] }, blow: { patterns: ['blow'] } },
+    scores: { coin: 1 },
+    rules: [
+      { on: 'ring', do: [{ set: 'bell', to: true }] },
+      { on: 'blow', do: [{ set: 'horn', to: true }] },
+      { on: 'take', object: 'coin', do: [{ award: 'coin' }] },
+    ],
+  };
+  const words = draw('map', data).replace(/<[^>]+>/g, '').replace(/\s+/g, ' ');
+  assert.match(words, /Opens when: bell \(north to Yard\), or horn \(east to Yard\)/);
+  const chart = draw('puzzles', data);
+  assert.match(chart, />either</);
+  assert.match(chart, /&gt; ring/);
+  assert.match(chart, /&gt; blow/);
 });

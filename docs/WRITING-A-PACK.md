@@ -1369,7 +1369,9 @@ shows the game's own words, not just its shape:
   scenery, people and the ways out. A noun nothing answers to is underlined
   in red (the `unexamined-noun` note, where you can see it). Ways that open
   only under a condition, or through a locked door, are red dashed lines
-  labelled with the condition.
+  labelled with the condition, and each room behind one says what opens it
+  ("Opens when: act Power or later"), in the same words as the puzzle chart.
+  A room that more than one way leads to lists them all: either will do.
 - **puzzles**: what must happen before what, as a chart from the first steps
   down to the endings. Each step is a command as a player would type it, with
   the game's reply. Each line says what the step makes true for the next

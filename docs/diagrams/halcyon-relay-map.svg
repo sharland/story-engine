@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1468.4" height="1212" viewBox="0 0 1468.4 1212" role="img" aria-label="The Halcyon Relay: map">
+<svg xmlns="http://www.w3.org/2000/svg" width="1468.4" height="1240" viewBox="0 0 1468.4 1240" role="img" aria-label="The Halcyon Relay: map">
 <title>The Halcyon Relay: map</title>
 <style>
 text { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "DejaVu Sans Mono", "Liberation Mono", monospace; font-size: 11px; fill: #1f1d1a; }
@@ -32,150 +32,154 @@ text { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "DejaVu Sans 
 <rect width="100%" height="100%" fill="#faf8f3"/>
 <text x="24" y="38" class="title" xml:space="preserve">The Halcyon Relay: map</text>
 <text x="24" y="56" class="sub" xml:space="preserve">Rooms laid out by compass from the start. Coloured words are ones the player can use there.</text>
-<line class="edge" x1="281.6" y1="344" x2="411.6" y2="344"/>
-<line class="edge" x1="799.2" y1="337" x2="669.2" y2="337"/>
-<line class="edge" x1="540.4" y1="440" x2="540.4" y2="504"/>
-<line class="edge" x1="840" y1="504" x2="669.2" y2="412.8"/>
-<line class="edge-gate" x1="540.4" y1="184" x2="540.4" y2="248"/>
-<line class="edge-gate" x1="1056.8" y1="309" x2="1186.8" y2="309"/>
-<line class="edge" x1="928" y1="718" x2="928" y2="598"/>
-<line class="edge" x1="540.4" y1="718" x2="540.4" y2="654"/>
-<line class="edge" x1="540.4" y1="826" x2="540.4" y2="974"/>
-<line class="edge" x1="242.7" y1="840" x2="440.2" y2="974"/>
-<rect class="card" x="24" y="248" width="257.6" height="192" rx="4"/>
-<rect class="band" x="24.6" y="248.6" width="256.4" height="24" rx="3.5" fill="#efebe3"/>
-<text x="34" y="264" class="head" xml:space="preserve">Crew Quarters</text>
-<text x="271.6" y="264" class="small muted" text-anchor="end">start</text>
-<text x="34" y="290" xml:space="preserve">A narrow cabin with two <tspan class="scenery">bunks</tspan>, one</text>
-<text x="34" y="304" xml:space="preserve">of them yours and one of them empty</text>
-<text x="34" y="318" xml:space="preserve">for as long as you have been aboard.</text>
-<text x="34" y="332" xml:space="preserve">A storage <tspan class="scenery">locker</tspan> is bolted to the</text>
-<text x="34" y="346" xml:space="preserve"><tspan class="scenery">bulkhead</tspan>. The <tspan class="scenery">hatch</tspan> to the spine</text>
-<text x="34" y="360" xml:space="preserve">corridor is <tspan class="exit">east</tspan>. <tspan class="muted em">Amber</tspan> <tspan class="muted em">emergency</tspan></text>
-<text x="34" y="374" xml:space="preserve"><tspan class="muted em">strips</tspan> <tspan class="muted em">glow</tspan> <tspan class="muted em">along</tspan> <tspan class="muted em">the</tspan> <tspan class="muted em">floor.</tspan></text>
-<text x="34" y="388" xml:space="preserve"></text>
-<text x="34" y="402" xml:space="preserve"><tspan class="muted">+</tspan> <tspan class="item">hand</tspan> <tspan class="item">torch</tspan><tspan class="muted">,</tspan> <tspan class="muted">in</tspan> <tspan class="muted">the</tspan> <tspan class="muted">storage</tspan> <tspan class="muted">locker</tspan></text>
-<text x="34" y="416" xml:space="preserve"><tspan class="muted">+</tspan> <tspan class="item">photograph</tspan><tspan class="muted">,</tspan> <tspan class="muted">in</tspan> <tspan class="muted">the</tspan> <tspan class="muted">storage</tspan> <tspan class="muted">locker</tspan></text>
-<text x="34" y="430" xml:space="preserve"><tspan class="muted">+</tspan> <tspan class="person">maintenance</tspan> <tspan class="person">drone</tspan> <tspan class="muted">(roams)</tspan></text>
-<rect class="card" x="411.6" y="248" width="257.6" height="192" rx="4"/>
-<rect class="band" x="412.2" y="248.6" width="256.4" height="24" rx="3.5" fill="#efebe3"/>
-<text x="421.6" y="264" class="head" xml:space="preserve">Spine Corridor</text>
-<text x="421.6" y="290" xml:space="preserve">The <tspan class="scenery">station's</tspan> central corridor,</text>
-<text x="421.6" y="304" xml:space="preserve">ribbed with <tspan class="scenery">conduit</tspan>. The crew</text>
-<text x="421.6" y="318" xml:space="preserve">quarters are <tspan class="exit">west</tspan> and the galley</text>
-<text x="421.6" y="332" xml:space="preserve"><tspan class="exit">east</tspan>. A heavy <tspan class="scenery">door</tspan> to the <tspan class="exit">north</tspan></text>
-<text x="421.6" y="346" xml:space="preserve">leads to the control room, a <tspan class="scenery">ladder</tspan></text>
-<text x="421.6" y="360" xml:space="preserve"><tspan class="scenery">well</tspan> drops <tspan class="exit">down</tspan> into the maintenance</text>
-<text x="421.6" y="374" xml:space="preserve">shaft, and the suit room is <tspan class="exit">south</tspan>.</text>
-<text x="421.6" y="388" xml:space="preserve"><tspan class="muted em">Only</tspan> <tspan class="muted em">the</tspan> <tspan class="muted em">amber</tspan> <tspan class="muted em">emergency</tspan> <tspan class="muted em">strips</tspan> <tspan class="muted em">are</tspan></text>
-<text x="421.6" y="402" xml:space="preserve"><tspan class="muted em">lit.</tspan></text>
-<text x="421.6" y="416" xml:space="preserve"></text>
-<text x="421.6" y="430" xml:space="preserve"><tspan class="muted">+</tspan> <tspan class="person">maintenance</tspan> <tspan class="person">drone</tspan> <tspan class="muted">(roams)</tspan></text>
-<rect class="card" x="799.2" y="248" width="257.6" height="178" rx="4"/>
-<rect class="band" x="799.8" y="248.6" width="256.4" height="24" rx="3.5" fill="#efebe3"/>
-<text x="809.2" y="264" class="head" xml:space="preserve">Galley</text>
-<text x="809.2" y="290" xml:space="preserve">A cramped galley with a fold-down</text>
-<text x="809.2" y="304" xml:space="preserve"><tspan class="scenery">table</tspan>, a <tspan class="scenery">water</tspan> <tspan class="scenery">dispenser</tspan> and the</text>
-<text x="809.2" y="318" xml:space="preserve">smell of reheated protein. The</text>
-<text x="809.2" y="332" xml:space="preserve">stores are behind a <tspan class="scenery">door</tspan> to the</text>
-<text x="809.2" y="346" xml:space="preserve"><tspan class="exit">east</tspan>, with a <tspan class="scenery">keypad</tspan> beside it. The</text>
-<text x="809.2" y="360" xml:space="preserve">spine corridor is <tspan class="exit">west</tspan>.</text>
-<text x="809.2" y="374" xml:space="preserve"></text>
-<text x="809.2" y="388" xml:space="preserve"><tspan class="muted">+</tspan> <tspan class="item">data</tspan> <tspan class="item">slate</tspan><tspan class="muted">,</tspan> <tspan class="muted">on</tspan> <tspan class="muted">the</tspan> <tspan class="muted">table</tspan></text>
-<text x="809.2" y="402" xml:space="preserve"><tspan class="muted">+</tspan> <tspan class="item">mug</tspan><tspan class="muted">,</tspan> <tspan class="muted">on</tspan> <tspan class="muted">the</tspan> <tspan class="muted">table</tspan></text>
-<text x="809.2" y="416" xml:space="preserve"><tspan class="muted">+</tspan> <tspan class="person">maintenance</tspan> <tspan class="person">drone</tspan> <tspan class="muted">(roams)</tspan></text>
-<rect class="card" x="1186.8" y="248" width="257.6" height="122" rx="4"/>
-<rect class="band" x="1187.4" y="248.6" width="256.4" height="24" rx="3.5" fill="#efebe3"/>
-<text x="1196.8" y="264" class="head" xml:space="preserve">Stores</text>
-<text x="1196.8" y="290" xml:space="preserve"><tspan class="scenery">Shelves</tspan> of sealed <tspan class="scenery">crates</tspan> line the</text>
-<text x="1196.8" y="304" xml:space="preserve"><tspan class="scenery">walls</tspan>, each labelled in the</text>
-<text x="1196.8" y="318" xml:space="preserve"><tspan class="scenery">station's</tspan> cramped stencil. The</text>
-<text x="1196.8" y="332" xml:space="preserve">galley is back to the <tspan class="exit">west</tspan>.</text>
-<text x="1196.8" y="346" xml:space="preserve"></text>
-<text x="1196.8" y="360" xml:space="preserve"><tspan class="muted">+</tspan> <tspan class="item">power</tspan> <tspan class="item">coupling</tspan></text>
-<rect class="card" x="799.2" y="504" width="257.6" height="94" rx="4"/>
-<rect class="band" x="799.8" y="504.6" width="256.4" height="24" rx="3.5" fill="#efebe3"/>
-<text x="809.2" y="520" class="head" xml:space="preserve">Maintenance Shaft</text>
-<text x="809.2" y="546" xml:space="preserve">A vertical shaft lined with <tspan class="scenery">cable</tspan></text>
-<text x="809.2" y="560" xml:space="preserve"><tspan class="scenery">trays</tspan>. <tspan class="scenery">Rungs</tspan> lead up to the spine</text>
-<text x="809.2" y="574" xml:space="preserve">corridor and <tspan class="exit">down</tspan> to the reactor</text>
-<text x="809.2" y="588" xml:space="preserve">bay.</text>
-<rect class="card" x="799.2" y="718" width="257.6" height="192" rx="4"/>
-<rect class="band" x="799.8" y="718.6" width="256.4" height="24" rx="3.5" fill="#efebe3"/>
-<text x="809.2" y="734" class="head" xml:space="preserve">Reactor Bay</text>
-<text x="809.2" y="760" xml:space="preserve">The squat fusion <tspan class="scenery">core</tspan> hums behind</text>
-<text x="809.2" y="774" xml:space="preserve">its <tspan class="scenery">shielding</tspan>, still running but cut</text>
-<text x="809.2" y="788" xml:space="preserve">off from the rest of the <tspan class="scenery">station</tspan>. A</text>
-<text x="809.2" y="802" xml:space="preserve"><tspan class="scenery">junction</tspan> <tspan class="scenery">panel</tspan> on the <tspan class="scenery">wall</tspan> has a</text>
-<text x="809.2" y="816" xml:space="preserve"><tspan class="scenery">socket</tspan> where the main power <tspan class="item">coupling</tspan></text>
-<text x="809.2" y="830" xml:space="preserve">belongs, and a <tspan class="scenery">breaker</tspan> <tspan class="scenery">lever</tspan> beside</text>
-<text x="809.2" y="844" xml:space="preserve">it. <tspan class="scenery">Rungs</tspan> lead up into the shaft.</text>
-<text x="809.2" y="858" xml:space="preserve"><tspan class="muted em">The</tspan> <tspan class="muted em">new</tspan> <tspan class="muted em">coupling</tspan> <tspan class="muted em">sits</tspan> <tspan class="muted em">snugly</tspan> <tspan class="muted em">in</tspan> <tspan class="muted em">its</tspan></text>
-<text x="809.2" y="872" xml:space="preserve"><tspan class="muted em">socket.</tspan></text>
-<text x="809.2" y="886" xml:space="preserve"></text>
-<text x="809.2" y="900" xml:space="preserve"><tspan class="muted">+</tspan> <tspan class="item">burnt</tspan> <tspan class="item">coupling</tspan></text>
-<rect class="card" x="411.6" y="76" width="257.6" height="108" rx="4"/>
+<line class="edge" x1="281.6" y1="372" x2="411.6" y2="372"/>
+<line class="edge" x1="799.2" y1="365" x2="669.2" y2="365"/>
+<line class="edge" x1="540.4" y1="468" x2="540.4" y2="532"/>
+<line class="edge" x1="840" y1="532" x2="669.2" y2="440.8"/>
+<line class="edge-gate" x1="540.4" y1="212" x2="540.4" y2="276"/>
+<line class="edge-gate" x1="1056.8" y1="351" x2="1186.8" y2="351"/>
+<line class="edge" x1="928" y1="746" x2="928" y2="626"/>
+<line class="edge" x1="540.4" y1="746" x2="540.4" y2="682"/>
+<line class="edge" x1="540.4" y1="854" x2="540.4" y2="1002"/>
+<line class="edge" x1="242.7" y1="868" x2="440.2" y2="1002"/>
+<rect class="card" x="24" y="276" width="257.6" height="192" rx="4"/>
+<rect class="band" x="24.6" y="276.6" width="256.4" height="24" rx="3.5" fill="#efebe3"/>
+<text x="34" y="292" class="head" xml:space="preserve">Crew Quarters</text>
+<text x="271.6" y="292" class="small muted" text-anchor="end">start</text>
+<text x="34" y="318" xml:space="preserve">A narrow cabin with two <tspan class="scenery">bunks</tspan>, one</text>
+<text x="34" y="332" xml:space="preserve">of them yours and one of them empty</text>
+<text x="34" y="346" xml:space="preserve">for as long as you have been aboard.</text>
+<text x="34" y="360" xml:space="preserve">A storage <tspan class="scenery">locker</tspan> is bolted to the</text>
+<text x="34" y="374" xml:space="preserve"><tspan class="scenery">bulkhead</tspan>. The <tspan class="scenery">hatch</tspan> to the spine</text>
+<text x="34" y="388" xml:space="preserve">corridor is <tspan class="exit">east</tspan>. <tspan class="muted em">Amber emergency</tspan></text>
+<text x="34" y="402" xml:space="preserve"><tspan class="muted em">strips glow along the floor.</tspan></text>
+<text x="34" y="416" xml:space="preserve"></text>
+<text x="34" y="430" xml:space="preserve"><tspan class="muted">+</tspan> <tspan class="item">hand torch</tspan><tspan class="muted">, in the storage locker</tspan></text>
+<text x="34" y="444" xml:space="preserve"><tspan class="muted">+</tspan> <tspan class="item">photograph</tspan><tspan class="muted">, in the storage locker</tspan></text>
+<text x="34" y="458" xml:space="preserve"><tspan class="muted">+</tspan> <tspan class="person">maintenance drone</tspan> <tspan class="muted">(roams)</tspan></text>
+<rect class="card" x="411.6" y="276" width="257.6" height="192" rx="4"/>
+<rect class="band" x="412.2" y="276.6" width="256.4" height="24" rx="3.5" fill="#efebe3"/>
+<text x="421.6" y="292" class="head" xml:space="preserve">Spine Corridor</text>
+<text x="421.6" y="318" xml:space="preserve">The <tspan class="scenery">station's</tspan> central corridor,</text>
+<text x="421.6" y="332" xml:space="preserve">ribbed with <tspan class="scenery">conduit</tspan>. The crew</text>
+<text x="421.6" y="346" xml:space="preserve">quarters are <tspan class="exit">west</tspan> and the galley</text>
+<text x="421.6" y="360" xml:space="preserve"><tspan class="exit">east</tspan>. A heavy <tspan class="scenery">door</tspan> to the <tspan class="exit">north</tspan></text>
+<text x="421.6" y="374" xml:space="preserve">leads to the control room, a <tspan class="scenery">ladder</tspan></text>
+<text x="421.6" y="388" xml:space="preserve"><tspan class="scenery">well</tspan> drops <tspan class="exit">down</tspan> into the maintenance</text>
+<text x="421.6" y="402" xml:space="preserve">shaft, and the suit room is <tspan class="exit">south</tspan>.</text>
+<text x="421.6" y="416" xml:space="preserve"><tspan class="muted em">Only the amber emergency strips are</tspan></text>
+<text x="421.6" y="430" xml:space="preserve"><tspan class="muted em">lit.</tspan></text>
+<text x="421.6" y="444" xml:space="preserve"></text>
+<text x="421.6" y="458" xml:space="preserve"><tspan class="muted">+</tspan> <tspan class="person">maintenance drone</tspan> <tspan class="muted">(roams)</tspan></text>
+<rect class="card" x="799.2" y="276" width="257.6" height="178" rx="4"/>
+<rect class="band" x="799.8" y="276.6" width="256.4" height="24" rx="3.5" fill="#efebe3"/>
+<text x="809.2" y="292" class="head" xml:space="preserve">Galley</text>
+<text x="809.2" y="318" xml:space="preserve">A cramped galley with a fold-down</text>
+<text x="809.2" y="332" xml:space="preserve"><tspan class="scenery">table</tspan>, a <tspan class="scenery">water dispenser</tspan> and the</text>
+<text x="809.2" y="346" xml:space="preserve">smell of reheated protein. The</text>
+<text x="809.2" y="360" xml:space="preserve">stores are behind a <tspan class="scenery">door</tspan> to the</text>
+<text x="809.2" y="374" xml:space="preserve"><tspan class="exit">east</tspan>, with a <tspan class="scenery">keypad</tspan> beside it. The</text>
+<text x="809.2" y="388" xml:space="preserve">spine corridor is <tspan class="exit">west</tspan>.</text>
+<text x="809.2" y="402" xml:space="preserve"></text>
+<text x="809.2" y="416" xml:space="preserve"><tspan class="muted">+</tspan> <tspan class="item">data slate</tspan><tspan class="muted">, on the table</tspan></text>
+<text x="809.2" y="430" xml:space="preserve"><tspan class="muted">+</tspan> <tspan class="item">mug</tspan><tspan class="muted">, on the table</tspan></text>
+<text x="809.2" y="444" xml:space="preserve"><tspan class="muted">+</tspan> <tspan class="person">maintenance drone</tspan> <tspan class="muted">(roams)</tspan></text>
+<rect class="card" x="1186.8" y="276" width="257.6" height="150" rx="4"/>
+<rect class="band" x="1187.4" y="276.6" width="256.4" height="24" rx="3.5" fill="#efebe3"/>
+<text x="1196.8" y="292" class="head" xml:space="preserve">Stores</text>
+<text x="1196.8" y="318" xml:space="preserve"><tspan class="gate">Opens when: stores door unlocked</tspan></text>
+<text x="1196.8" y="332" xml:space="preserve"></text>
+<text x="1196.8" y="346" xml:space="preserve"><tspan class="scenery">Shelves</tspan> of sealed <tspan class="scenery">crates</tspan> line the</text>
+<text x="1196.8" y="360" xml:space="preserve"><tspan class="scenery">walls</tspan>, each labelled in the</text>
+<text x="1196.8" y="374" xml:space="preserve"><tspan class="scenery">station's</tspan> cramped stencil. The</text>
+<text x="1196.8" y="388" xml:space="preserve">galley is back to the <tspan class="exit">west</tspan>.</text>
+<text x="1196.8" y="402" xml:space="preserve"></text>
+<text x="1196.8" y="416" xml:space="preserve"><tspan class="muted">+</tspan> <tspan class="item">power coupling</tspan></text>
+<rect class="card" x="799.2" y="532" width="257.6" height="94" rx="4"/>
+<rect class="band" x="799.8" y="532.6" width="256.4" height="24" rx="3.5" fill="#efebe3"/>
+<text x="809.2" y="548" class="head" xml:space="preserve">Maintenance Shaft</text>
+<text x="809.2" y="574" xml:space="preserve">A vertical shaft lined with <tspan class="scenery">cable</tspan></text>
+<text x="809.2" y="588" xml:space="preserve"><tspan class="scenery">trays</tspan>. <tspan class="scenery">Rungs</tspan> lead up to the spine</text>
+<text x="809.2" y="602" xml:space="preserve">corridor and <tspan class="exit">down</tspan> to the reactor</text>
+<text x="809.2" y="616" xml:space="preserve">bay.</text>
+<rect class="card" x="799.2" y="746" width="257.6" height="192" rx="4"/>
+<rect class="band" x="799.8" y="746.6" width="256.4" height="24" rx="3.5" fill="#efebe3"/>
+<text x="809.2" y="762" class="head" xml:space="preserve">Reactor Bay</text>
+<text x="809.2" y="788" xml:space="preserve">The squat fusion <tspan class="scenery">core</tspan> hums behind</text>
+<text x="809.2" y="802" xml:space="preserve">its <tspan class="scenery">shielding</tspan>, still running but cut</text>
+<text x="809.2" y="816" xml:space="preserve">off from the rest of the <tspan class="scenery">station</tspan>. A</text>
+<text x="809.2" y="830" xml:space="preserve"><tspan class="scenery">junction panel</tspan> on the <tspan class="scenery">wall</tspan> has a</text>
+<text x="809.2" y="844" xml:space="preserve"><tspan class="scenery">socket</tspan> where the main power <tspan class="item">coupling</tspan></text>
+<text x="809.2" y="858" xml:space="preserve">belongs, and a <tspan class="scenery">breaker lever</tspan> beside</text>
+<text x="809.2" y="872" xml:space="preserve">it. <tspan class="scenery">Rungs</tspan> lead up into the shaft.</text>
+<text x="809.2" y="886" xml:space="preserve"><tspan class="muted em">The new coupling sits snugly in its</tspan></text>
+<text x="809.2" y="900" xml:space="preserve"><tspan class="muted em">socket.</tspan></text>
+<text x="809.2" y="914" xml:space="preserve"></text>
+<text x="809.2" y="928" xml:space="preserve"><tspan class="muted">+</tspan> <tspan class="item">burnt coupling</tspan></text>
+<rect class="card" x="411.6" y="76" width="257.6" height="136" rx="4"/>
 <rect class="band" x="412.2" y="76.6" width="256.4" height="24" rx="3.5" fill="#efebe3"/>
 <text x="421.6" y="92" class="head" xml:space="preserve">Control Room</text>
-<text x="421.6" y="118" xml:space="preserve">A <tspan class="scenery">horseshoe</tspan> of <tspan class="scenery">consoles</tspan> faces a</text>
-<text x="421.6" y="132" xml:space="preserve"><tspan class="scenery">window</tspan> full of slowly turning <tspan class="scenery">cloud</tspan></text>
-<text x="421.6" y="146" xml:space="preserve"><tspan class="scenery">bands</tspan>. The <tspan class="scenery">beacon</tspan> <tspan class="scenery">console</tspan> sits in</text>
-<text x="421.6" y="160" xml:space="preserve">the middle. The spine corridor is</text>
-<text x="421.6" y="174" xml:space="preserve"><tspan class="exit">south</tspan>.</text>
-<rect class="card" x="411.6" y="504" width="257.6" height="150" rx="4"/>
-<rect class="band" x="412.2" y="504.6" width="256.4" height="24" rx="3.5" fill="#efebe3"/>
-<text x="421.6" y="520" class="head" xml:space="preserve">Suit Room</text>
-<text x="421.6" y="546" xml:space="preserve">Pressure <tspan class="item">suits</tspan> hang in a <tspan class="scenery">rack</tspan> along</text>
-<text x="421.6" y="560" xml:space="preserve">one <tspan class="scenery">wall</tspan>, though only one of them</text>
-<text x="421.6" y="574" xml:space="preserve">has ever passed inspection. The</text>
-<text x="421.6" y="588" xml:space="preserve">spine corridor is <tspan class="exit">north</tspan>. The</text>
-<text x="421.6" y="602" xml:space="preserve">airlock's inner <tspan class="scenery">hatch</tspan> is <tspan class="exit">south</tspan>.</text>
-<text x="421.6" y="616" xml:space="preserve"></text>
-<text x="421.6" y="630" xml:space="preserve"><tspan class="muted">+</tspan> <tspan class="item">pressure</tspan> <tspan class="item">suit</tspan></text>
-<text x="421.6" y="644" xml:space="preserve"><tspan class="muted">+</tspan> <tspan class="person">maintenance</tspan> <tspan class="person">drone</tspan> <tspan class="muted">(roams)</tspan></text>
-<rect class="card" x="411.6" y="718" width="257.6" height="108" rx="4"/>
-<rect class="band" x="412.2" y="718.6" width="256.4" height="24" rx="3.5" fill="#efebe3"/>
-<text x="421.6" y="734" class="head" xml:space="preserve">Airlock</text>
-<text x="421.6" y="760" xml:space="preserve">A bare chamber just big enough for</text>
-<text x="421.6" y="774" xml:space="preserve">two people in suits. The inner <tspan class="scenery">hatch</tspan></text>
-<text x="421.6" y="788" xml:space="preserve">leads <tspan class="exit">north</tspan>, back into the <tspan class="scenery">station</tspan>.</text>
-<text x="421.6" y="802" xml:space="preserve">The outer <tspan class="scenery">hatch</tspan> leads <tspan class="exit">south</tspan>, out</text>
-<text x="421.6" y="816" xml:space="preserve">onto the hull.</text>
-<rect class="card" x="411.6" y="974" width="257.6" height="136" rx="4"/>
-<rect class="band" x="412.2" y="974.6" width="256.4" height="24" rx="3.5" fill="#e9f0f7"/>
-<text x="421.6" y="990" class="head" xml:space="preserve">Outer Hull</text>
-<text x="659.2" y="990" class="small muted" text-anchor="end">outside</text>
-<text x="421.6" y="1016" xml:space="preserve">You stand on the <tspan class="scenery">station's</tspan> outer</text>
-<text x="421.6" y="1030" xml:space="preserve"><tspan class="scenery">skin</tspan>, boots locked to the <tspan class="scenery">plating</tspan>.</text>
-<text x="421.6" y="1044" xml:space="preserve">The gas <tspan class="scenery">giant</tspan> fills half the <tspan class="scenery">sky</tspan>,</text>
-<text x="421.6" y="1058" xml:space="preserve">banded in rust and cream. A</text>
-<text x="421.6" y="1072" xml:space="preserve">maintenance <tspan class="scenery">ladder</tspan> leads up to the</text>
-<text x="421.6" y="1086" xml:space="preserve">dish mount. The outer <tspan class="scenery">hatch</tspan> is</text>
-<text x="421.6" y="1100" xml:space="preserve"><tspan class="exit">north</tspan>.</text>
-<rect class="card" x="24" y="718" width="257.6" height="122" rx="4"/>
-<rect class="band" x="24.6" y="718.6" width="256.4" height="24" rx="3.5" fill="#e9f0f7"/>
-<text x="34" y="734" class="head" xml:space="preserve">Dish Mount</text>
-<text x="271.6" y="734" class="small muted" text-anchor="end">outside</text>
-<text x="34" y="760" xml:space="preserve">The relay <tspan class="scenery">dish</tspan> is a great white <tspan class="scenery">bowl</tspan></text>
-<text x="34" y="774" xml:space="preserve">on a gimballed mount, with a stiff</text>
-<text x="34" y="788" xml:space="preserve"><tspan class="scenery">handwheel</tspan> at its <tspan class="scenery">base</tspan> for manual</text>
-<text x="34" y="802" xml:space="preserve">adjustment. <tspan class="muted em">It</tspan> <tspan class="muted em">points</tspan> <tspan class="muted em">straight</tspan> <tspan class="muted em">along</tspan></text>
-<text x="34" y="816" xml:space="preserve"><tspan class="muted em">the</tspan> <tspan class="muted em">shipping</tspan> <tspan class="muted em">lane.</tspan> The <tspan class="scenery">ladder</tspan> leads</text>
-<text x="34" y="830" xml:space="preserve">back <tspan class="exit">down</tspan> to the hull.</text>
-<rect class="label-bg" x="282.2" y="327" width="56" height="14" rx="3"/><text x="310.2" y="338" class="small exit" text-anchor="middle">east/out</text>
-<rect class="label-bg" x="792.4" y="475.9" width="20" height="14" rx="3"/><text x="802.4" y="486.9" class="small exit" text-anchor="middle">up</text>
-<rect class="label-bg" x="690.8" y="424.9" width="32" height="14" rx="3"/><text x="706.8" y="435.9" class="small exit" text-anchor="middle">down</text>
-<rect class="label-bg" x="482.4" y="208" width="116" height="14" rx="3"/><text x="540.4" y="219" class="small gate" text-anchor="middle">act Power or later</text>
-<rect class="label-bg" x="1057.8" y="292" width="128" height="14" rx="3"/><text x="1121.8" y="303" class="small gate" text-anchor="middle">stores door (locked)</text>
-<rect class="label-bg" x="918" y="683.6" width="20" height="14" rx="3"/><text x="928" y="694.6" class="small exit" text-anchor="middle">up</text>
-<rect class="label-bg" x="912" y="616.4" width="32" height="14" rx="3"/><text x="928" y="627.4" class="small exit" text-anchor="middle">down</text>
-<rect class="label-bg" x="512.4" y="695.9" width="56" height="14" rx="3"/><text x="540.4" y="706.9" class="small exit" text-anchor="middle">north/in</text>
-<rect class="label-bg" x="503.4" y="678" width="74" height="14" rx="3"/><text x="540.4" y="689" class="small muted" text-anchor="middle">inner hatch</text>
-<rect class="label-bg" x="509.4" y="850.6" width="62" height="14" rx="3"/><text x="540.4" y="861.6" class="small exit" text-anchor="middle">south/out</text>
-<rect class="label-bg" x="512.4" y="933.4" width="56" height="14" rx="3"/><text x="540.4" y="944.4" class="small exit" text-anchor="middle">north/in</text>
-<rect class="label-bg" x="503.4" y="892" width="74" height="14" rx="3"/><text x="540.4" y="903" class="small muted" text-anchor="middle">outer hatch</text>
-<rect class="label-bg" x="270.1" y="861.5" width="32" height="14" rx="3"/><text x="286.1" y="872.5" class="small exit" text-anchor="middle">down</text>
-<rect class="label-bg" x="386.7" y="936.5" width="20" height="14" rx="3"/><text x="396.7" y="947.5" class="small exit" text-anchor="middle">up</text>
-<text x="24" y="1178" xml:space="preserve"><tspan class="item">item</tspan><tspan class="muted"> to take   </tspan><tspan class="scenery">scenery</tspan><tspan class="muted"> to examine   </tspan><tspan class="person">person</tspan>   <tspan class="exit">exit</tspan>   <tspan class="missing">named but not examinable</tspan>   <tspan class="muted em">grey italic</tspan><tspan class="muted">: shown only sometimes</tspan></text>
-<text x="24" y="1196" xml:space="preserve"><tspan class="gate">Red dashed line</tspan><tspan class="muted">: a way that opens only when the condition shown is met, or through a locked door. </tspan><tspan class="muted">Arrow: one way only. Grey label: a door.</tspan></text>
+<text x="421.6" y="118" xml:space="preserve"><tspan class="gate">Opens when: act Power or later</tspan></text>
+<text x="421.6" y="132" xml:space="preserve"></text>
+<text x="421.6" y="146" xml:space="preserve">A <tspan class="scenery">horseshoe</tspan> of <tspan class="scenery">consoles</tspan> faces a</text>
+<text x="421.6" y="160" xml:space="preserve"><tspan class="scenery">window</tspan> full of slowly turning <tspan class="scenery">cloud</tspan></text>
+<text x="421.6" y="174" xml:space="preserve"><tspan class="scenery">bands</tspan>. The <tspan class="scenery">beacon console</tspan> sits in</text>
+<text x="421.6" y="188" xml:space="preserve">the middle. The spine corridor is</text>
+<text x="421.6" y="202" xml:space="preserve"><tspan class="exit">south</tspan>.</text>
+<rect class="card" x="411.6" y="532" width="257.6" height="150" rx="4"/>
+<rect class="band" x="412.2" y="532.6" width="256.4" height="24" rx="3.5" fill="#efebe3"/>
+<text x="421.6" y="548" class="head" xml:space="preserve">Suit Room</text>
+<text x="421.6" y="574" xml:space="preserve">Pressure <tspan class="item">suits</tspan> hang in a <tspan class="scenery">rack</tspan> along</text>
+<text x="421.6" y="588" xml:space="preserve">one <tspan class="scenery">wall</tspan>, though only one of them</text>
+<text x="421.6" y="602" xml:space="preserve">has ever passed inspection. The</text>
+<text x="421.6" y="616" xml:space="preserve">spine corridor is <tspan class="exit">north</tspan>. The</text>
+<text x="421.6" y="630" xml:space="preserve">airlock's inner <tspan class="scenery">hatch</tspan> is <tspan class="exit">south</tspan>.</text>
+<text x="421.6" y="644" xml:space="preserve"></text>
+<text x="421.6" y="658" xml:space="preserve"><tspan class="muted">+</tspan> <tspan class="item">pressure suit</tspan></text>
+<text x="421.6" y="672" xml:space="preserve"><tspan class="muted">+</tspan> <tspan class="person">maintenance drone</tspan> <tspan class="muted">(roams)</tspan></text>
+<rect class="card" x="411.6" y="746" width="257.6" height="108" rx="4"/>
+<rect class="band" x="412.2" y="746.6" width="256.4" height="24" rx="3.5" fill="#efebe3"/>
+<text x="421.6" y="762" class="head" xml:space="preserve">Airlock</text>
+<text x="421.6" y="788" xml:space="preserve">A bare chamber just big enough for</text>
+<text x="421.6" y="802" xml:space="preserve">two people in suits. The inner <tspan class="scenery">hatch</tspan></text>
+<text x="421.6" y="816" xml:space="preserve">leads <tspan class="exit">north</tspan>, back into the <tspan class="scenery">station</tspan>.</text>
+<text x="421.6" y="830" xml:space="preserve">The outer <tspan class="scenery">hatch</tspan> leads <tspan class="exit">south</tspan>, out</text>
+<text x="421.6" y="844" xml:space="preserve">onto the hull.</text>
+<rect class="card" x="411.6" y="1002" width="257.6" height="136" rx="4"/>
+<rect class="band" x="412.2" y="1002.6" width="256.4" height="24" rx="3.5" fill="#e9f0f7"/>
+<text x="421.6" y="1018" class="head" xml:space="preserve">Outer Hull</text>
+<text x="659.2" y="1018" class="small muted" text-anchor="end">outside</text>
+<text x="421.6" y="1044" xml:space="preserve">You stand on the <tspan class="scenery">station's</tspan> outer</text>
+<text x="421.6" y="1058" xml:space="preserve"><tspan class="scenery">skin</tspan>, boots locked to the <tspan class="scenery">plating</tspan>.</text>
+<text x="421.6" y="1072" xml:space="preserve">The gas <tspan class="scenery">giant</tspan> fills half the <tspan class="scenery">sky</tspan>,</text>
+<text x="421.6" y="1086" xml:space="preserve">banded in rust and cream. A</text>
+<text x="421.6" y="1100" xml:space="preserve">maintenance <tspan class="scenery">ladder</tspan> leads up to the</text>
+<text x="421.6" y="1114" xml:space="preserve">dish mount. The outer <tspan class="scenery">hatch</tspan> is</text>
+<text x="421.6" y="1128" xml:space="preserve"><tspan class="exit">north</tspan>.</text>
+<rect class="card" x="24" y="746" width="257.6" height="122" rx="4"/>
+<rect class="band" x="24.6" y="746.6" width="256.4" height="24" rx="3.5" fill="#e9f0f7"/>
+<text x="34" y="762" class="head" xml:space="preserve">Dish Mount</text>
+<text x="271.6" y="762" class="small muted" text-anchor="end">outside</text>
+<text x="34" y="788" xml:space="preserve">The relay <tspan class="scenery">dish</tspan> is a great white <tspan class="scenery">bowl</tspan></text>
+<text x="34" y="802" xml:space="preserve">on a gimballed mount, with a stiff</text>
+<text x="34" y="816" xml:space="preserve"><tspan class="scenery">handwheel</tspan> at its <tspan class="scenery">base</tspan> for manual</text>
+<text x="34" y="830" xml:space="preserve">adjustment. <tspan class="muted em">It points straight along</tspan></text>
+<text x="34" y="844" xml:space="preserve"><tspan class="muted em">the shipping lane.</tspan> The <tspan class="scenery">ladder</tspan> leads</text>
+<text x="34" y="858" xml:space="preserve">back <tspan class="exit">down</tspan> to the hull.</text>
+<rect class="label-bg" x="282.2" y="355" width="56" height="14" rx="3"/><text x="310.2" y="366" class="small exit" text-anchor="middle">east/out</text>
+<rect class="label-bg" x="792.4" y="503.9" width="20" height="14" rx="3"/><text x="802.4" y="514.9" class="small exit" text-anchor="middle">up</text>
+<rect class="label-bg" x="690.8" y="452.9" width="32" height="14" rx="3"/><text x="706.8" y="463.9" class="small exit" text-anchor="middle">down</text>
+<rect class="label-bg" x="482.4" y="236" width="116" height="14" rx="3"/><text x="540.4" y="247" class="small gate" text-anchor="middle">act Power or later</text>
+<rect class="label-bg" x="1057.8" y="334" width="128" height="14" rx="3"/><text x="1121.8" y="345" class="small gate" text-anchor="middle">stores door (locked)</text>
+<rect class="label-bg" x="918" y="711.6" width="20" height="14" rx="3"/><text x="928" y="722.6" class="small exit" text-anchor="middle">up</text>
+<rect class="label-bg" x="912" y="644.4" width="32" height="14" rx="3"/><text x="928" y="655.4" class="small exit" text-anchor="middle">down</text>
+<rect class="label-bg" x="512.4" y="723.9" width="56" height="14" rx="3"/><text x="540.4" y="734.9" class="small exit" text-anchor="middle">north/in</text>
+<rect class="label-bg" x="503.4" y="706" width="74" height="14" rx="3"/><text x="540.4" y="717" class="small muted" text-anchor="middle">inner hatch</text>
+<rect class="label-bg" x="509.4" y="878.6" width="62" height="14" rx="3"/><text x="540.4" y="889.6" class="small exit" text-anchor="middle">south/out</text>
+<rect class="label-bg" x="512.4" y="961.4" width="56" height="14" rx="3"/><text x="540.4" y="972.4" class="small exit" text-anchor="middle">north/in</text>
+<rect class="label-bg" x="503.4" y="920" width="74" height="14" rx="3"/><text x="540.4" y="931" class="small muted" text-anchor="middle">outer hatch</text>
+<rect class="label-bg" x="270.1" y="889.5" width="32" height="14" rx="3"/><text x="286.1" y="900.5" class="small exit" text-anchor="middle">down</text>
+<rect class="label-bg" x="386.7" y="964.5" width="20" height="14" rx="3"/><text x="396.7" y="975.5" class="small exit" text-anchor="middle">up</text>
+<text x="24" y="1206" xml:space="preserve"><tspan class="item">item</tspan><tspan class="muted"> to take   </tspan><tspan class="scenery">scenery</tspan><tspan class="muted"> to examine   </tspan><tspan class="person">person</tspan>   <tspan class="exit">exit</tspan>   <tspan class="missing">named but not examinable</tspan>   <tspan class="muted em">grey italic</tspan><tspan class="muted">: shown only sometimes</tspan></text>
+<text x="24" y="1224" xml:space="preserve"><tspan class="gate">Red dashed line</tspan><tspan class="muted">: a way that opens only when the condition shown is met, or through a locked door. </tspan><tspan class="muted">Arrow: one way only. Grey label: a door.</tspan></text>
 </svg>

@@ -45,14 +45,27 @@ export function wrapRuns(runs: Run[], width: number): Run[][] {
       length = 0;
     }
     if (length > 0) {
-      line.push({ text: ' ', cls: '' });
+      // A space between two words of one style takes that style.
+      const before = line[line.length - 1].cls;
+      line.push({ text: ' ', cls: before === word[0].cls ? before : '' });
       length++;
     }
     line.push(...word);
     length += size;
   }
   if (line.length > 0) lines.push(line);
-  return lines;
+  return lines.map(merge);
+}
+
+/** Join neighbouring runs of the same style. */
+function merge(runs: Run[]): Run[] {
+  const out: Run[] = [];
+  for (const r of runs) {
+    const last = out[out.length - 1];
+    if (last && last.cls === r.cls) last.text += r.text;
+    else out.push({ ...r });
+  }
+  return out;
 }
 
 export function wrap(text: string, width: number, cls = ''): Run[][] {
