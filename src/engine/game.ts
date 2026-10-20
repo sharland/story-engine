@@ -988,8 +988,14 @@ export class Game {
   }
 
   /** Every direction the player can type, for help: "NORTH (N), ..., IN and OUT". */
+  /** The directions this pack's exits (or rules) use, as help lists them. */
   private directionList(): string {
-    const names = [...this.world.directions.values()].map((d) => {
+    const used = new Set<string>();
+    for (const room of this.world.rooms.values()) for (const dir of room.exits.keys()) used.add(dir);
+    for (const rule of this.world.rules) for (const d of asList(rule.dir ?? [])) used.add(this.world.directionWords.get(d) ?? d);
+    const all = [...this.world.directions.values()];
+    const shown = all.some((d) => used.has(d.id)) ? all.filter((d) => used.has(d.id)) : all;
+    const names = shown.map((d) => {
       const short = d.words.slice(1).filter((w) => w.length <= 2);
       const name = d.words[0].toUpperCase();
       return short.length > 0 ? `${name} (${short.join(', ').toUpperCase()})` : name;

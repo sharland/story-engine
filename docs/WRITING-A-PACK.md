@@ -1135,6 +1135,10 @@ your patterns is shadowed by, or shadows, a pattern of a different verb.
 A new direction can then be used in exits and typed by the player. Giving the
 id of a standard direction adds words to it: `"up": {"words": ["upstairs"]}`.
 
+`help` lists only the directions your exits (and rules) use, so a pack with no
+stairs never offers UP and DOWN. The others still work if typed; they just say
+there's no way that way.
+
 ### Messages
 
 Every standard response can be replaced to suit the story's voice:
@@ -1149,6 +1153,13 @@ Every standard response can be replaced to suit the story's voice:
 
 An empty string suppresses a message. [Appendix B](#appendix-b-standard-messages)
 lists every key with its default text and the templates it uses.
+
+**Read the standard messages for your period.** They are written for no time
+and place in particular, and some give that away: "You can't switch that on or
+off" is wrong in a western, where a player types LIGHT. The demo western
+replaces it with "You can't light the stove." The same goes for verbs: LIGHT
+already means switching on, and a pack adds its own patterns ("strike match")
+the same way it adds verbs (see [Verbs](#verbs)).
 
 ## 12. Script modules
 
@@ -1913,7 +1924,7 @@ success, which is when after-rules run.
 
 Override any of these in a `messages` section. Templates are explained in
 [section 5](#5-text); `{list}`, `{word}`, `{verb}`, `{n}`, `{title}`,
-`{reason}` and `{directions}` (every direction the pack knows, for `help`)
+`{reason}` and `{directions}` (the directions the pack's exits use, for `help`)
 are filled in by the engine for the messages that use them.
 
 | Key | Default text |

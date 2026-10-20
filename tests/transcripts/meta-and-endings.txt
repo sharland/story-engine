@@ -19,7 +19,7 @@ There is nothing to undo.
 
 > help
 Type short commands: LOOK, INVENTORY, TAKE something, PUT something IN something, OPEN something, TALK TO someone, ASK someone ABOUT something.
-To move, type a direction: NORTH (N), SOUTH (S), EAST (E), WEST (W), NORTHEAST (NE), NORTHWEST (NW), SOUTHEAST (SE), SOUTHWEST (SW), UP (U), DOWN (D), IN, OUT and AROUND.
+To move, type a direction: NORTH (N), SOUTH (S), EAST (E), WEST (W), UP (U), DOWN (D) and AROUND.
 Other commands: SCORE, SAVE, RESTORE, UNDO, AGAIN, RESTART, QUIT, ABOUT.
 
 > about
